@@ -167,7 +167,7 @@ function switchAuthTab(tab) {
 }
 
 // ============================================
-// 🔑 GOOGLE SIGN-IN (спливаюче вікно)
+// 🔑 GOOGLE SIGN-IN
 // ============================================
 async function signInWithGoogle() {
     const provider = new firebase.auth.GoogleAuthProvider();
@@ -185,11 +185,17 @@ async function signInWithGoogle() {
             role: user.email === 'admin@admin.com' ? 'admin' : 'user'
         };
         localStorage.setItem('currentUser', JSON.stringify(userData));
+        window.currentUser = userData;
 
         showToast(`Welcome ${user.displayName}!`, 'success');
         closeAuthModal();
         updateUIAfterLogin(userData);
+        
+        // Оновлюємо хедер на всіх сторінках
         if (typeof updatePageAfterAuth === 'function') updatePageAfterAuth();
+        
+        // Перезавантажуємо сторінку для оновлення всього інтерфейсу
+        setTimeout(() => location.reload(), 500);
     } catch (error) {
         console.error('Google Sign-In Error:', error);
         showToast(error.message, 'error');
@@ -220,11 +226,14 @@ async function signInWithEmail() {
             role: email === 'admin@admin.com' ? 'admin' : 'user'
         };
         localStorage.setItem('currentUser', JSON.stringify(userData));
+        window.currentUser = userData;
 
         showToast(`Welcome ${userData.name}!`, 'success');
         closeAuthModal();
         updateUIAfterLogin(userData);
+        
         if (typeof updatePageAfterAuth === 'function') updatePageAfterAuth();
+        setTimeout(() => location.reload(), 500);
     } catch (error) {
         console.error('Email Sign-In Error:', error);
         if (error.code === 'auth/user-not-found') {
@@ -275,11 +284,14 @@ async function signUpWithEmail() {
             role: 'user'
         };
         localStorage.setItem('currentUser', JSON.stringify(userData));
+        window.currentUser = userData;
 
         showToast(`Account created! Welcome ${name}!`, 'success');
         closeAuthModal();
         updateUIAfterLogin(userData);
+        
         if (typeof updatePageAfterAuth === 'function') updatePageAfterAuth();
+        setTimeout(() => location.reload(), 500);
     } catch (error) {
         console.error('Email Sign-Up Error:', error);
         if (error.code === 'auth/email-already-in-use') {
@@ -297,16 +309,14 @@ async function signOut() {
     try {
         await firebase.auth().signOut();
         localStorage.removeItem('currentUser');
-        currentUser = null;
+        window.currentUser = null;
         showToast(window.currentLanguage === 'uk' ? 'Ви вийшли з аккаунту' : 'Signed out successfully', 'success');
         updateUIAfterLogout();
+        
         if (typeof updatePageAfterAuth === 'function') updatePageAfterAuth();
-
-        const protectedPages = ['profile.html', 'add-coin.html', 'admin.html'];
-        const currentPage = window.location.pathname.split('/').pop();
-        if (protectedPages.includes(currentPage)) {
-            setTimeout(() => window.location.href = 'index.html', 1500);
-        }
+        
+        // Перезавантажуємо сторінку для оновлення інтерфейсу
+        setTimeout(() => location.reload(), 500);
     } catch (error) {
         console.error('Sign Out Error:', error);
         showToast(error.message, 'error');
@@ -317,15 +327,16 @@ async function signOut() {
 // 👤 UPDATE UI
 // ============================================
 function updateUIAfterLogin(user) {
-    currentUser = user;
+    window.currentUser = user;
     const authButton = document.getElementById('authButton');
     const adminLink = document.getElementById('adminLink');
 
     if (authButton) {
+        const firstLetter = user.name ? user.name.charAt(0).toUpperCase() : 'U';
         authButton.innerHTML = `
             <div class="flex items-center gap-2 cursor-pointer" onclick="toggleUserMenu()">
-                ${user.photoURL ? `<img src="${user.photoURL}" class="w-8 h-8 rounded-full object-cover">` : `<div class="w-8 h-8 rounded-full bg-yellow-500 flex items-center justify-center text-black font-bold">${user.name.charAt(0)}</div>`}
-                <span class="hidden md:inline">${user.name}</span>
+                ${user.photoURL ? `<img src="${user.photoURL}" class="w-8 h-8 rounded-full object-cover">` : `<div class="w-8 h-8 rounded-full bg-yellow-500 flex items-center justify-center text-black font-bold">${firstLetter}</div>`}
+                <span class="hidden md:inline">${user.name?.split(' ')[0] || user.name || 'User'}</span>
                 <i class="fas fa-chevron-down text-xs"></i>
             </div>
         `;
@@ -339,13 +350,14 @@ function updateUIAfterLogin(user) {
 }
 
 function updateUIAfterLogout() {
-    currentUser = null;
+    window.currentUser = null;
     const authButton = document.getElementById('authButton');
     const adminLink = document.getElementById('adminLink');
     const userMenu = document.getElementById('userMenu');
 
     if (authButton) {
-        authButton.innerHTML = `<button onclick="openAuthModal()" class="bg-yellow-500 hover:bg-yellow-600 text-black px-4 py-2 rounded-lg font-medium transition"><i class="fas fa-user mr-2"></i>${window.currentLanguage === 'uk' ? 'Увійти' : 'Sign In'}</button>`;
+        const signInText = window.currentLanguage === 'uk' ? 'Увійти' : 'Sign In';
+        authButton.innerHTML = `<button onclick="openAuthModal()" class="bg-yellow-500 hover:bg-yellow-600 text-black px-4 py-2 rounded-lg font-medium transition"><i class="fas fa-user mr-2"></i>${signInText}</button>`;
     }
     if (userMenu) userMenu.classList.add('hidden');
     if (adminLink) adminLink.classList.add('hidden');
@@ -363,21 +375,21 @@ firebase.auth().onAuthStateChanged((user) => {
     if (user) {
         const savedUser = localStorage.getItem('currentUser');
         if (savedUser) {
-            currentUser = JSON.parse(savedUser);
+            window.currentUser = JSON.parse(savedUser);
         } else {
             const userData = {
                 uid: user.uid,
-                name: user.displayName || user.email.split('@')[0],
+                name: user.displayName || user.email?.split('@')[0] || 'User',
                 email: user.email,
                 photoURL: user.photoURL,
                 role: user.email === 'admin@admin.com' ? 'admin' : 'user'
             };
             localStorage.setItem('currentUser', JSON.stringify(userData));
-            currentUser = userData;
+            window.currentUser = userData;
         }
-        updateUIAfterLogin(currentUser);
+        updateUIAfterLogin(window.currentUser);
     } else {
-        currentUser = null;
+        window.currentUser = null;
         updateUIAfterLogout();
     }
     if (typeof updatePageAfterAuth === 'function') updatePageAfterAuth();
@@ -390,8 +402,8 @@ document.addEventListener('DOMContentLoaded', () => {
     createAuthModal();
     const savedUser = localStorage.getItem('currentUser');
     if (savedUser) {
-        currentUser = JSON.parse(savedUser);
-        updateUIAfterLogin(currentUser);
+        window.currentUser = JSON.parse(savedUser);
+        updateUIAfterLogin(window.currentUser);
     }
 });
 
@@ -405,3 +417,5 @@ window.closeAuthModal = closeAuthModal;
 window.switchAuthTab = switchAuthTab;
 window.toggleUserMenu = toggleUserMenu;
 window.showToast = showToast;
+window.updateUIAfterLogin = updateUIAfterLogin;
+window.updateUIAfterLogout = updateUIAfterLogout;

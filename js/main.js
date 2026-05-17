@@ -4,53 +4,34 @@
 
 // Глобальні змінні
 window.currentLanguage = localStorage.getItem('language') || 'en';
-window.currentTheme = localStorage.getItem('theme') || 'dark';
+window.currentTheme = 'dark'; // Тільки темна тема
 
 // ============================================
-// 🎨 ТЕМА (ТЕМНА/СВІТЛА)
+// 🎨 ТЕМА (ТІЛЬКИ ТЕМНА - СВІТЛУ ВИДАЛЕНО)
 // ============================================
 
 function initTheme() {
-    if (window.currentTheme === 'light') {
-        document.documentElement.classList.remove('dark');
-        document.documentElement.classList.add('light');
-        updateThemeIcon('light');
-    } else {
-        document.documentElement.classList.remove('light');
-        document.documentElement.classList.add('dark');
-        updateThemeIcon('dark');
-    }
+    // Завжди темна тема
+    document.documentElement.classList.remove('light');
+    document.documentElement.classList.add('dark');
+    updateThemeIcon('dark');
 }
 
 function toggleTheme() {
-    if (window.currentTheme === 'dark') {
-        window.currentTheme = 'light';
-        document.documentElement.classList.remove('dark');
-        document.documentElement.classList.add('light');
-        localStorage.setItem('theme', 'light');
-        updateThemeIcon('light');
-    } else {
-        window.currentTheme = 'dark';
-        document.documentElement.classList.remove('light');
-        document.documentElement.classList.add('dark');
-        localStorage.setItem('theme', 'dark');
-        updateThemeIcon('dark');
-    }
+    // Функція більше не працює - тема завжди темна
+    // Можна залишити порожньою або приховати кнопку
+    return;
 }
 
 function updateThemeIcon(theme) {
     const themeIcon = document.getElementById('themeIcon');
-    const themeText = document.getElementById('themeText');
     if (themeIcon) {
-        themeIcon.className = theme === 'dark' ? 'fas fa-moon' : 'fas fa-sun';
-    }
-    if (themeText) {
-        themeText.textContent = theme === 'dark' ? 'Dark' : 'Light';
+        themeIcon.className = 'fas fa-moon';
     }
 }
 
 // ============================================
-// 🌐 МОВА (УКР/АНГЛ) - ПРОСТА ВЕРСІЯ З ПЕРЕЗАВАНТАЖЕННЯМ
+// 🌐 МОВА - ПРОСТА ВЕРСІЯ З ПЕРЕЗАВАНТАЖЕННЯМ
 // ============================================
 
 let translations = { uk: {}, en: {} };
@@ -102,7 +83,7 @@ function applyTranslations() {
     }
 }
 
-// ОСНОВНА ФУНКЦІЯ ЗМІНИ МОВИ (просте перезавантаження)
+// ОСНОВНА ФУНКЦІЯ ЗМІНИ МОВИ
 function switchLanguage(lang) {
     localStorage.setItem('language', lang);
     location.reload();
@@ -161,10 +142,6 @@ function createHeader() {
                     </div>
                     
                     <div class="flex items-center gap-3">
-                        <button onclick="toggleTheme()" class="p-2 rounded-lg bg-gray-800 text-yellow-500 hover:bg-gray-700 transition">
-                            <i id="themeIcon" class="fas ${window.currentTheme === 'dark' ? 'fa-moon' : 'fa-sun'}"></i>
-                        </button>
-                        
                         <button onclick="switchLanguage('${currentLangForButton}')" class="p-2 rounded-lg bg-gray-800 text-yellow-500 hover:bg-gray-700 transition font-bold">
                             <span id="langText">${window.currentLanguage === 'uk' ? 'EN' : 'UA'}</span>
                         </button>
@@ -199,7 +176,6 @@ function createHeader() {
 function updateUserMenu() {
     const userName = document.getElementById('userName');
     const userEmail = document.getElementById('userEmail');
-    const userMenu = document.getElementById('userMenu');
     
     if (window.currentUser) {
         if (userName) userName.textContent = window.currentUser.name;

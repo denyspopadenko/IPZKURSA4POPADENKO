@@ -59,7 +59,7 @@
 <!-- ============================================ -->
 <!-- ПЕРЕВІРКА АВТОРИЗАЦІЇ -->
 <!-- ============================================ -->
-<div id="unauthorizedMessage" class="hidden min-h-screen flex items-center justify-center">
+<div id="unauthorizedMessage" class="min-h-screen flex items-center justify-center">
     <div class="text-center max-w-md mx-auto px-4">
         <i class="fas fa-lock text-6xl text-yellow-500 mb-4"></i>
         <h2 class="text-3xl font-bold mb-2">Access Restricted</h2>
@@ -221,21 +221,34 @@
 
 <script>
     // ============================================
-    // ВСЯ ЛОГІКА ПРОФІЛЮ ТУТ
+    // ВСЯ ЛОГІКА ПРОФІЛЮ
     // ============================================
     
     let metalChart = null, countryChart = null, valueChart = null;
     
     function switchProfileTab(tabName) {
         document.querySelectorAll('.profile-tab').forEach(btn => btn.classList.remove('active'));
-        document.getElementById(`tab${tabName.charAt(0).toUpperCase() + tabName.slice(1)}`).classList.add('active');
+        const tabId = 'tab' + tabName.charAt(0).toUpperCase() + tabName.slice(1);
+        const activeTab = document.getElementById(tabId);
+        if (activeTab) activeTab.classList.add('active');
+        
         document.querySelectorAll('.profile-tab-content').forEach(content => content.classList.add('hidden'));
         
-        if (tabName === 'collection') document.getElementById('collectionTab').classList.remove('hidden');
-        else if (tabName === 'wishlist') document.getElementById('wishlistTab').classList.remove('hidden');
-        else if (tabName === 'submissions') document.getElementById('submissionsTab').classList.remove('hidden');
-        else if (tabName === 'stats') { document.getElementById('statsTab').classList.remove('hidden'); updateStatsCharts(); }
-        else if (tabName === 'settings') document.getElementById('settingsTab').classList.remove('hidden');
+        const tabContentMap = {
+            'collection': 'collectionTab',
+            'wishlist': 'wishlistTab',
+            'submissions': 'submissionsTab',
+            'stats': 'statsTab',
+            'settings': 'settingsTab'
+        };
+        
+        const contentId = tabContentMap[tabName];
+        if (contentId) {
+            const content = document.getElementById(contentId);
+            if (content) content.classList.remove('hidden');
+        }
+        
+        if (tabName === 'stats') updateStatsCharts();
     }
     
     function loadProfileData() {
@@ -245,13 +258,21 @@
         const email = window.currentUser.email || '';
         const firstLetter = name.charAt(0).toUpperCase();
         
-        document.getElementById('profileName').textContent = name;
-        document.getElementById('profileEmail').textContent = email;
-        document.getElementById('profileAvatar').textContent = firstLetter;
-        if (window.currentUser.role === 'admin') document.getElementById('profileRole').innerHTML = '<i class="fas fa-shield-alt mr-1"></i> Admin';
+        const profileName = document.getElementById('profileName');
+        const profileEmail = document.getElementById('profileEmail');
+        const profileAvatar = document.getElementById('profileAvatar');
+        const profileRole = document.getElementById('profileRole');
+        const displayName = document.getElementById('displayName');
+        const displayEmail = document.getElementById('displayEmail');
         
-        document.getElementById('displayName').value = name;
-        document.getElementById('displayEmail').value = email;
+        if (profileName) profileName.textContent = name;
+        if (profileEmail) profileEmail.textContent = email;
+        if (profileAvatar) profileAvatar.textContent = firstLetter;
+        if (profileRole && window.currentUser.role === 'admin') {
+            profileRole.innerHTML = '<i class="fas fa-shield-alt mr-1"></i> Admin';
+        }
+        if (displayName) displayName.value = name;
+        if (displayEmail) displayEmail.value = email;
         
         loadUserCollection();
         loadUserWishlist();
@@ -259,6 +280,8 @@
     }
     
     function loadUserCollection() {
+        if (!window.currentUser) return;
+        
         const collectionIds = getUserCollection(window.currentUser.uid);
         const allCoins = loadCoins();
         const collectionCoins = allCoins.filter(coin => collectionIds.includes(coin.id));
@@ -266,111 +289,159 @@
         const totalValue = collectionCoins.reduce((sum, coin) => sum + coin.priceUSD, 0);
         const avgRarity = collectionCoins.length > 0 ? (collectionCoins.reduce((sum, coin) => sum + coin.rarity, 0) / collectionCoins.length).toFixed(1) : 0;
         
-        document.getElementById('totalCoinsCount').textContent = collectionCoins.length;
-        document.getElementById('totalValue').textContent = `$${totalValue.toLocaleString()}`;
-        document.getElementById('avgRarity').textContent = `${avgRarity}/10`;
+        const totalCoinsCount = document.getElementById('totalCoinsCount');
+        const totalValueEl = document.getElementById('totalValue');
+        const avgRarityEl = document.getElementById('avgRarity');
+        
+        if (totalCoinsCount) totalCoinsCount.textContent = collectionCoins.length;
+        if (totalValueEl) totalValueEl.textContent = `$${totalValue.toLocaleString()}`;
+        if (avgRarityEl) avgRarityEl.textContent = `${avgRarity}/10`;
         
         const container = document.getElementById('collectionList');
-        if (collectionCoins.length === 0) {
-            container.innerHTML = `<div class="text-center py-12"><i class="fas fa-box-open text-5xl text-gray-600 mb-4"></i><p class="text-gray-400">Your collection is empty. Start adding coins from the catalog!</p><a href="catalog.html" class="inline-block mt-4 bg-yellow-500 hover:bg-yellow-600 text-black px-6 py-2 rounded-lg">Browse Catalog</a></div>`;
-        } else {
-            container.innerHTML = collectionCoins.map(coin => `
-                <div class="coin-list-item bg-gray-800 rounded-xl p-4 flex justify-between items-center">
-                    <div class="flex items-center gap-4">
-                        <i class="fas fa-coins text-3xl text-yellow-500"></i>
-                        <div><h4 class="font-bold">${coin.name.en}</h4><p class="text-sm text-gray-400">${coin.country} • ${coin.year} • Rarity ${coin.rarity}/10</p></div>
+        if (container) {
+            if (collectionCoins.length === 0) {
+                container.innerHTML = `<div class="text-center py-12"><i class="fas fa-box-open text-5xl text-gray-600 mb-4"></i><p class="text-gray-400">Your collection is empty. Start adding coins from the catalog!</p><a href="catalog.html" class="inline-block mt-4 bg-yellow-500 hover:bg-yellow-600 text-black px-6 py-2 rounded-lg">Browse Catalog</a></div>`;
+            } else {
+                container.innerHTML = collectionCoins.map(coin => `
+                    <div class="coin-list-item bg-gray-800 rounded-xl p-4 flex justify-between items-center">
+                        <div class="flex items-center gap-4">
+                            <i class="fas fa-coins text-3xl text-yellow-500"></i>
+                            <div><h4 class="font-bold">${coin.name.en}</h4><p class="text-sm text-gray-400">${coin.country} • ${coin.year} • Rarity ${coin.rarity}/10</p></div>
+                        </div>
+                        <div class="flex items-center gap-4">
+                            <span class="text-yellow-500 font-bold text-lg">$${coin.priceUSD}</span>
+                            <button onclick="removeFromCollection('${coin.id}')" class="text-red-400 hover:text-red-300 transition"><i class="fas fa-trash-alt"></i></button>
+                        </div>
                     </div>
-                    <div class="flex items-center gap-4">
-                        <span class="text-yellow-500 font-bold text-lg">$${coin.priceUSD}</span>
-                        <button onclick="removeFromCollection('${coin.id}')" class="text-red-400 hover:text-red-300 transition"><i class="fas fa-trash-alt"></i></button>
-                    </div>
-                </div>
-            `).join('');
+                `).join('');
+            }
         }
     }
     
     function loadUserWishlist() {
+        if (!window.currentUser) return;
+        
         const wishlistIds = getUserWishlist(window.currentUser.uid);
         const allCoins = loadCoins();
         const wishlistCoins = allCoins.filter(coin => wishlistIds.includes(coin.id));
         
-        document.getElementById('wishlistCount').textContent = `${wishlistCoins.length} coins`;
+        const wishlistCount = document.getElementById('wishlistCount');
+        if (wishlistCount) wishlistCount.textContent = `${wishlistCoins.length} coins`;
+        
         const container = document.getElementById('wishlistList');
-        if (wishlistCoins.length === 0) {
-            container.innerHTML = `<div class="text-center py-12"><i class="fas fa-heart-broken text-5xl text-gray-600 mb-4"></i><p class="text-gray-400">Your wishlist is empty. Add coins you want to acquire!</p></div>`;
-        } else {
-            container.innerHTML = wishlistCoins.map(coin => `
-                <div class="coin-list-item bg-gray-800 rounded-xl p-4 flex justify-between items-center">
-                    <div class="flex items-center gap-4">
-                        <i class="fas fa-heart text-yellow-500 text-2xl"></i>
-                        <div><h4 class="font-bold">${coin.name.en}</h4><p class="text-sm text-gray-400">${coin.country} • ${coin.year}</p></div>
+        if (container) {
+            if (wishlistCoins.length === 0) {
+                container.innerHTML = `<div class="text-center py-12"><i class="fas fa-heart-broken text-5xl text-gray-600 mb-4"></i><p class="text-gray-400">Your wishlist is empty. Add coins you want to acquire!</p></div>`;
+            } else {
+                container.innerHTML = wishlistCoins.map(coin => `
+                    <div class="coin-list-item bg-gray-800 rounded-xl p-4 flex justify-between items-center">
+                        <div class="flex items-center gap-4">
+                            <i class="fas fa-heart text-yellow-500 text-2xl"></i>
+                            <div><h4 class="font-bold">${coin.name.en}</h4><p class="text-sm text-gray-400">${coin.country} • ${coin.year}</p></div>
+                        </div>
+                        <div class="flex items-center gap-4">
+                            <span class="text-yellow-500 font-bold text-lg">$${coin.priceUSD}</span>
+                            <button onclick="removeFromWishlist('${coin.id}')" class="text-red-400 hover:text-red-300 transition"><i class="fas fa-times-circle"></i></button>
+                        </div>
                     </div>
-                    <div class="flex items-center gap-4">
-                        <span class="text-yellow-500 font-bold text-lg">$${coin.priceUSD}</span>
-                        <button onclick="removeFromWishlist('${coin.id}')" class="text-red-400 hover:text-red-300 transition"><i class="fas fa-times-circle"></i></button>
-                    </div>
-                </div>
-            `).join('');
+                `).join('');
+            }
         }
     }
     
     function loadUserSubmissions() {
+        if (!window.currentUser) return;
+        
         const allCoins = loadCoins();
         const submittedCoins = allCoins.filter(coin => coin.addedBy === window.currentUser.uid);
         
         const container = document.getElementById('submissionsList');
-        if (submittedCoins.length === 0) {
-            container.innerHTML = `<div class="text-center py-12"><i class="fas fa-pen-fancy text-5xl text-gray-600 mb-4"></i><p class="text-gray-400">You haven't submitted any coins yet.</p><a href="add-coin.html" class="inline-block mt-4 bg-yellow-500 hover:bg-yellow-600 text-black px-6 py-2 rounded-lg">Add Your First Coin</a></div>`;
-        } else {
-            container.innerHTML = submittedCoins.map(coin => `
-                <div class="coin-list-item bg-gray-800 rounded-xl p-4 flex justify-between items-center">
-                    <div class="flex items-center gap-4">
-                        <i class="fas fa-paper-plane text-2xl ${coin.status === 'approved' ? 'text-green-500' : coin.status === 'pending' ? 'text-yellow-500' : 'text-red-500'}"></i>
-                        <div><h4 class="font-bold">${coin.name.en}</h4><p class="text-sm text-gray-400">${coin.country} • ${coin.year}</p></div>
+        if (container) {
+            if (submittedCoins.length === 0) {
+                container.innerHTML = `<div class="text-center py-12"><i class="fas fa-pen-fancy text-5xl text-gray-600 mb-4"></i><p class="text-gray-400">You haven't submitted any coins yet.</p><a href="add-coin.html" class="inline-block mt-4 bg-yellow-500 hover:bg-yellow-600 text-black px-6 py-2 rounded-lg">Add Your First Coin</a></div>`;
+            } else {
+                container.innerHTML = submittedCoins.map(coin => `
+                    <div class="coin-list-item bg-gray-800 rounded-xl p-4 flex justify-between items-center">
+                        <div class="flex items-center gap-4">
+                            <i class="fas fa-paper-plane text-2xl ${coin.status === 'approved' ? 'text-green-500' : coin.status === 'pending' ? 'text-yellow-500' : 'text-red-500'}"></i>
+                            <div><h4 class="font-bold">${coin.name.en}</h4><p class="text-sm text-gray-400">${coin.country} • ${coin.year}</p></div>
+                        </div>
+                        <div><span class="px-3 py-1 rounded-full text-xs font-bold ${coin.status === 'approved' ? 'bg-green-500/20 text-green-500' : coin.status === 'pending' ? 'bg-yellow-500/20 text-yellow-500' : 'bg-red-500/20 text-red-500'}">${coin.status === 'approved' ? 'Approved' : coin.status === 'pending' ? 'Pending Review' : 'Rejected'}</span></div>
                     </div>
-                    <div><span class="px-3 py-1 rounded-full text-xs font-bold ${coin.status === 'approved' ? 'bg-green-500/20 text-green-500' : coin.status === 'pending' ? 'bg-yellow-500/20 text-yellow-500' : 'bg-red-500/20 text-red-500'}">${coin.status === 'approved' ? 'Approved' : coin.status === 'pending' ? 'Pending Review' : 'Rejected'}</span></div>
-                </div>
-            `).join('');
+                `).join('');
+            }
         }
     }
     
     function updateStatsCharts() {
+        if (!window.currentUser) return;
+        
         const collectionIds = getUserCollection(window.currentUser.uid);
         const allCoins = loadCoins();
         const collectionCoins = allCoins.filter(coin => collectionIds.includes(coin.id));
         
         const metalCounts = { gold: 0, silver: 0, bronze: 0 };
-        collectionCoins.forEach(coin => { if (metalCounts[coin.metalType] !== undefined) metalCounts[coin.metalType]++; else metalCounts.silver++; });
+        collectionCoins.forEach(coin => { 
+            if (metalCounts[coin.metalType] !== undefined) metalCounts[coin.metalType]++; 
+            else metalCounts.silver++; 
+        });
         
-        if (document.getElementById('metalChart')) {
+        const metalChartCanvas = document.getElementById('metalChart');
+        if (metalChartCanvas && collectionCoins.length > 0) {
             if (metalChart) metalChart.destroy();
-            metalChart = new Chart(document.getElementById('metalChart'), { type: 'pie', data: { labels: ['Gold', 'Silver', 'Bronze'], datasets: [{ data: [metalCounts.gold, metalCounts.silver, metalCounts.bronze], backgroundColor: ['#fbbf24', '#9ca3af', '#d97706'] }] }, options: { responsive: true, plugins: { legend: { labels: { color: '#e5e5e5' } } } } });
+            metalChart = new Chart(metalChartCanvas, { 
+                type: 'pie', 
+                data: { 
+                    labels: ['Gold', 'Silver', 'Bronze'], 
+                    datasets: [{ data: [metalCounts.gold, metalCounts.silver, metalCounts.bronze], backgroundColor: ['#fbbf24', '#9ca3af', '#d97706'] }] 
+                }, 
+                options: { responsive: true, plugins: { legend: { labels: { color: '#e5e5e5' } } } } 
+            });
         }
         
         const countryCounts = {};
         collectionCoins.forEach(coin => { countryCounts[coin.country] = (countryCounts[coin.country] || 0) + 1; });
         const topCountries = Object.entries(countryCounts).sort((a, b) => b[1] - a[1]).slice(0, 5);
         
-        if (document.getElementById('countryChart')) {
+        const countryChartCanvas = document.getElementById('countryChart');
+        if (countryChartCanvas && collectionCoins.length > 0) {
             if (countryChart) countryChart.destroy();
-            countryChart = new Chart(document.getElementById('countryChart'), { type: 'bar', data: { labels: topCountries.map(c => c[0]), datasets: [{ label: 'Number of Coins', data: topCountries.map(c => c[1]), backgroundColor: '#fbbf24' }] }, options: { responsive: true, scales: { y: { ticks: { color: '#e5e5e5' } }, x: { ticks: { color: '#e5e5e5' } } } } });
+            countryChart = new Chart(countryChartCanvas, { 
+                type: 'bar', 
+                data: { 
+                    labels: topCountries.map(c => c[0]), 
+                    datasets: [{ label: 'Number of Coins', data: topCountries.map(c => c[1]), backgroundColor: '#fbbf24' }] 
+                }, 
+                options: { responsive: true, scales: { y: { ticks: { color: '#e5e5e5' } }, x: { ticks: { color: '#e5e5e5' } } } } 
+            });
         }
         
-        if (document.getElementById('valueChart')) {
+        const valueChartCanvas = document.getElementById('valueChart');
+        if (valueChartCanvas && collectionCoins.length > 0) {
             if (valueChart) valueChart.destroy();
-            valueChart = new Chart(document.getElementById('valueChart'), { type: 'line', data: { labels: collectionCoins.slice(0, 10).map((_, i) => `Coin ${i+1}`), datasets: [{ label: 'Value (USD)', data: collectionCoins.slice(0, 10).map(c => c.priceUSD), borderColor: '#fbbf24', fill: true }] }, options: { responsive: true } });
+            valueChart = new Chart(valueChartCanvas, { 
+                type: 'line', 
+                data: { 
+                    labels: collectionCoins.slice(0, 10).map((_, i) => `Coin ${i+1}`), 
+                    datasets: [{ label: 'Value (USD)', data: collectionCoins.slice(0, 10).map(c => c.priceUSD), borderColor: '#fbbf24', fill: true }] 
+                }, 
+                options: { responsive: true } 
+            });
         }
     }
     
     function removeFromCollection(coinId) {
+        if (!window.currentUser) return;
         removeFromUserCollection(window.currentUser.uid, coinId);
-        showToast('Coin removed from your collection', 'success');
+        if (typeof showToast === 'function') showToast('Coin removed from your collection', 'success');
         loadUserCollection();
+        loadUserWishlist();
     }
     
     function removeFromWishlist(coinId) {
+        if (!window.currentUser) return;
         removeFromWishlist(window.currentUser.uid, coinId);
-        showToast('Coin removed from your wishlist', 'success');
+        if (typeof showToast === 'function') showToast('Coin removed from your wishlist', 'success');
         loadUserWishlist();
     }
     
@@ -379,7 +450,7 @@
         if (newName && window.currentUser) {
             window.currentUser.name = newName;
             localStorage.setItem('currentUser', JSON.stringify(window.currentUser));
-            showToast('Profile updated successfully!', 'success');
+            if (typeof showToast === 'function') showToast('Profile updated successfully!', 'success');
             loadProfileData();
             if (typeof updateUIAfterLogin === 'function') updateUIAfterLogin(window.currentUser);
         }
@@ -389,19 +460,30 @@
         const current = document.getElementById('currentPassword').value;
         const newPwd = document.getElementById('newPassword').value;
         const confirm = document.getElementById('confirmPassword').value;
-        if (!current || !newPwd || !confirm) { showToast('Please fill all password fields', 'error'); return; }
-        if (newPwd !== confirm) { showToast('New passwords do not match', 'error'); return; }
-        if (newPwd.length < 6) { showToast('Password must be at least 6 characters', 'error'); return; }
+        if (!current || !newPwd || !confirm) { 
+            if (typeof showToast === 'function') showToast('Please fill all password fields', 'error'); 
+            return; 
+        }
+        if (newPwd !== confirm) { 
+            if (typeof showToast === 'function') showToast('New passwords do not match', 'error'); 
+            return; 
+        }
+        if (newPwd.length < 6) { 
+            if (typeof showToast === 'function') showToast('Password must be at least 6 characters', 'error'); 
+            return; 
+        }
         try {
             const user = firebase.auth().currentUser;
             const credential = firebase.auth.EmailAuthProvider.credential(user.email, current);
             await user.reauthenticateWithCredential(credential);
             await user.updatePassword(newPwd);
-            showToast('Password updated successfully!', 'success');
+            if (typeof showToast === 'function') showToast('Password updated successfully!', 'success');
             document.getElementById('currentPassword').value = '';
             document.getElementById('newPassword').value = '';
             document.getElementById('confirmPassword').value = '';
-        } catch (error) { showToast(error.message, 'error'); }
+        } catch (error) { 
+            if (typeof showToast === 'function') showToast(error.message, 'error'); 
+        }
     }
     
     async function deleteAccount() {
@@ -409,28 +491,41 @@
             try {
                 await firebase.auth().currentUser.delete();
                 localStorage.removeItem('currentUser');
-                showToast('Account deleted successfully', 'success');
+                if (typeof showToast === 'function') showToast('Account deleted successfully', 'success');
                 setTimeout(() => window.location.href = 'index.html', 1500);
-            } catch (error) { showToast(error.message, 'error'); }
+            } catch (error) { 
+                if (typeof showToast === 'function') showToast(error.message, 'error'); 
+            }
+        }
+    }
+    
+    function checkAuthAndLoad() {
+        if (window.currentUser) {
+            const unauthorizedMsg = document.getElementById('unauthorizedMessage');
+            const profileContent = document.getElementById('profileContent');
+            if (unauthorizedMsg) unauthorizedMsg.classList.add('hidden');
+            if (profileContent) profileContent.classList.remove('hidden');
+            loadProfileData();
+        } else {
+            const unauthorizedMsg = document.getElementById('unauthorizedMessage');
+            const profileContent = document.getElementById('profileContent');
+            if (unauthorizedMsg) unauthorizedMsg.classList.remove('hidden');
+            if (profileContent) profileContent.classList.add('hidden');
         }
     }
     
     document.addEventListener('DOMContentLoaded', () => {
         AOS.init({ duration: 600, once: true });
-        const checkAuth = setInterval(() => {
-            if (window.currentUser !== undefined) {
-                clearInterval(checkAuth);
-                if (window.currentUser) {
-                    document.getElementById('unauthorizedMessage').classList.add('hidden');
-                    document.getElementById('profileContent').classList.remove('hidden');
-                    loadProfileData();
-                } else {
-                    document.getElementById('unauthorizedMessage').classList.remove('hidden');
-                    document.getElementById('profileContent').classList.add('hidden');
-                }
-            }
-        }, 100);
+        checkAuthAndLoad();
     });
+    
+    // Слідкуємо за зміною авторизації
+    const authCheckInterval = setInterval(() => {
+        if (window.currentUser !== undefined) {
+            clearInterval(authCheckInterval);
+            checkAuthAndLoad();
+        }
+    }, 100);
     
     window.switchProfileTab = switchProfileTab;
     window.removeFromCollection = removeFromCollection;
