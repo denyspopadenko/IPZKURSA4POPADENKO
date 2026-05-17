@@ -69,12 +69,13 @@
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
-        /* Стилі для кнопок навігації */
-        .nav-link {
-            transition: color 0.2s ease;
-        }
-        .nav-link:hover {
-            color: #fbbf24;
+        /* Виправлення для меню */
+        .user-menu {
+            position: absolute;
+            right: 0;
+            top: 100%;
+            margin-top: 8px;
+            z-index: 1000;
         }
     </style>
 </head>
@@ -308,21 +309,28 @@
     
     // ПРИМУСОВЕ ПОКАЗУВАННЯ КНОПОК (ЗАВЖДИ ВИДИМІ)
     function forceShowNavButtons() {
-        // Знаходимо елементи навігації
         const navProfile = document.getElementById('nav-profile');
         const navAddCoin = document.getElementById('nav-add-coin');
         
-        // Примусово показуємо кнопки (видаляємо hidden)
         if (navProfile) navProfile.classList.remove('hidden');
         if (navAddCoin) navAddCoin.classList.remove('hidden');
         
-        // Також показуємо в меню користувача
-        const userMenu = document.getElementById('userMenu');
-        if (userMenu) userMenu.classList.remove('hidden');
-        
-        // Оновлюємо меню користувача
         if (typeof updateUserMenu === 'function') updateUserMenu();
     }
+    
+    // Закриття меню при кліку поза ним
+    document.addEventListener('click', function(event) {
+        const userMenu = document.getElementById('userMenu');
+        const authButton = document.getElementById('authButton');
+        
+        if (userMenu && !userMenu.classList.contains('hidden')) {
+            if (authButton && !authButton.contains(event.target)) {
+                if (!userMenu.contains(event.target)) {
+                    userMenu.classList.add('hidden');
+                }
+            }
+        }
+    });
     
     // Оновлення після авторизації
     window.updatePageAfterAuth = function() {
@@ -338,7 +346,6 @@
         loadBlogData();
         updateCommentFormVisibility();
         
-        // Примусове показування кнопок після завантаження
         setTimeout(() => {
             forceShowNavButtons();
             if (window.currentUser && typeof window.updateUIAfterLogin === 'function') window.updateUIAfterLogin(window.currentUser);
