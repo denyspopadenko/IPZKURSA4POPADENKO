@@ -299,11 +299,22 @@
         document.getElementById('loginToComment')?.classList.toggle('hidden', isLoggedIn);
     }
     
+    // Примусове показування кнопок Profile та Add Coin
+    function showAllNavButtons() {
+        const profileLink = document.getElementById('nav-profile');
+        const addCoinLink = document.getElementById('nav-add-coin');
+        if (profileLink) profileLink.classList.remove('hidden');
+        if (addCoinLink) addCoinLink.classList.remove('hidden');
+        
+        if (typeof updateUserMenu === 'function') updateUserMenu();
+        if (typeof updatePageAfterAuth === 'function') updatePageAfterAuth();
+    }
+    
     // Оновлення після авторизації
     window.updatePageAfterAuth = function() {
         updateCommentFormVisibility();
         if (currentArticleId) loadComments(currentArticleId);
-        // Оновлюємо хедер
+        showAllNavButtons();
         if (typeof updateUserMenu === 'function') updateUserMenu();
         if (typeof window.updateUIAfterLogin === 'function' && window.currentUser) window.updateUIAfterLogin(window.currentUser);
     };
@@ -315,7 +326,7 @@
         
         // Примусове оновлення хедера після завантаження
         setTimeout(() => {
-            if (typeof updateUserMenu === 'function') updateUserMenu();
+            showAllNavButtons();
             if (window.currentUser && typeof window.updateUIAfterLogin === 'function') window.updateUIAfterLogin(window.currentUser);
         }, 200);
     });
