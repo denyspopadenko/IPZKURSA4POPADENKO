@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Numismatist's Guide - Rare Coins Directory</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- FontAwesome 6 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <!-- Swiper.js (карусель) -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    
+    <!-- AOS (анімація при прокрутці) -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    
+    <!-- Chart.js (графіки) -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/custom.css">
+    
+    <style>
+        .swiper-button-next, .swiper-button-prev {
+            color: #fbbf24 !important;
+            background: rgba(0,0,0,0.5);
+            width: 40px !important;
+            height: 40px !important;
+            border-radius: 50%;
+        }
+        .swiper-button-next:after, .swiper-button-prev:after {
+            font-size: 20px !important;
+        }
+        .swiper-pagination-bullet-active {
+            background: #fbbf24 !important;
+        }
+        .category-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .category-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3);
+        }
+        html.dark {
+            background-color: #0a0a0a;
+        }
+        html.light {
+            background-color: #f5f5f5;
+        }
+        html.light .bg-gray-900 {
+            background-color: #ffffff !important;
+        }
+        html.light .text-gray-300 {
+            color: #4a4a4a !important;
+        }
+        html.light .border-gray-800 {
+            border-color: #e5e5e5 !important;
+        }
+        html.light .bg-gray-800 {
+            background-color: #f0f0f0 !important;
+        }
+        /* Стилі для loader */
+        .loader {
+            width: 48px;
+            height: 48px;
+            border: 4px solid #374151;
+            border-top: 4px solid #fbbf24;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .carousel-loader, .articles-loader {
+            text-align: center;
+            padding: 40px;
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-gray-100 transition-colors duration-300">
+
+<div id="header-placeholder"></div>
+
+<!-- ============================================ -->
+<!-- HERO СЕКЦІЯ З ПОШУКОМ -->
+<!-- ============================================ -->
+<section class="relative overflow-hidden">
+    <div class="absolute inset-0 z-0">
+        <div class="w-full h-full bg-gradient-to-r from-gray-900 to-gray-800"></div>
+    </div>
+    
+    <div class="relative z-10 container mx-auto px-4 py-16 md:py-24">
+        <div class="text-center max-w-4xl mx-auto" data-aos="fade-up">
+            <h1 class="text-4xl md:text-6xl font-bold mb-4 bg-gradient-to-r from-yellow-400 to-yellow-600 bg-clip-text text-transparent">
+                The World's Most Trusted<br>Coin Reference Directory
+            </h1>
+            <p class="text-xl text-gray-300 mb-8">
+                Identify, explore, and value coins from around the world.<br>
+                Built for collectors, by collectors.
+            </p>
+            
+            <div class="relative max-w-2xl mx-auto mb-6">
+                <i class="fas fa-search absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                <input type="text" id="globalSearch" placeholder="Search coins by name, type, country, or year..." 
+                    class="w-full pl-12 pr-4 py-4 bg-gray-800 border border-gray-700 rounded-xl text-white focus:outline-none focus:border-yellow-500 transition">
+            </div>
+            
+            <div class="flex flex-wrap justify-center gap-3">
+                <span class="px-4 py-2 bg-gray-800 rounded-full text-sm text-yellow-400 cursor-pointer hover:bg-gray-700 transition tag-search" data-search="Morgan Dollar">Morgan Dollar</span>
+                <span class="px-4 py-2 bg-gray-800 rounded-full text-sm text-yellow-400 cursor-pointer hover:bg-gray-700 transition tag-search" data-search="Peace Dollar">Peace Dollar</span>
+                <span class="px-4 py-2 bg-gray-800 rounded-full text-sm text-yellow-400 cursor-pointer hover:bg-gray-700 transition tag-search" data-search="Wheat Penny">Wheat Penny</span>
+                <span class="px-4 py-2 bg-gray-800 rounded-full text-sm text-yellow-400 cursor-pointer hover:bg-gray-700 transition tag-search" data-search="Buffalo Nickel">Buffalo Nickel</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================ -->
+<!-- КАРУСЕЛЬ РІДКІСНИХ МОНЕТ -->
+<!-- ============================================ -->
+<section class="py-16 container mx-auto px-4">
+    <div class="text-center mb-12" data-aos="fade-up">
+        <h2 class="text-3xl md:text-4xl font-bold mb-2">Rare Coins Gallery</h2>
+        <p class="text-gray-400">Discover the most valuable treasures of numismatics</p>
+    </div>
+    
+    <div class="swiper coinCarousel" data-aos="fade-up" data-aos-delay="100">
+        <div class="swiper-wrapper" id="carouselWrapper">
+            <div class="swiper-slide">
+                <div class="carousel-loader"><div class="loader"></div><p class="text-gray-400 mt-4">Loading coins...</p></div>
+            </div>
+        </div>
+        <div class="swiper-pagination"></div>
+        <div class="swiper-button-next"></div>
+        <div class="swiper-button-prev"></div>
+    </div>
+</section>
+
+<!-- ============================================ -->
+<!-- КАТЕГОРІЇ МОНЕТ -->
+<!-- ============================================ -->
+<section class="py-16 bg-gray-800/50">
+    <div class="container mx-auto px-4">
+        <div class="text-center mb-12" data-aos="fade-up">
+            <h2 class="text-3xl md:text-4xl font-bold mb-2">Identify Coins</h2>
+            <p class="text-gray-400">Accurate tools and detailed information to help you identify any coin</p>
+        </div>
+        
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div class="category-card bg-gray-900 rounded-xl p-6 text-center cursor-pointer hover:bg-gray-800 transition" data-aos="fade-up" data-aos-delay="0" onclick="window.location.href='catalog.html?category=us'">
+                <div class="w-20 h-20 mx-auto mb-4 rounded-full bg-yellow-500/20 flex items-center justify-center">
+                    <i class="fas fa-dollar-sign text-3xl text-yellow-500"></i>
+                </div>
+                <h3 class="text-xl font-bold mb-1">US Coins</h3>
+                <p class="text-gray-400">1792-Now</p>
+                <p class="text-yellow-500 font-bold mt-2">1,245 Coins</p>
+            </div>
+            
+            <div class="category-card bg-gray-900 rounded-xl p-6 text-center cursor-pointer hover:bg-gray-800 transition" data-aos="fade-up" data-aos-delay="100" onclick="window.location.href='catalog.html?category=world'">
+                <div class="w-20 h-20 mx-auto mb-4 rounded-full bg-yellow-500/20 flex items-center justify-center">
+                    <i class="fas fa-globe text-3xl text-yellow-500"></i>
+                </div>
+                <h3 class="text-xl font-bold mb-1">World Coins</h3>
+                <p class="text-gray-400">American-Now</p>
+                <p class="text-yellow-500 font-bold mt-2">2,377 Coins</p>
+            </div>
+            
+            <div class="category-card bg-gray-900 rounded-xl p-6 text-center cursor-pointer hover:bg-gray-800 transition" data-aos="fade-up" data-aos-delay="200" onclick="window.location.href='catalog.html?category=ancient'">
+                <div class="w-20 h-20 mx-auto mb-4 rounded-full bg-yellow-500/20 flex items-center justify-center">
+                    <i class="fas fa-landmark text-3xl text-yellow-500"></i>
+                </div>
+                <h3 class="text-xl font-bold mb-1">Ancient Coins</h3>
+                <p class="text-gray-400">3000 BC-500 AD</p>
+                <p class="text-yellow-500 font-bold mt-2">684 Coins</p>
+            </div>
+            
+            <div class="category-card bg-gray-900 rounded-xl p-6 text-center cursor-pointer hover:bg-gray-800 transition" data-aos="fade-up" data-aos-delay="300" onclick="window.location.href='catalog.html?category=gold'">
+                <div class="w-20 h-20 mx-auto mb-4 rounded-full bg-yellow-500/20 flex items-center justify-center">
+                    <i class="fas fa-crown text-3xl text-yellow-500"></i>
+                </div>
+                <h3 class="text-xl font-bold mb-1">Gold Coins</h3>
+                <p class="text-gray-400">Pre-1933-Now</p>
+                <p class="text-yellow-500 font-bold mt-2">503 Coins</p>
+            </div>
+            
+            <div class="category-card bg-gray-900 rounded-xl p-6 text-center cursor-pointer hover:bg-gray-800 transition" data-aos="fade-up" data-aos-delay="400" onclick="window.location.href='catalog.html?category=error'">
+                <div class="w-20 h-20 mx-auto mb-4 rounded-full bg-yellow-500/20 flex items-center justify-center">
+                    <i class="fas fa-exclamation-triangle text-3xl text-yellow-500"></i>
+                </div>
+                <h3 class="text-xl font-bold mb-1">Error Coins</h3>
+                <p class="text-gray-400">Mint Errors</p>
+                <p class="text-yellow-500 font-bold mt-2">1,023 Coins</p>
+            </div>
+            
+            <div class="category-card bg-gray-900 rounded-xl p-6 text-center cursor-pointer hover:bg-gray-800 transition" data-aos="fade-up" data-aos-delay="500" onclick="window.location.href='catalog.html?category=commonwealth'">
+                <div class="w-20 h-20 mx-auto mb-4 rounded-full bg-yellow-500/20 flex items-center justify-center">
+                    <i class="fas fa-flag-checkered text-3xl text-yellow-500"></i>
+                </div>
+                <h3 class="text-xl font-bold mb-1">Commonwealth</h3>
+                <p class="text-gray-400">1892-Now</p>
+                <p class="text-yellow-500 font-bold mt-2">902 Coins</p>
+            </div>
+        </div>
+        
+        <div class="text-center mt-10" data-aos="fade-up">
+            <a href="catalog.html" class="inline-block bg-yellow-500 hover:bg-yellow-600 text-black font-bold px-8 py-3 rounded-lg transition">
+                Explore All Categories <i class="fas fa-arrow-right ml-2"></i>
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================ -->
+<!-- ГРАФІК РИНКОВИХ ЦІН -->
+<!-- ============================================ -->
+<section class="py-16 container mx-auto px-4">
+    <div class="text-center mb-12" data-aos="fade-up">
+        <h2 class="text-3xl md:text-4xl font-bold mb-2">Market Trends 2025-2026</h2>
+        <p class="text-gray-400">Average gold coin prices over the last 5 years</p>
+    </div>
+    
+    <div class="bg-gray-800 rounded-xl p-6 max-w-4xl mx-auto" data-aos="fade-up" data-aos-delay="100">
+        <canvas id="priceChart" height="300"></canvas>
+    </div>
+</section>
+
+<!-- ============================================ -->
+<!-- ОСТАННІ СТАТТІ -->
+<!-- ============================================ -->
+<section class="py-16 bg-gray-800/50">
+    <div class="container mx-auto px-4">
+        <div class="text-center mb-12" data-aos="fade-up">
+            <h2 class="text-3xl md:text-4xl font-bold mb-2">LATEST GUIDES & ARTICLES</h2>
+            <p class="text-gray-400">Fresh Knowledge for Collectors</p>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="articlesGrid">
+            <div class="articles-loader"><div class="loader"></div><p class="text-gray-400 mt-4">Loading articles...</p></div>
+        </div>
+        
+        <div class="text-center mt-10" data-aos="fade-up">
+            <a href="blog.html" class="inline-block bg-yellow-500 hover:bg-yellow-600 text-black font-bold px-8 py-3 rounded-lg transition">
+                View All Articles <i class="fas fa-arrow-right ml-2"></i>
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================ -->
+<!-- CTA СЕКЦІЯ -->
+<!-- ============================================ -->
+<section class="py-20 container mx-auto px-4 text-center">
+    <div class="max-w-3xl mx-auto" data-aos="fade-up">
+        <i class="fas fa-users text-5xl text-yellow-500 mb-4"></i>
+        <h2 class="text-3xl md:text-4xl font-bold mb-4">JOIN THOUSANDS OF COLLECTORS</h2>
+        <p class="text-xl text-gray-300 mb-6">
+            A Community That Shares Your Passion. Whether you're just starting out or a seasoned collector, 
+            you'll find a place here to learn, share, and grow.
+        </p>
+        <button onclick="openAuthModal()" class="bg-yellow-500 hover:bg-yellow-600 text-black font-bold px-8 py-3 rounded-lg transition text-lg">
+            Join Free Today <i class="fas fa-arrow-right ml-2"></i>
+        </button>
+    </div>
+</section>
+
+<!-- ============================================ -->
+<!-- ПІДВАЛ -->
+<!-- ============================================ -->
+<footer class="bg-gray-900 border-t border-gray-800 py-12">
+    <div class="container mx-auto px-4">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8">
+            <div class="lg:col-span-1">
+                <div class="flex items-center gap-2 mb-4">
+                    <i class="fas fa-coins text-2xl text-yellow-500"></i>
+                    <span class="text-xl font-bold">COINPEDIA</span>
+                </div>
+                <p class="text-gray-400 text-sm">The Collectible Reference. Your trusted source for coin information, values, history, and collecting knowledge.</p>
+            </div>
+            
+            <div>
+                <h4 class="font-bold mb-3">EXPLORE</h4>
+                <ul class="space-y-2 text-gray-400 text-sm">
+                    <li><a href="catalog.html" class="hover:text-yellow-500 transition">Coins</a></li>
+                    <li><a href="values.html" class="hover:text-yellow-500 transition">Values</a></li>
+                    <li><a href="grades.html" class="hover:text-yellow-500 transition">Grades</a></li>
+                    <li><a href="blog.html" class="hover:text-yellow-500 transition">Notes</a></li>
+                </ul>
+            </div>
+            
+            <div>
+                <h4 class="font-bold mb-3">RESOURCES</h4>
+                <ul class="space-y-2 text-gray-400 text-sm">
+                    <li><a href="blog.html?article=grading" class="hover:text-yellow-500 transition">Coin Grading Guide</a></li>
+                    <li><a href="values.html" class="hover:text-yellow-500 transition">Value Charts</a></li>
+                    <li><a href="#" class="hover:text-yellow-500 transition">Coin Certification</a></li>
+                    <li><a href="#" class="hover:text-yellow-500 transition">FAQs</a></li>
+                </ul>
+            </div>
+            
+            <div>
+                <h4 class="font-bold mb-3">COMPANY</h4>
+                <ul class="space-y-2 text-gray-400 text-sm">
+                    <li><a href="#" class="hover:text-yellow-500 transition">About Us</a></li>
+                    <li><a href="#" class="hover:text-yellow-500 transition">Contact</a></li>
+                    <li><a href="#" class="hover:text-yellow-500 transition">Privacy Policy</a></li>
+                </ul>
+            </div>
+            
+            <div>
+                <h4 class="font-bold mb-3">NEWSLETTER</h4>
+                <p class="text-gray-400 text-sm mb-3">Get the latest coin news, values, and collecting tips.</p>
+                <div class="flex">
+                    <input type="email" placeholder="Enter your email" class="flex-1 px-3 py-2 bg-gray-800 border border-gray-700 rounded-l-lg text-white focus:outline-none focus:border-yellow-500">
+                    <button class="bg-yellow-500 hover:bg-yellow-600 text-black px-4 rounded-r-lg transition">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="border-t border-gray-800 mt-8 pt-8 text-center text-gray-500 text-sm">
+            &copy; 2025 Coinpedia. All rights reserved. Numismatist's Reference Guide.
+        </div>
+    </div>
+</footer>
+
+<!-- Підключення JS файлів -->
+<script src="js/firebase-config.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/data.js"></script>
+<script src="js/main.js"></script>
+
+<script>
+    // ============================================
+    // ІНІЦІАЛІЗАЦІЯ ГОЛОВНОЇ СТОРІНКИ (оновлена)
+    // ============================================
+    
+    let priceChart = null;
+    let coinCarousel = null;
+    
+    // Очікуємо завантаження всіх даних
+    function waitForData() {
+        return new Promise((resolve) => {
+            const checkInterval = setInterval(() => {
+                if (window.loadCoins && window.loadArticles) {
+                    clearInterval(checkInterval);
+                    resolve();
+                }
+            }, 100);
+        });
+    }
+    
+    async function initializePage() {
+        await waitForData();
+        
+        const coins = loadCoins();
+        const articles = loadArticles();
+        
+        renderCarousel(coins);
+        renderArticles(articles);
+        initChart();
+        initSearch();
+        initAOS();
+    }
+    
+    function renderCarousel(coins) {
+        const wrapper = document.getElementById('carouselWrapper');
+        if (!wrapper) return;
+        
+        const rareCoins = [...coins].filter(c => c.status === 'approved').sort((a, b) => b.rarity - a.rarity).slice(0, 8);
+        
+        if (rareCoins.length === 0) {
+            wrapper.innerHTML = `<div class="swiper-slide"><div class="text-center p-8"><p class="text-gray-400">No coins available</p></div></div>`;
+            return;
+        }
+        
+        wrapper.innerHTML = rareCoins.map(coin => `
+            <div class="swiper-slide">
+                <div class="bg-gradient-to-br from-gray-800 to-gray-900 rounded-xl overflow-hidden shadow-xl">
+                    <div class="h-64 bg-gray-700 flex items-center justify-center">
+                        <i class="fas fa-coins text-6xl text-yellow-500"></i>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="text-xl font-bold">${coin.name.en}</h3>
+                            <span class="px-2 py-1 bg-yellow-500/20 text-yellow-500 rounded-full text-xs">Rarity ${coin.rarity}/10</span>
+                        </div>
+                        <p class="text-gray-400 mb-2">${coin.country} • ${coin.year}</p>
+                        <p class="text-yellow-500 font-bold text-xl">$${coin.priceUSD}</p>
+                        <button onclick="window.location.href='coin-detail.html?id=${coin.id}'" class="mt-4 w-full bg-yellow-500 hover:bg-yellow-600 text-black font-bold py-2 rounded-lg transition">
+                            View Details <i class="fas fa-arrow-right ml-1"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        `).join('');
+        
+        if (coinCarousel) coinCarousel.destroy();
+        coinCarousel = new Swiper('.coinCarousel', {
+            loop: true,
+            autoplay: { delay: 5000, disableOnInteraction: false },
+            navigation: { nextEl: '.swiper-button-next', prevEl: '.swiper-button-prev' },
+            pagination: { el: '.swiper-pagination', clickable: true },
+            slidesPerView: 1,
+            spaceBetween: 20,
+            breakpoints: { 640: { slidesPerView: 2 }, 1024: { slidesPerView: 3 }, 1280: { slidesPerView: 4 } }
+        });
+    }
+    
+    function renderArticles(articles) {
+        const grid = document.getElementById('articlesGrid');
+        if (!grid) return;
+        
+        const recentArticles = articles.slice(0, 3);
+        
+        if (recentArticles.length === 0) {
+            grid.innerHTML = `<div class="col-span-full text-center py-8"><p class="text-gray-400">No articles available</p></div>`;
+            return;
+        }
+        
+        grid.innerHTML = recentArticles.map(article => `
+            <div class="bg-gray-900 rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition">
+                <div class="h-48 bg-gray-800 flex items-center justify-center">
+                    <i class="fas fa-newspaper text-4xl text-yellow-500"></i>
+                </div>
+                <div class="p-6">
+                    <div class="flex justify-between items-center text-sm text-gray-400 mb-2">
+                        <span><i class="far fa-calendar-alt mr-1"></i>${article.date}</span>
+                        <span><i class="far fa-clock mr-1"></i>${article.readTime} min read</span>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">${article.title.en}</h3>
+                    <p class="text-gray-400 mb-4">${article.excerpt?.en?.substring(0, 100) || ''}...</p>
+                    <a href="blog-post.html?id=${article.id}" class="text-yellow-500 hover:text-yellow-400 font-medium">Read More <i class="fas fa-arrow-right ml-1"></i></a>
+                </div>
+            </div>
+        `).join('');
+    }
+    
+    function initChart() {
+        const ctx = document.getElementById('priceChart');
+        if (!ctx) return;
+        
+        if (priceChart) priceChart.destroy();
+        
+        priceChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ['2022', '2023', '2024', '2025', '2026'],
+                datasets: [{
+                    label: 'Average Gold Coin Price (USD)',
+                    data: [450, 520, 610, 720, 850],
+                    borderColor: '#fbbf24',
+                    backgroundColor: 'rgba(251, 191, 36, 0.1)',
+                    borderWidth: 3,
+                    fill: true,
+                    tension: 0.3,
+                    pointBackgroundColor: '#fbbf24',
+                    pointBorderColor: '#0a0a0a',
+                    pointRadius: 5,
+                    pointHoverRadius: 8
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: true,
+                plugins: {
+                    legend: { labels: { color: '#e5e5e5', font: { size: 12 } } },
+                    tooltip: { backgroundColor: '#1f2937', titleColor: '#fbbf24', bodyColor: '#e5e5e5' }
+                },
+                scales: {
+                    y: { grid: { color: '#374151' }, ticks: { color: '#e5e5e5' } },
+                    x: { grid: { color: '#374151' }, ticks: { color: '#e5e5e5' } }
+                }
+            }
+        });
+    }
+    
+    function initSearch() {
+        const searchInput = document.getElementById('globalSearch');
+        if (searchInput) {
+            searchInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    const query = searchInput.value.trim();
+                    if (query) window.location.href = `catalog.html?search=${encodeURIComponent(query)}`;
+                }
+            });
+        }
+        
+        document.querySelectorAll('.tag-search').forEach(tag => {
+            tag.addEventListener('click', () => {
+                const query = tag.getAttribute('data-search');
+                if (query) window.location.href = `catalog.html?search=${encodeURIComponent(query)}`;
+            });
+        });
+    }
+    
+    function initAOS() {
+        AOS.init({ duration: 800, once: true, offset: 100 });
+    }
+    
+    function updateChartTheme() {
+        if (priceChart) {
+            const isDark = document.documentElement.classList.contains('dark');
+            priceChart.options.plugins.legend.labels.color = isDark ? '#e5e5e5' : '#1a1a1a';
+            priceChart.options.scales.y.ticks.color = isDark ? '#e5e5e5' : '#1a1a1a';
+            priceChart.options.scales.x.ticks.color = isDark ? '#e5e5e5' : '#1a1a1a';
+            priceChart.options.scales.y.grid.color = isDark ? '#374151' : '#e5e5e5';
+            priceChart.options.scales.x.grid.color = isDark ? '#374151' : '#e5e5e5';
+            priceChart.update();
+        }
+    }
+    
+    const observer = new MutationObserver(() => updateChartTheme());
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
+    
+    document.addEventListener('DOMContentLoaded', initializePage);
+</script>
+
+</body>
+</html>

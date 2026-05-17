@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Numismatic Blog - Coin Guides & Articles</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- FontAwesome 6 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <!-- AOS (анімація) -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/custom.css">
+    
+    <style>
+        .blog-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .blog-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3);
+        }
+        .tag-filter {
+            transition: all 0.2s ease;
+        }
+        .tag-filter.active {
+            background-color: #fbbf24;
+            color: #000;
+        }
+        .comment-item {
+            transition: background-color 0.2s ease;
+        }
+        .comment-item:hover {
+            background-color: #374151;
+        }
+        html.dark {
+            background-color: #0a0a0a;
+        }
+        html.light {
+            background-color: #f5f5f5;
+        }
+        html.light .bg-gray-900 {
+            background-color: #ffffff !important;
+        }
+        html.light .text-gray-300 {
+            color: #4a4a4a !important;
+        }
+        html.light .border-gray-800 {
+            border-color: #e5e5e5 !important;
+        }
+        html.light .bg-gray-800 {
+            background-color: #f0f0f0 !important;
+        }
+        html.light .bg-gray-700 {
+            background-color: #e5e5e5 !important;
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-gray-100 transition-colors duration-300">
+
+<div id="header-placeholder"></div>
+
+<!-- ============================================ -->
+<!-- ЗАГОЛОВОК СТОРІНКИ -->
+<!-- ============================================ -->
+<section class="bg-gradient-to-r from-gray-800 to-gray-900 py-12">
+    <div class="container mx-auto px-4 text-center" data-aos="fade-up">
+        <h1 class="text-4xl md:text-5xl font-bold mb-3"><i class="fas fa-newspaper text-yellow-500 mr-3"></i>Numismatic Blog</h1>
+        <p class="text-gray-400 text-lg max-w-2xl mx-auto">Expert guides, market insights, and collecting tips from professional numismatists</p>
+    </div>
+</section>
+
+<!-- ============================================ -->
+<!-- ФІЛЬТРИ ЗА ТЕГАМИ -->
+<!-- ============================================ -->
+<section class="container mx-auto px-4 py-8">
+    <div class="flex flex-wrap justify-center gap-3 mb-8" data-aos="fade-up">
+        <button onclick="filterByTag('all')" id="tagAll" class="tag-filter active px-4 py-2 bg-yellow-500 text-black rounded-full font-medium transition">All Articles</button>
+        <button onclick="filterByTag('grading')" id="tagGrading" class="tag-filter px-4 py-2 bg-gray-700 hover:bg-gray-600 rounded-full font-medium transition">Grading</button>
+        <button onclick="filterByTag('values')" id="tagValues" class="tag-filter px-4 py-2 bg-gray-700 hover:bg-gray-600 rounded-full font-medium transition">Market Values</button>
+        <button onclick="filterByTag('errors')" id="tagErrors" class="tag-filter px-4 py-2 bg-gray-700 hover:bg-gray-600 rounded-full font-medium transition">Error Coins</button>
+        <button onclick="filterByTag('ancient')" id="tagAncient" class="tag-filter px-4 py-2 bg-gray-700 hover:bg-gray-600 rounded-full font-medium transition">Ancient Coins</button>
+        <button onclick="filterByTag('ukraine')" id="tagUkraine" class="tag-filter px-4 py-2 bg-gray-700 hover:bg-gray-600 rounded-full font-medium transition">Ukrainian Coins</button>
+        <button onclick="filterByTag('care')" id="tagCare" class="tag-filter px-4 py-2 bg-gray-700 hover:bg-gray-600 rounded-full font-medium transition">Coin Care</button>
+    </div>
+</section>
+
+<!-- ============================================ -->
+<!-- СІТКА СТАТЕЙ -->
+<!-- ============================================ -->
+<section class="container mx-auto px-4 py-8">
+    <div id="articlesGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <!-- Динамічне завантаження статей -->
+    </div>
+</section>
+
+<!-- ============================================ -->
+<!-- МОДАЛЬНЕ ВІКНО СТАТТІ -->
+<!-- ============================================ -->
+<div id="articleModal" class="fixed inset-0 bg-black bg-opacity-90 z-50 hidden overflow-y-auto" onclick="if(event.target === this) closeArticleModal()">
+    <div class="container mx-auto px-4 py-8 max-w-4xl">
+        <div class="bg-gray-800 rounded-2xl shadow-2xl overflow-hidden">
+            <div class="relative h-64 bg-gray-700 flex items-center justify-center">
+                <i id="modalArticleIcon" class="fas fa-newspaper text-6xl text-yellow-500"></i>
+                <button onclick="closeArticleModal()" class="absolute top-4 right-4 w-10 h-10 bg-black/50 hover:bg-black/70 rounded-full flex items-center justify-center text-white text-xl transition">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="p-6 md:p-8">
+                <div class="flex flex-wrap justify-between items-center gap-3 mb-4">
+                    <span id="modalArticleDate" class="text-gray-400 text-sm"><i class="far fa-calendar-alt mr-1"></i>Date</span>
+                    <span id="modalArticleReadTime" class="text-gray-400 text-sm"><i class="far fa-clock mr-1"></i>X min read</span>
+                </div>
+                <h2 id="modalArticleTitle" class="text-2xl md:text-3xl font-bold mb-4">Article Title</h2>
+                <div id="modalArticleTags" class="flex flex-wrap gap-2 mb-6"></div>
+                <div id="modalArticleContent" class="prose prose-invert max-w-none text-gray-300 leading-relaxed space-y-4">
+                    <!-- Динамічний вміст статті -->
+                </div>
+                
+                <!-- Секція коментарів -->
+                <div class="mt-10 pt-6 border-t border-gray-700">
+                    <h3 class="text-xl font-bold mb-4"><i class="fas fa-comments text-yellow-500 mr-2"></i>Comments</h3>
+                    <div id="commentsSection" class="space-y-4 mb-6">
+                        <!-- Динамічне завантаження коментарів -->
+                    </div>
+                    
+                    <!-- Форма додавання коментаря -->
+                    <div id="commentForm" class="mt-4">
+                        <textarea id="commentText" rows="3" placeholder="Share your thoughts about this article..." class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:border-yellow-500 resize-none"></textarea>
+                        <div class="flex justify-end mt-3">
+                            <button onclick="addComment()" class="bg-yellow-500 hover:bg-yellow-600 text-black font-bold px-6 py-2 rounded-lg transition">
+                                <i class="fas fa-paper-plane mr-2"></i> Post Comment
+                            </button>
+                        </div>
+                    </div>
+                    <div id="loginToComment" class="hidden text-center py-6">
+                        <p class="text-gray-400 mb-3">Please sign in to leave a comment</p>
+                        <button onclick="openAuthModal()" class="bg-yellow-500 hover:bg-yellow-600 text-black px-6 py-2 rounded-lg transition">
+                            <i class="fas fa-sign-in-alt mr-2"></i> Sign In
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Підключення JS -->
+<script src="js/firebase-config.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/data.js"></script>
+<script src="js/main.js"></script>
+
+<script>
+    // ============================================
+    // BLOG.JS - ЛОГІКА БЛОГУ ТА КОМЕНТАРІВ
+    // ============================================
+    
+    let articles = [];
+    let currentArticleId = null;
+    let currentTag = 'all';
+    
+    function loadBlogData() {
+        articles = loadArticles();
+        renderArticles();
+    }
+    
+    function renderArticles() {
+        const grid = document.getElementById('articlesGrid');
+        if (!grid) return;
+        
+        let filteredArticles = articles;
+        if (currentTag !== 'all') {
+            filteredArticles = articles.filter(a => a.tags && a.tags.includes(currentTag));
+        }
+        
+        if (filteredArticles.length === 0) {
+            grid.innerHTML = `<div class="col-span-full text-center py-12"><i class="fas fa-search text-5xl text-gray-600 mb-4"></i><p class="text-gray-400">No articles found in this category</p></div>`;
+            return;
+        }
+        
+        grid.innerHTML = filteredArticles.map(article => `
+            <div class="blog-card bg-gray-800 rounded-xl overflow-hidden shadow-lg cursor-pointer" onclick="openArticle('${article.id}')" data-aos="fade-up">
+                <div class="h-48 bg-gray-700 flex items-center justify-center">
+                    <i class="fas fa-coins text-5xl text-yellow-500"></i>
+                </div>
+                <div class="p-5">
+                    <div class="flex justify-between items-center text-sm text-gray-400 mb-3">
+                        <span><i class="far fa-calendar-alt mr-1"></i>${article.date}</span>
+                        <span><i class="far fa-clock mr-1"></i>${article.readTime} min read</span>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2 line-clamp-2">${article.title.en}</h3>
+                    <p class="text-gray-400 mb-4 line-clamp-3">${article.excerpt?.en || article.content?.en?.substring(0, 120) || ''}...</p>
+                    <div class="flex flex-wrap gap-2 mb-4">
+                        ${article.tags?.map(tag => `<span class="px-2 py-1 bg-gray-700 text-xs rounded-full text-yellow-400">#${tag}</span>`).join('') || ''}
+                    </div>
+                    <button class="text-yellow-500 hover:text-yellow-400 font-medium transition">Read More <i class="fas fa-arrow-right ml-1"></i></button>
+                </div>
+            </div>
+        `).join('');
+    }
+    
+    function filterByTag(tag) {
+        currentTag = tag;
+        
+        document.querySelectorAll('.tag-filter').forEach(btn => btn.classList.remove('active'));
+        if (tag === 'all') document.getElementById('tagAll').classList.add('active');
+        else if (tag === 'grading') document.getElementById('tagGrading').classList.add('active');
+        else if (tag === 'values') document.getElementById('tagValues').classList.add('active');
+        else if (tag === 'errors') document.getElementById('tagErrors').classList.add('active');
+        else if (tag === 'ancient') document.getElementById('tagAncient').classList.add('active');
+        else if (tag === 'ukraine') document.getElementById('tagUkraine').classList.add('active');
+        else if (tag === 'care') document.getElementById('tagCare').classList.add('active');
+        
+        renderArticles();
+    }
+    
+    function openArticle(articleId) {
+        const article = articles.find(a => a.id === articleId);
+        if (!article) return;
+        currentArticleId = articleId;
+        
+        document.getElementById('modalArticleTitle').textContent = article.title.en;
+        document.getElementById('modalArticleDate').innerHTML = `<i class="far fa-calendar-alt mr-1"></i>${article.date}`;
+        document.getElementById('modalArticleReadTime').innerHTML = `<i class="far fa-clock mr-1"></i>${article.readTime} min read`;
+        
+        const tagsHtml = article.tags?.map(tag => `<span class="px-2 py-1 bg-gray-700 text-xs rounded-full text-yellow-400">#${tag}</span>`).join('') || '';
+        document.getElementById('modalArticleTags').innerHTML = tagsHtml;
+        
+        let contentHtml = article.content?.en || '';
+        if (!contentHtml && article.excerpt) contentHtml = article.excerpt.en;
+        contentHtml = contentHtml.split('\n').map(para => `<p>${para}</p>`).join('');
+        document.getElementById('modalArticleContent').innerHTML = contentHtml || '<p>Full article content would be displayed here. This is a placeholder for the complete article.</p>';
+        
+        document.getElementById('articleModal').classList.remove('hidden');
+        document.getElementById('articleModal').classList.add('block');
+        
+        loadComments(articleId);
+        updateCommentFormVisibility();
+    }
+    
+    function closeArticleModal() {
+        document.getElementById('articleModal').classList.add('hidden');
+        document.getElementById('articleModal').classList.remove('block');
+        currentArticleId = null;
+    }
+    
+    function loadComments(articleId) {
+        const comments = JSON.parse(localStorage.getItem(`comments_${articleId}`) || '[]');
+        const container = document.getElementById('commentsSection');
+        
+        if (comments.length === 0) {
+            container.innerHTML = `<div class="text-center py-6 text-gray-500"><i class="fas fa-comment-slash text-3xl mb-2"></i><p>No comments yet. Be the first to share your thoughts!</p></div>`;
+            return;
+        }
+        
+        container.innerHTML = comments.map(comment => `
+            <div class="comment-item bg-gray-700 rounded-lg p-4">
+                <div class="flex justify-between items-start mb-2">
+                    <div class="flex items-center gap-2">
+                        <div class="w-8 h-8 rounded-full bg-yellow-500/20 flex items-center justify-center">
+                            <i class="fas fa-user text-yellow-500 text-sm"></i>
+                        </div>
+                        <div>
+                            <span class="font-bold">${comment.userName}</span>
+                            <span class="text-xs text-gray-400 ml-2">${comment.date}</span>
+                        </div>
+                    </div>
+                    ${comment.userEmail === window.currentUser?.email ? `<button onclick="deleteComment('${articleId}', '${comment.id}')" class="text-red-400 hover:text-red-300 text-sm"><i class="fas fa-trash-alt"></i></button>` : ''}
+                </div>
+                <p class="text-gray-300">${comment.text}</p>
+            </div>
+        `).join('');
+    }
+    
+    function addComment() {
+        if (!window.currentUser) {
+            showToast('Please sign in to leave a comment', 'error');
+            openAuthModal();
+            return;
+        }
+        
+        const text = document.getElementById('commentText').value.trim();
+        if (!text) {
+            showToast('Please enter a comment', 'error');
+            return;
+        }
+        
+        const comments = JSON.parse(localStorage.getItem(`comments_${currentArticleId}`) || '[]');
+        const newComment = {
+            id: Date.now().toString(),
+            userName: window.currentUser.name,
+            userEmail: window.currentUser.email,
+            text: text,
+            date: new Date().toLocaleDateString()
+        };
+        comments.push(newComment);
+        localStorage.setItem(`comments_${currentArticleId}`, JSON.stringify(comments));
+        
+        document.getElementById('commentText').value = '';
+        loadComments(currentArticleId);
+        showToast('Comment posted successfully!', 'success');
+    }
+    
+    function deleteComment(articleId, commentId) {
+        const comments = JSON.parse(localStorage.getItem(`comments_${articleId}`) || '[]');
+        const filtered = comments.filter(c => c.id !== commentId);
+        localStorage.setItem(`comments_${articleId}`, JSON.stringify(filtered));
+        loadComments(articleId);
+        showToast('Comment deleted', 'success');
+    }
+    
+    function updateCommentFormVisibility() {
+        const commentForm = document.getElementById('commentForm');
+        const loginMessage = document.getElementById('loginToComment');
+        
+        if (window.currentUser) {
+            commentForm.classList.remove('hidden');
+            loginMessage.classList.add('hidden');
+        } else {
+            commentForm.classList.add('hidden');
+            loginMessage.classList.remove('hidden');
+        }
+    }
+    
+    // Оновлення після авторизації
+    window.updatePageAfterAuth = function() {
+        updateCommentFormVisibility();
+        if (currentArticleId) {
+            loadComments(currentArticleId);
+        }
+    };
+    
+    // Ініціалізація
+    document.addEventListener('DOMContentLoaded', () => {
+        AOS.init({ duration: 600, once: true });
+        loadBlogData();
+        updateCommentFormVisibility();
+    });
+    
+    window.filterByTag = filterByTag;
+    window.openArticle = openArticle;
+    window.closeArticleModal = closeArticleModal;
+    window.addComment = addComment;
+    window.deleteComment = deleteComment;
+</script>
+
+</body>
+</html>

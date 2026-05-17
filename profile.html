@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>My Profile - Numismatist's Guide</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- FontAwesome 6 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    
+    <!-- AOS (анімація) -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/custom.css">
+    
+    <style>
+        .profile-tab {
+            transition: all 0.3s ease;
+        }
+        .profile-tab.active {
+            background-color: #fbbf24;
+            color: #000;
+        }
+        .profile-tab:not(.active):hover {
+            background-color: #374151;
+        }
+        .coin-list-item {
+            transition: all 0.2s ease;
+        }
+        .coin-list-item:hover {
+            background-color: #374151;
+            transform: translateX(5px);
+        }
+        html.dark {
+            background-color: #0a0a0a;
+        }
+        html.light {
+            background-color: #f5f5f5;
+        }
+        html.light .bg-gray-900 {
+            background-color: #ffffff !important;
+        }
+        html.light .text-gray-300 {
+            color: #4a4a4a !important;
+        }
+        html.light .border-gray-800 {
+            border-color: #e5e5e5 !important;
+        }
+        html.light .bg-gray-800 {
+            background-color: #f0f0f0 !important;
+        }
+        .stat-card {
+            transition: transform 0.3s ease;
+        }
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-gray-100 transition-colors duration-300">
+
+<div id="header-placeholder"></div>
+
+<!-- ============================================ -->
+<!-- ПЕРЕВІРКА АВТОРИЗАЦІЇ -->
+<!-- ============================================ -->
+<div id="unauthorizedMessage" class="hidden min-h-screen flex items-center justify-center">
+    <div class="text-center max-w-md mx-auto px-4">
+        <i class="fas fa-lock text-6xl text-yellow-500 mb-4"></i>
+        <h2 class="text-3xl font-bold mb-2">Access Restricted</h2>
+        <p class="text-gray-400 mb-6">Please sign in to view your profile and collection.</p>
+        <button onclick="openAuthModal()" class="bg-yellow-500 hover:bg-yellow-600 text-black font-bold px-6 py-3 rounded-lg transition">
+            <i class="fas fa-sign-in-alt mr-2"></i> Sign In
+        </button>
+    </div>
+</div>
+
+<!-- ============================================ -->
+<!-- ОСНОВНИЙ КОНТЕНТ ПРОФІЛЮ -->
+<!-- ============================================ -->
+<div id="profileContent" class="hidden">
+    
+    <!-- Шапка профілю -->
+    <section class="bg-gradient-to-r from-gray-800 to-gray-900 py-12">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row items-center gap-6" data-aos="fade-up">
+                <div id="profileAvatar" class="w-24 h-24 rounded-full bg-yellow-500 flex items-center justify-center text-3xl font-bold text-black">
+                    ?
+                </div>
+                <div class="text-center md:text-left">
+                    <h1 id="profileName" class="text-3xl md:text-4xl font-bold">Loading...</h1>
+                    <p id="profileEmail" class="text-gray-400 mt-1">email@example.com</p>
+                    <div class="flex flex-wrap gap-3 mt-3 justify-center md:justify-start">
+                        <span class="px-3 py-1 bg-gray-700 rounded-full text-sm"><i class="fas fa-calendar-alt mr-1"></i> Member since 2025</span>
+                        <span id="profileRole" class="px-3 py-1 bg-yellow-500/20 text-yellow-500 rounded-full text-sm"><i class="fas fa-user mr-1"></i> Collector</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Вкладки профілю -->
+    <section class="py-8 container mx-auto px-4">
+        <div class="flex flex-wrap gap-2 mb-8 border-b border-gray-800 pb-2" data-aos="fade-up">
+            <button onclick="switchProfileTab('collection')" id="tabCollection" class="profile-tab active px-6 py-2 rounded-lg font-medium transition">
+                <i class="fas fa-box mr-2"></i> My Collection
+            </button>
+            <button onclick="switchProfileTab('wishlist')" id="tabWishlist" class="profile-tab px-6 py-2 rounded-lg font-medium transition">
+                <i class="fas fa-heart mr-2"></i> Wishlist
+            </button>
+            <button onclick="switchProfileTab('submissions')" id="tabSubmissions" class="profile-tab px-6 py-2 rounded-lg font-medium transition">
+                <i class="fas fa-paper-plane mr-2"></i> My Submissions
+            </button>
+            <button onclick="switchProfileTab('stats')" id="tabStats" class="profile-tab px-6 py-2 rounded-lg font-medium transition">
+                <i class="fas fa-chart-pie mr-2"></i> Statistics
+            </button>
+            <button onclick="switchProfileTab('settings')" id="tabSettings" class="profile-tab px-6 py-2 rounded-lg font-medium transition">
+                <i class="fas fa-cog mr-2"></i> Settings
+            </button>
+        </div>
+        
+        <!-- ==================== ВКЛАДКА: КОЛЕКЦІЯ ==================== -->
+        <div id="collectionTab" class="profile-tab-content">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6" data-aos="fade-up">
+                <div class="stat-card bg-gray-800 rounded-xl p-6 text-center">
+                    <i class="fas fa-coins text-3xl text-yellow-500 mb-2"></i>
+                    <p class="text-gray-400">Total Coins</p>
+                    <p id="totalCoinsCount" class="text-3xl font-bold">0</p>
+                </div>
+                <div class="stat-card bg-gray-800 rounded-xl p-6 text-center">
+                    <i class="fas fa-chart-line text-3xl text-yellow-500 mb-2"></i>
+                    <p class="text-gray-400">Total Value (USD)</p>
+                    <p id="totalValue" class="text-3xl font-bold">$0</p>
+                </div>
+                <div class="stat-card bg-gray-800 rounded-xl p-6 text-center">
+                    <i class="fas fa-star text-3xl text-yellow-500 mb-2"></i>
+                    <p class="text-gray-400">Avg. Rarity Score</p>
+                    <p id="avgRarity" class="text-3xl font-bold">0/10</p>
+                </div>
+            </div>
+            
+            <div id="collectionList" class="space-y-3" data-aos="fade-up">
+                <!-- Динамічне завантаження колекції -->
+            </div>
+        </div>
+        
+        <!-- ==================== ВКЛАДКА: WISHLIST ==================== -->
+        <div id="wishlistTab" class="profile-tab-content hidden">
+            <div class="mb-4 flex justify-between items-center" data-aos="fade-up">
+                <h3 class="text-xl font-bold"><i class="fas fa-heart text-yellow-500 mr-2"></i>Coins You Want to Acquire</h3>
+                <p id="wishlistCount" class="text-gray-400">0 coins</p>
+            </div>
+            <div id="wishlistList" class="space-y-3" data-aos="fade-up">
+                <!-- Динамічне завантаження wishlist -->
+            </div>
+        </div>
+        
+        <!-- ==================== ВКЛАДКА: ПОДАНІ МОНЕТИ ==================== -->
+        <div id="submissionsTab" class="profile-tab-content hidden">
+            <div class="mb-4" data-aos="fade-up">
+                <h3 class="text-xl font-bold"><i class="fas fa-paper-plane text-yellow-500 mr-2"></i>Coins You've Submitted</h3>
+                <p class="text-gray-400 text-sm">Track the status of your coin submissions</p>
+            </div>
+            <div id="submissionsList" class="space-y-3" data-aos="fade-up">
+                <!-- Динамічне завантаження поданих монет -->
+            </div>
+        </div>
+        
+        <!-- ==================== ВКЛАДКА: СТАТИСТИКА ==================== -->
+        <div id="statsTab" class="profile-tab-content hidden">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6" data-aos="fade-up">
+                <div class="bg-gray-800 rounded-xl p-6">
+                    <h3 class="text-lg font-bold mb-4"><i class="fas fa-chart-pie text-yellow-500 mr-2"></i>Collection by Metal Type</h3>
+                    <canvas id="metalChart" height="250"></canvas>
+                </div>
+                <div class="bg-gray-800 rounded-xl p-6">
+                    <h3 class="text-lg font-bold mb-4"><i class="fas fa-chart-bar text-yellow-500 mr-2"></i>Collection by Country</h3>
+                    <canvas id="countryChart" height="250"></canvas>
+                </div>
+            </div>
+            <div class="mt-6 bg-gray-800 rounded-xl p-6" data-aos="fade-up" data-aos-delay="100">
+                <h3 class="text-lg font-bold mb-4"><i class="fas fa-chart-line text-yellow-500 mr-2"></i>Collection Value Over Time</h3>
+                <canvas id="valueChart" height="200"></canvas>
+            </div>
+        </div>
+        
+        <!-- ==================== ВКЛАДКА: НАЛАШТУВАННЯ ==================== -->
+        <div id="settingsTab" class="profile-tab-content hidden">
+            <div class="max-w-2xl" data-aos="fade-up">
+                <div class="bg-gray-800 rounded-xl p-6 mb-6">
+                    <h3 class="text-xl font-bold mb-4">Profile Settings</h3>
+                    <div class="mb-4">
+                        <label class="block text-gray-300 mb-2">Display Name</label>
+                        <input type="text" id="displayName" class="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:border-yellow-500">
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-gray-300 mb-2">Email</label>
+                        <input type="email" id="displayEmail" class="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:border-yellow-500" readonly>
+                    </div>
+                    <button onclick="updateProfile()" class="bg-yellow-500 hover:bg-yellow-600 text-black font-bold px-6 py-2 rounded-lg transition">
+                        Save Changes
+                    </button>
+                </div>
+                
+                <div class="bg-gray-800 rounded-xl p-6 mb-6">
+                    <h3 class="text-xl font-bold mb-4">Change Password</h3>
+                    <div class="mb-4">
+                        <label class="block text-gray-300 mb-2">Current Password</label>
+                        <input type="password" id="currentPassword" class="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:border-yellow-500">
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-gray-300 mb-2">New Password</label>
+                        <input type="password" id="newPassword" class="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:border-yellow-500">
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-gray-300 mb-2">Confirm New Password</label>
+                        <input type="password" id="confirmPassword" class="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:border-yellow-500">
+                    </div>
+                    <button onclick="changePassword()" class="bg-yellow-500 hover:bg-yellow-600 text-black font-bold px-6 py-2 rounded-lg transition">
+                        Update Password
+                    </button>
+                </div>
+                
+                <div class="bg-gray-800 rounded-xl p-6">
+                    <h3 class="text-xl font-bold mb-4 text-red-400">Danger Zone</h3>
+                    <p class="text-gray-400 mb-4">Once you delete your account, there is no going back.</p>
+                    <button onclick="deleteAccount()" class="bg-red-600 hover:bg-red-700 text-white font-bold px-6 py-2 rounded-lg transition">
+                        <i class="fas fa-trash-alt mr-2"></i> Delete Account
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+<!-- Підключення JS -->
+<script src="js/firebase-config.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/data.js"></script>
+<script src="js/main.js"></script>
+<script src="js/profile.js"></script>
+
+<script>
+    // ============================================
+    // PROFILE.JS - ЛОГІКА ПРОФІЛЮ
+    // ============================================
+    
+    let metalChart = null;
+    let countryChart = null;
+    let valueChart = null;
+    
+    function switchProfileTab(tabName) {
+        // Оновлюємо класи кнопок
+        document.querySelectorAll('.profile-tab').forEach(btn => btn.classList.remove('active'));
+        document.getElementById(`tab${tabName.charAt(0).toUpperCase() + tabName.slice(1)}`).classList.add('active');
+        
+        // Ховаємо всі вкладки
+        document.querySelectorAll('.profile-tab-content').forEach(content => content.classList.add('hidden'));
+        
+        // Показуємо вибрану
+        if (tabName === 'collection') document.getElementById('collectionTab').classList.remove('hidden');
+        else if (tabName === 'wishlist') document.getElementById('wishlistTab').classList.remove('hidden');
+        else if (tabName === 'submissions') document.getElementById('submissionsTab').classList.remove('hidden');
+        else if (tabName === 'stats') document.getElementById('statsTab').classList.remove('hidden');
+        else if (tabName === 'settings') document.getElementById('settingsTab').classList.remove('hidden');
+        
+        // Оновлюємо дані для статистики
+        if (tabName === 'stats') updateStatsCharts();
+    }
+    
+    function loadProfileData() {
+        if (!window.currentUser) return;
+        
+        // Оновлюємо шапку
+        const name = window.currentUser.name || 'Collector';
+        const email = window.currentUser.email || '';
+        const firstLetter = name.charAt(0).toUpperCase();
+        
+        document.getElementById('profileName').textContent = name;
+        document.getElementById('profileEmail').textContent = email;
+        document.getElementById('profileAvatar').textContent = firstLetter;
+        
+        if (window.currentUser.role === 'admin') {
+            document.getElementById('profileRole').innerHTML = '<i class="fas fa-shield-alt mr-1"></i> Admin';
+        }
+        
+        document.getElementById('displayName').value = name;
+        document.getElementById('displayEmail').value = email;
+        
+        // Завантажуємо колекцію
+        loadUserCollection();
+        loadUserWishlist();
+        loadUserSubmissions();
+    }
+    
+    function loadUserCollection() {
+        const collectionIds = getUserCollection(window.currentUser.uid);
+        const allCoins = loadCoins();
+        const collectionCoins = allCoins.filter(coin => collectionIds.includes(coin.id));
+        
+        const totalValue = collectionCoins.reduce((sum, coin) => sum + coin.priceUSD, 0);
+        const avgRarity = collectionCoins.length > 0 ? (collectionCoins.reduce((sum, coin) => sum + coin.rarity, 0) / collectionCoins.length).toFixed(1) : 0;
+        
+        document.getElementById('totalCoinsCount').textContent = collectionCoins.length;
+        document.getElementById('totalValue').textContent = `$${totalValue.toLocaleString()}`;
+        document.getElementById('avgRarity').textContent = `${avgRarity}/10`;
+        
+        const container = document.getElementById('collectionList');
+        if (collectionCoins.length === 0) {
+            container.innerHTML = `<div class="text-center py-12"><i class="fas fa-box-open text-5xl text-gray-600 mb-4"></i><p class="text-gray-400">Your collection is empty. Start adding coins from the catalog!</p><a href="catalog.html" class="inline-block mt-4 bg-yellow-500 hover:bg-yellow-600 text-black px-6 py-2 rounded-lg">Browse Catalog</a></div>`;
+        } else {
+            container.innerHTML = collectionCoins.map(coin => `
+                <div class="coin-list-item bg-gray-800 rounded-xl p-4 flex justify-between items-center">
+                    <div class="flex items-center gap-4">
+                        <i class="fas fa-coins text-3xl text-yellow-500"></i>
+                        <div>
+                            <h4 class="font-bold">${coin.name.en}</h4>
+                            <p class="text-sm text-gray-400">${coin.country} • ${coin.year} • Rarity ${coin.rarity}/10</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-4">
+                        <span class="text-yellow-500 font-bold text-lg">$${coin.priceUSD}</span>
+                        <button onclick="removeFromCollection('${coin.id}')" class="text-red-400 hover:text-red-300 transition">
+                            <i class="fas fa-trash-alt"></i>
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+    }
+    
+    function loadUserWishlist() {
+        const wishlistIds = getUserWishlist(window.currentUser.uid);
+        const allCoins = loadCoins();
+        const wishlistCoins = allCoins.filter(coin => wishlistIds.includes(coin.id));
+        
+        document.getElementById('wishlistCount').textContent = `${wishlistCoins.length} coins`;
+        
+        const container = document.getElementById('wishlistList');
+        if (wishlistCoins.length === 0) {
+            container.innerHTML = `<div class="text-center py-12"><i class="fas fa-heart-broken text-5xl text-gray-600 mb-4"></i><p class="text-gray-400">Your wishlist is empty. Add coins you want to acquire!</p></div>`;
+        } else {
+            container.innerHTML = wishlistCoins.map(coin => `
+                <div class="coin-list-item bg-gray-800 rounded-xl p-4 flex justify-between items-center">
+                    <div class="flex items-center gap-4">
+                        <i class="fas fa-heart text-yellow-500 text-2xl"></i>
+                        <div>
+                            <h4 class="font-bold">${coin.name.en}</h4>
+                            <p class="text-sm text-gray-400">${coin.country} • ${coin.year}</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-4">
+                        <span class="text-yellow-500 font-bold text-lg">$${coin.priceUSD}</span>
+                        <button onclick="removeFromWishlist('${coin.id}')" class="text-red-400 hover:text-red-300 transition">
+                            <i class="fas fa-times-circle"></i>
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+    }
+    
+    function loadUserSubmissions() {
+        const allCoins = loadCoins();
+        const submittedCoins = allCoins.filter(coin => coin.addedBy === window.currentUser.uid);
+        
+        const container = document.getElementById('submissionsList');
+        if (submittedCoins.length === 0) {
+            container.innerHTML = `<div class="text-center py-12"><i class="fas fa-pen-fancy text-5xl text-gray-600 mb-4"></i><p class="text-gray-400">You haven't submitted any coins yet.</p><a href="add-coin.html" class="inline-block mt-4 bg-yellow-500 hover:bg-yellow-600 text-black px-6 py-2 rounded-lg">Add Your First Coin</a></div>`;
+        } else {
+            container.innerHTML = submittedCoins.map(coin => `
+                <div class="coin-list-item bg-gray-800 rounded-xl p-4 flex justify-between items-center">
+                    <div class="flex items-center gap-4">
+                        <i class="fas fa-paper-plane text-2xl ${coin.status === 'approved' ? 'text-green-500' : coin.status === 'pending' ? 'text-yellow-500' : 'text-red-500'}"></i>
+                        <div>
+                            <h4 class="font-bold">${coin.name.en}</h4>
+                            <p class="text-sm text-gray-400">${coin.country} • ${coin.year}</p>
+                        </div>
+                    </div>
+                    <div>
+                        <span class="px-3 py-1 rounded-full text-xs font-bold ${coin.status === 'approved' ? 'bg-green-500/20 text-green-500' : coin.status === 'pending' ? 'bg-yellow-500/20 text-yellow-500' : 'bg-red-500/20 text-red-500'}">
+                            ${coin.status === 'approved' ? 'Approved' : coin.status === 'pending' ? 'Pending Review' : 'Rejected'}
+                        </span>
+                    </div>
+                </div>
+            `).join('');
+        }
+    }
+    
+    function updateStatsCharts() {
+        const collectionIds = getUserCollection(window.currentUser.uid);
+        const allCoins = loadCoins();
+        const collectionCoins = allCoins.filter(coin => collectionIds.includes(coin.id));
+        
+        // Статистика за металами
+        const metalCounts = { gold: 0, silver: 0, bronze: 0 };
+        collectionCoins.forEach(coin => {
+            if (metalCounts[coin.metalType] !== undefined) metalCounts[coin.metalType]++;
+            else metalCounts.silver++;
+        });
+        
+        const ctxMetal = document.getElementById('metalChart');
+        if (ctxMetal) {
+            if (metalChart) metalChart.destroy();
+            metalChart = new Chart(ctxMetal, {
+                type: 'pie',
+                data: {
+                    labels: ['Gold', 'Silver', 'Bronze'],
+                    datasets: [{ data: [metalCounts.gold, metalCounts.silver, metalCounts.bronze], backgroundColor: ['#fbbf24', '#9ca3af', '#d97706'] }]
+                },
+                options: { responsive: true, plugins: { legend: { labels: { color: '#e5e5e5' } } } }
+            });
+        }
+        
+        // Статистика за країнами
+        const countryCounts = {};
+        collectionCoins.forEach(coin => { countryCounts[coin.country] = (countryCounts[coin.country] || 0) + 1; });
+        const topCountries = Object.entries(countryCounts).sort((a, b) => b[1] - a[1]).slice(0, 5);
+        
+        const ctxCountry = document.getElementById('countryChart');
+        if (ctxCountry) {
+            if (countryChart) countryChart.destroy();
+            countryChart = new Chart(ctxCountry, {
+                type: 'bar',
+                data: {
+                    labels: topCountries.map(c => c[0]),
+                    datasets: [{ label: 'Number of Coins', data: topCountries.map(c => c[1]), backgroundColor: '#fbbf24' }]
+                },
+                options: { responsive: true, plugins: { legend: { labels: { color: '#e5e5e5' } } }, scales: { y: { ticks: { color: '#e5e5e5' } }, x: { ticks: { color: '#e5e5e5' } } } }
+            });
+        }
+        
+        // Графік вартості
+        const ctxValue = document.getElementById('valueChart');
+        if (ctxValue) {
+            if (valueChart) valueChart.destroy();
+            valueChart = new Chart(ctxValue, {
+                type: 'line',
+                data: {
+                    labels: collectionCoins.slice(0, 10).map((_, i) => `Coin ${i+1}`),
+                    datasets: [{ label: 'Value (USD)', data: collectionCoins.slice(0, 10).map(c => c.priceUSD), borderColor: '#fbbf24', fill: true }]
+                },
+                options: { responsive: true }
+            });
+        }
+    }
+    
+    function removeFromCollection(coinId) {
+        removeFromUserCollection(window.currentUser.uid, coinId);
+        showToast('Coin removed from your collection', 'success');
+        loadUserCollection();
+        loadProfileData();
+    }
+    
+    function removeFromWishlist(coinId) {
+        removeFromWishlist(window.currentUser.uid, coinId);
+        showToast('Coin removed from your wishlist', 'success');
+        loadUserWishlist();
+    }
+    
+    function updateProfile() {
+        const newName = document.getElementById('displayName').value;
+        if (newName && window.currentUser) {
+            window.currentUser.name = newName;
+            localStorage.setItem('currentUser', JSON.stringify(window.currentUser));
+            showToast('Profile updated successfully!', 'success');
+            loadProfileData();
+            if (typeof updateUIAfterLogin === 'function') updateUIAfterLogin(window.currentUser);
+        }
+    }
+    
+    async function changePassword() {
+        const current = document.getElementById('currentPassword').value;
+        const newPwd = document.getElementById('newPassword').value;
+        const confirm = document.getElementById('confirmPassword').value;
+        
+        if (!current || !newPwd || !confirm) {
+            showToast('Please fill all password fields', 'error');
+            return;
+        }
+        if (newPwd !== confirm) {
+            showToast('New passwords do not match', 'error');
+            return;
+        }
+        if (newPwd.length < 6) {
+            showToast('Password must be at least 6 characters', 'error');
+            return;
+        }
+        
+        try {
+            const user = firebase.auth().currentUser;
+            const credential = firebase.auth.EmailAuthProvider.credential(user.email, current);
+            await user.reauthenticateWithCredential(credential);
+            await user.updatePassword(newPwd);
+            showToast('Password updated successfully!', 'success');
+            document.getElementById('currentPassword').value = '';
+            document.getElementById('newPassword').value = '';
+            document.getElementById('confirmPassword').value = '';
+        } catch (error) {
+            showToast(error.message, 'error');
+        }
+    }
+    
+    async function deleteAccount() {
+        if (confirm('Are you sure you want to delete your account? This action cannot be undone!')) {
+            try {
+                const user = firebase.auth().currentUser;
+                await user.delete();
+                localStorage.removeItem('currentUser');
+                showToast('Account deleted successfully', 'success');
+                setTimeout(() => window.location.href = 'index.html', 1500);
+            } catch (error) {
+                showToast(error.message, 'error');
+            }
+        }
+    }
+    
+    // Перевірка авторизації
+    document.addEventListener('DOMContentLoaded', () => {
+        AOS.init({ duration: 600, once: true });
+        
+        const checkAuth = setInterval(() => {
+            if (window.currentUser !== undefined) {
+                clearInterval(checkAuth);
+                if (window.currentUser) {
+                    document.getElementById('unauthorizedMessage').classList.add('hidden');
+                    document.getElementById('profileContent').classList.remove('hidden');
+                    loadProfileData();
+                } else {
+                    document.getElementById('unauthorizedMessage').classList.remove('hidden');
+                    document.getElementById('profileContent').classList.add('hidden');
+                }
+            }
+        }, 100);
+    });
+    
+    window.switchProfileTab = switchProfileTab;
+    window.removeFromCollection = removeFromCollection;
+    window.removeFromWishlist = removeFromWishlist;
+    window.updateProfile = updateProfile;
+    window.changePassword = changePassword;
+    window.deleteAccount = deleteAccount;
+</script>
+
+</body>
+</html>

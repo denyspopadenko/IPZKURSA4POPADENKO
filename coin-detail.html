@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Coin Details - Numismatist's Guide</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- FontAwesome 6 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    
+    <!-- Swiper.js -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    
+    <!-- AOS -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/custom.css">
+    
+    <style>
+        .detail-section {
+            transition: all 0.3s ease;
+        }
+        .detail-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .detail-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+        }
+        .action-btn {
+            transition: all 0.2s ease;
+        }
+        .action-btn:hover {
+            transform: scale(1.02);
+        }
+        .price-tag {
+            background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+        }
+        .rarity-badge {
+            background: linear-gradient(135deg, #1f2937 0%, #374151 100%);
+        }
+        html.dark {
+            background-color: #0a0a0a;
+        }
+        html.light {
+            background-color: #f5f5f5;
+        }
+        html.light .bg-gray-900 {
+            background-color: #ffffff !important;
+        }
+        html.light .text-gray-300 {
+            color: #4a4a4a !important;
+        }
+        html.light .border-gray-800 {
+            border-color: #e5e5e5 !important;
+        }
+        html.light .bg-gray-800 {
+            background-color: #f0f0f0 !important;
+        }
+        .swiper-button-next, .swiper-button-prev {
+            color: #fbbf24 !important;
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-gray-100 transition-colors duration-300">
+
+<div id="header-placeholder"></div>
+
+<!-- ============================================ -->
+<!-- ОСНОВНИЙ КОНТЕНТ -->
+<!-- ============================================ -->
+<main class="container mx-auto px-4 py-8">
+    
+    <!-- Хлібні крихти -->
+    <div class="text-sm text-gray-400 mb-6" data-aos="fade-up">
+        <a href="index.html" class="hover:text-yellow-500">Home</a> >
+        <a href="catalog.html" class="hover:text-yellow-500">Catalog</a> >
+        <span id="breadcrumbCoin" class="text-yellow-500">Loading...</span>
+    </div>
+    
+    <div id="coinContent">
+        <div class="text-center py-12">
+            <i class="fas fa-spinner fa-spin text-4xl text-yellow-500"></i>
+            <p class="mt-4 text-gray-400">Loading coin details...</p>
+        </div>
+    </div>
+</main>
+
+<!-- Підключення JS -->
+<script src="js/firebase-config.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/data.js"></script>
+<script src="js/main.js"></script>
+
+<script>
+    // ============================================
+    // COIN-DETAIL.JS - ДЕТАЛЬНА СТОРІНКА МОНЕТИ
+    // ============================================
+    
+    let currentCoin = null;
+    let priceChart = null;
+    let similarSwiper = null;
+    
+    function getCoinIdFromUrl() {
+        const params = new URLSearchParams(window.location.search);
+        return params.get('id');
+    }
+    
+    function loadCoinDetail() {
+        const coinId = getCoinIdFromUrl();
+        if (!coinId) {
+            document.getElementById('coinContent').innerHTML = `
+                <div class="text-center py-12">
+                    <i class="fas fa-exclamation-triangle text-5xl text-red-500 mb-4"></i>
+                    <h2 class="text-2xl font-bold">Coin not found</h2>
+                    <p class="text-gray-400 mt-2">No coin ID provided</p>
+                    <a href="catalog.html" class="inline-block mt-6 bg-yellow-500 hover:bg-yellow-600 text-black font-bold px-6 py-2 rounded-lg">Browse Catalog</a>
+                </div>
+            `;
+            return;
+        }
+        
+        const allCoins = loadCoins();
+        const coin = allCoins.find(c => c.id === coinId);
+        
+        if (!coin || coin.status !== 'approved') {
+            document.getElementById('coinContent').innerHTML = `
+                <div class="text-center py-12">
+                    <i class="fas fa-coins text-5xl text-gray-600 mb-4"></i>
+                    <h2 class="text-2xl font-bold">Coin Not Available</h2>
+                    <p class="text-gray-400 mt-2">This coin may not exist or is pending approval</p>
+                    <a href="catalog.html" class="inline-block mt-6 bg-yellow-500 hover:bg-yellow-600 text-black font-bold px-6 py-2 rounded-lg">Browse Catalog</a>
+                </div>
+            `;
+            return;
+        }
+        
+        currentCoin = coin;
+        renderCoinDetail(coin);
+        renderSimilarCoins(coin);
+        initPriceChart();
+    }
+    
+    function renderCoinDetail(coin) {
+        document.getElementById('breadcrumbCoin').textContent = coin.name.en;
+        
+        const container = document.getElementById('coinContent');
+        
+        // Визначення кольору для рідкості
+        let rarityColor = '';
+        if (coin.rarity <= 2) rarityColor = 'text-green-400';
+        else if (coin.rarity <= 4) rarityColor = 'text-blue-400';
+        else if (coin.rarity <= 6) rarityColor = 'text-yellow-400';
+        else if (coin.rarity <= 8) rarityColor = 'text-orange-400';
+        else rarityColor = 'text-red-400';
+        
+        // Визначення іконки металу
+        let metalIcon = '';
+        if (coin.metalType === 'gold') metalIcon = 'fa-crown';
+        else if (coin.metalType === 'silver') metalIcon = 'fa-gem';
+        else metalIcon = 'fa-coins';
+        
+        container.innerHTML = `
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8" data-aos="fade-up">
+                <!-- Ліва колонка: Зображення -->
+                <div class="space-y-4">
+                    <div class="bg-gradient-to-br from-gray-800 to-gray-900 rounded-2xl p-8 text-center">
+                        <i class="fas ${metalIcon} text-8xl text-yellow-500 mb-4"></i>
+                        <div class="mt-4 flex justify-center gap-2">
+                            <span class="px-3 py-1 bg-gray-700 rounded-full text-xs"><i class="fas fa-tag mr-1"></i>${coin.country}</span>
+                            <span class="px-3 py-1 bg-gray-700 rounded-full text-xs"><i class="far fa-calendar mr-1"></i>${coin.year}</span>
+                            <span class="px-3 py-1 bg-gray-700 rounded-full text-xs"><i class="fas fa-balance-scale mr-1"></i>${coin.weight}g</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Статистика в картках -->
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="bg-gray-800 rounded-xl p-4 text-center">
+                            <p class="text-gray-400 text-sm">Rarity Score</p>
+                            <p class="text-2xl font-bold ${rarityColor}">${coin.rarity}/10</p>
+                        </div>
+                        <div class="bg-gray-800 rounded-xl p-4 text-center">
+                            <p class="text-gray-400 text-sm">Mintage</p>
+                            <p class="text-2xl font-bold">${coin.mintage ? coin.mintage.toLocaleString() : 'Unknown'}</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Права колонка: Інформація -->
+                <div class="space-y-6">
+                    <div>
+                        <h1 class="text-3xl md:text-4xl font-bold mb-2">${coin.name.en}</h1>
+                        <p class="text-gray-400">${coin.name.uk || coin.name.en}</p>
+                    </div>
+                    
+                    <div class="price-tag rounded-xl p-6 text-center">
+                        <p class="text-black/70 text-sm">Current Market Value</p>
+                        <p class="text-4xl font-bold text-black">$${coin.priceUSD.toLocaleString()}</p>
+                        <p class="text-black/60 text-sm mt-1">≈ ${coin.priceUAH.toLocaleString()} UAH</p>
+                    </div>
+                    
+                    <div class="grid grid-cols-2 gap-4 text-center">
+                        <div class="detail-card bg-gray-800 rounded-xl p-3">
+                            <i class="fas fa-ruler-combined text-yellow-500"></i>
+                            <p class="text-xs text-gray-400 mt-1">Diameter</p>
+                            <p class="font-bold">${coin.diameter || '?'} mm</p>
+                        </div>
+                        <div class="detail-card bg-gray-800 rounded-xl p-3">
+                            <i class="fas fa-flask text-yellow-500"></i>
+                            <p class="text-xs text-gray-400 mt-1">Metal</p>
+                            <p class="font-bold">${coin.metal || coin.metalType}</p>
+                        </div>
+                        <div class="detail-card bg-gray-800 rounded-xl p-3">
+                            <i class="fas fa-stamp text-yellow-500"></i>
+                            <p class="text-xs text-gray-400 mt-1">Denomination</p>
+                            <p class="font-bold">${coin.denomination}</p>
+                        </div>
+                        <div class="detail-card bg-gray-800 rounded-xl p-3">
+                            <i class="fas fa-tachometer-alt text-yellow-500"></i>
+                            <p class="text-xs text-gray-400 mt-1">Condition</p>
+                            <p class="font-bold">Uncirculated</p>
+                        </div>
+                    </div>
+                    
+                    <div class="flex gap-3">
+                        <button onclick="addToUserCollectionHandler()" class="action-btn flex-1 bg-yellow-500 hover:bg-yellow-600 text-black font-bold py-3 rounded-lg transition">
+                            <i class="fas fa-plus-circle mr-2"></i> Add to Collection
+                        </button>
+                        <button onclick="addToWishlistHandler()" class="action-btn flex-1 bg-gray-700 hover:bg-gray-600 text-white font-bold py-3 rounded-lg transition">
+                            <i class="fas fa-heart mr-2"></i> Add to Wishlist
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Історія монети -->
+            <div class="mt-10 bg-gray-800 rounded-2xl p-6" data-aos="fade-up" data-aos-delay="100">
+                <div class="flex items-center gap-3 mb-4">
+                    <i class="fas fa-history text-2xl text-yellow-500"></i>
+                    <h2 class="text-xl font-bold">History of this Coin</h2>
+                </div>
+                <p class="text-gray-300 leading-relaxed">${coin.history?.en || 'No historical information available for this coin.'}</p>
+                ${coin.history?.uk ? `<p class="text-gray-400 text-sm mt-3 italic">${coin.history.uk}</p>` : ''}
+            </div>
+            
+            <!-- Графік ціни -->
+            <div class="mt-10 bg-gray-800 rounded-2xl p-6" data-aos="fade-up" data-aos-delay="200">
+                <div class="flex items-center gap-3 mb-4">
+                    <i class="fas fa-chart-line text-2xl text-yellow-500"></i>
+                    <h2 class="text-xl font-bold">Price History (USD)</h2>
+                </div>
+                <canvas id="priceHistoryChart" height="200"></canvas>
+                <p class="text-gray-500 text-xs text-center mt-4">*Estimated market trends based on historical data</p>
+            </div>
+            
+            <!-- Схожі монети -->
+            <div class="mt-10" data-aos="fade-up" data-aos-delay="300">
+                <div class="flex items-center gap-3 mb-4">
+                    <i class="fas fa-layer-group text-2xl text-yellow-500"></i>
+                    <h2 class="text-xl font-bold">Similar Coins You Might Like</h2>
+                </div>
+                <div class="swiper similarSwiper">
+                    <div class="swiper-wrapper" id="similarCoinsWrapper"></div>
+                    <div class="swiper-button-next"></div>
+                    <div class="swiper-button-prev"></div>
+                </div>
+            </div>
+        `;
+    }
+    
+    function renderSimilarCoins(coin) {
+        const allCoins = loadCoins();
+        const approvedCoins = allCoins.filter(c => c.status === 'approved' && c.id !== coin.id);
+        
+        // Пошук схожих монет (за країною або металом)
+        const similar = approvedCoins.filter(c => 
+            c.country === coin.country || c.metalType === coin.metalType
+        ).slice(0, 6);
+        
+        const wrapper = document.getElementById('similarCoinsWrapper');
+        if (wrapper) {
+            wrapper.innerHTML = similar.map(c => `
+                <div class="swiper-slide">
+                    <div class="bg-gray-800 rounded-xl overflow-hidden cursor-pointer" onclick="window.location.href='coin-detail.html?id=${c.id}'">
+                        <div class="h-40 bg-gray-700 flex items-center justify-center">
+                            <i class="fas fa-coins text-4xl text-yellow-500"></i>
+                        </div>
+                        <div class="p-4">
+                            <h4 class="font-bold text-sm">${c.name.en}</h4>
+                            <p class="text-gray-400 text-xs">${c.country} • ${c.year}</p>
+                            <p class="text-yellow-500 font-bold text-sm mt-2">$${c.priceUSD}</p>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+        
+        if (similarSwiper) similarSwiper.destroy();
+        similarSwiper = new Swiper('.similarSwiper', {
+            slidesPerView: 1,
+            spaceBetween: 20,
+            navigation: { nextEl: '.swiper-button-next', prevEl: '.swiper-button-prev' },
+            breakpoints: { 640: { slidesPerView: 2 }, 1024: { slidesPerView: 3 } }
+        });
+    }
+    
+    function initPriceChart() {
+        const ctx = document.getElementById('priceHistoryChart');
+        if (!ctx || !currentCoin) return;
+        
+        const basePrice = currentCoin.priceUSD;
+        const years = ['2022', '2023', '2024', '2025', '2026'];
+        const prices = [
+            basePrice * 0.6,
+            basePrice * 0.75,
+            basePrice * 0.85,
+            basePrice * 0.95,
+            basePrice
+        ];
+        
+        if (priceChart) priceChart.destroy();
+        priceChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: years,
+                datasets: [{
+                    label: 'Estimated Value (USD)',
+                    data: prices,
+                    borderColor: '#fbbf24',
+                    backgroundColor: 'rgba(251, 191, 36, 0.1)',
+                    borderWidth: 3,
+                    fill: true,
+                    tension: 0.3,
+                    pointBackgroundColor: '#fbbf24'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: true,
+                plugins: { legend: { labels: { color: '#e5e5e5' } } },
+                scales: { y: { ticks: { color: '#e5e5e5' }, grid: { color: '#374151' } }, x: { ticks: { color: '#e5e5e5' }, grid: { color: '#374151' } } }
+            }
+        });
+    }
+    
+    function addToUserCollectionHandler() {
+        if (!window.currentUser) {
+            showToast('Please sign in to add coins to your collection', 'error');
+            openAuthModal();
+            return;
+        }
+        if (!currentCoin) return;
+        
+        const collection = getUserCollection(window.currentUser.uid);
+        if (collection.includes(currentCoin.id)) {
+            showToast('This coin is already in your collection', 'error');
+            return;
+        }
+        
+        addToUserCollection(window.currentUser.uid, currentCoin.id);
+        showToast(`${currentCoin.name.en} added to your collection!`, 'success');
+    }
+    
+    function addToWishlistHandler() {
+        if (!window.currentUser) {
+            showToast('Please sign in to add coins to your wishlist', 'error');
+            openAuthModal();
+            return;
+        }
+        if (!currentCoin) return;
+        
+        const wishlist = getUserWishlist(window.currentUser.uid);
+        if (wishlist.includes(currentCoin.id)) {
+            showToast('This coin is already in your wishlist', 'error');
+            return;
+        }
+        
+        addToWishlist(window.currentUser.uid, currentCoin.id);
+        showToast(`${currentCoin.name.en} added to your wishlist!`, 'success');
+    }
+    
+    document.addEventListener('DOMContentLoaded', () => {
+        AOS.init({ duration: 600, once: true });
+        loadCoinDetail();
+    });
+    
+    window.addToUserCollectionHandler = addToUserCollectionHandler;
+    window.addToWishlistHandler = addToWishlistHandler;
+</script>
+
+</body>
+</html>

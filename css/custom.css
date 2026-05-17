@@ -1,0 +1,527 @@
+/* ============================================ */
+/* CUSTOM.CSS - ДОДАТКОВІ СТИЛІ ДЛЯ ВСЬОГО САЙТУ */
+/* ============================================ */
+
+/* ============================================ */
+/* ГЛОБАЛЬНІ НАЛАШТУВАННЯ */
+/* ============================================ */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Сховати скролбар але залишити можливість скролити */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #1f2937;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #fbbf24;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #f59e0b;
+}
+
+/* ============================================ */
+/* АНІМАЦІЇ ТА ПЕРЕХОДИ */
+/* ============================================ */
+
+.fade-in {
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.pulse {
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+/* ============================================ */
+/* КАРТКИ МОНЕТ ТА КАТЕГОРІЙ */
+/* ============================================ */
+
+.coin-card, .category-card, .blog-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.coin-card:hover, .category-card:hover, .blog-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3);
+}
+
+/* ============================================ */
+/* СТИЛІ ДЛЯ ADD-COIN.HTML */
+/* ============================================ */
+
+.preview-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.preview-card:hover {
+    transform: scale(1.02);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+.rarity-slider {
+    -webkit-appearance: none;
+    appearance: none;
+    height: 8px;
+    background: #374151;
+    border-radius: 5px;
+    outline: none;
+}
+
+.rarity-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    background: #fbbf24;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.rarity-slider::-webkit-slider-thumb:hover {
+    transform: scale(1.2);
+}
+
+.rarity-slider::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+    background: #fbbf24;
+    border-radius: 50%;
+    cursor: pointer;
+    border: none;
+}
+
+.form-input, .form-select, .form-textarea {
+    transition: all 0.2s ease;
+}
+
+.form-input:focus, .form-select:focus, .form-textarea:focus {
+    transform: translateY(-2px);
+    box-shadow: 0 0 0 2px rgba(251, 191, 36, 0.3);
+}
+
+/* ============================================ */
+/* СТИЛІ ДЛЯ ТОСТ-СПОВІЩЕНЬ */
+/* ============================================ */
+
+.toast-notification {
+    animation: slideInRight 0.3s ease-out;
+}
+
+@keyframes slideInRight {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+.toast-notification.fade-out {
+    animation: fadeOutRight 0.3s ease-out forwards;
+}
+
+@keyframes fadeOutRight {
+    from {
+        transform: translateX(0);
+        opacity: 1;
+    }
+    to {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+}
+
+/* ============================================ */
+/* СТИЛІ ДЛЯ МОДАЛЬНИХ ВІКОН */
+/* ============================================ */
+
+.modal-open {
+    overflow: hidden;
+}
+
+.modal-content {
+    animation: modalFadeIn 0.3s ease-out;
+}
+
+@keyframes modalFadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* ============================================ */
+/* СТИЛІ ДЛЯ ГРАФІКІВ CHART.JS */
+/* ============================================ */
+
+.chart-container {
+    position: relative;
+    margin: auto;
+    height: 300px;
+    width: 100%;
+}
+
+/* ============================================ */
+/* СТИЛІ ДЛЯ СЛАЙДЕРА SWIPER */
+/* ============================================ */
+
+.swiper-button-next, .swiper-button-prev {
+    color: #fbbf24 !important;
+    background: rgba(0, 0, 0, 0.5);
+    width: 40px !important;
+    height: 40px !important;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+}
+
+.swiper-button-next:hover, .swiper-button-prev:hover {
+    background: rgba(0, 0, 0, 0.8);
+    transform: scale(1.1);
+}
+
+.swiper-button-next:after, .swiper-button-prev:after {
+    font-size: 18px !important;
+}
+
+.swiper-pagination-bullet {
+    background: #6b7280 !important;
+    opacity: 0.5;
+}
+
+.swiper-pagination-bullet-active {
+    background: #fbbf24 !important;
+    opacity: 1;
+}
+
+/* ============================================ */
+/* АДАПТИВНІСТЬ ДЛЯ МОБІЛЬНИХ ПРИСТРОЇВ */
+/* ============================================ */
+
+@media (max-width: 768px) {
+    .container {
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+    
+    h1 {
+        font-size: 1.875rem;
+    }
+    
+    h2 {
+        font-size: 1.5rem;
+    }
+    
+    .swiper-button-next, .swiper-button-prev {
+        display: none !important;
+    }
+    
+    .grid {
+        gap: 1rem;
+    }
+}
+
+@media (max-width: 640px) {
+    .price-tag .text-4xl {
+        font-size: 1.875rem;
+    }
+    
+    .stat-card {
+        padding: 1rem;
+    }
+}
+
+/* ============================================ */
+/* ДРУК СТОРІНКИ */
+/* ============================================ */
+
+@media print {
+    header, footer, .swiper-button-next, .swiper-button-prev, .action-btn {
+        display: none !important;
+    }
+    
+    body {
+        background: white;
+        color: black;
+    }
+    
+    .bg-gray-800, .bg-gray-900, .bg-gray-700 {
+        background: white !important;
+        border: 1px solid #ccc;
+    }
+}
+
+/* ============================================ */
+/* ДОДАТКОВІ КОРИСНІ КЛАСИ */
+/* ============================================ */
+
+/* Ліміт рядків для тексту */
+.line-clamp-1 {
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.line-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.line-clamp-3 {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/* Плавне з'явлення */
+.fade-up {
+    animation: fadeUp 0.6s ease-out;
+}
+
+@keyframes fadeUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Затримки для анімацій */
+.delay-100 {
+    animation-delay: 0.1s;
+}
+.delay-200 {
+    animation-delay: 0.2s;
+}
+.delay-300 {
+    animation-delay: 0.3s;
+}
+.delay-400 {
+    animation-delay: 0.4s;
+}
+.delay-500 {
+    animation-delay: 0.5s;
+}
+
+/* ============================================ */
+/* СВІТЛА ТЕМА (OVERRIDES) */
+/* ============================================ */
+
+html.light .rarity-slider {
+    background: #d1d5db;
+}
+
+html.light .rarity-slider::-webkit-slider-thumb {
+    background: #f59e0b;
+}
+
+html.light .swiper-button-next, 
+html.light .swiper-button-prev {
+    background: rgba(255, 255, 255, 0.8);
+    color: #f59e0b !important;
+}
+
+html.light .swiper-pagination-bullet {
+    background: #9ca3af !important;
+}
+
+html.light .swiper-pagination-bullet-active {
+    background: #f59e0b !important;
+}
+
+html.light ::-webkit-scrollbar-track {
+    background: #e5e5e5;
+}
+
+html.light ::-webkit-scrollbar-thumb {
+    background: #f59e0b;
+}
+
+html.light .toast-notification {
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+/* ============================================ */
+/* СТИЛІ ДЛЯ ГРЕЙДУВАННЯ (GRADES.HTML) */
+/* ============================================ */
+
+.grade-scale-item {
+    transition: all 0.2s ease;
+}
+
+.grade-scale-item:hover {
+    transform: scale(1.02);
+    background-color: #374151;
+}
+
+.active-grade {
+    background-color: #fbbf24;
+    color: #000;
+}
+
+/* ============================================ */
+/* СТИЛІ ДЛЯ ТАБЛИЦЬ */
+/* ============================================ */
+
+.table-row {
+    transition: background-color 0.2s ease;
+}
+
+.table-row:hover {
+    background-color: #374151;
+}
+
+html.light .table-row:hover {
+    background-color: #e5e5e5;
+}
+
+/* ============================================ */
+/* СТИЛІ ДЛЯ ПОСТОРІНКОВОЇ НАВІГАЦІЇ */
+/* ============================================ */
+
+.pagination-btn {
+    transition: all 0.2s ease;
+}
+
+.pagination-btn:hover:not(:disabled) {
+    background-color: #fbbf24;
+    color: #000;
+    transform: translateY(-2px);
+}
+
+.pagination-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* ============================================ */
+/* СТИЛІ ДЛЯ ФІЛЬТРІВ */
+/* ============================================ */
+
+.filter-sidebar {
+    transition: all 0.3s ease;
+}
+
+.filter-active {
+    background-color: #fbbf24;
+    color: #000;
+}
+
+/* ============================================ */
+/* ЛОДЕР (ЗАВАНТАЖЕННЯ) */
+/* ============================================ */
+
+.loader {
+    width: 48px;
+    height: 48px;
+    border: 4px solid #374151;
+    border-top: 4px solid #fbbf24;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* ============================================ */
+/* КНОПКИ ТА ІНТЕРАКТИВНІ ЕЛЕМЕНТИ */
+/* ============================================ */
+
+button, a {
+    cursor: pointer;
+}
+
+.btn-gradient {
+    background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+    transition: all 0.3s ease;
+}
+
+.btn-gradient:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 15px -3px rgba(251, 191, 36, 0.3);
+}
+
+/* ============================================ */
+/* ФОРМИ ТА ПОЛЯ ВВОДУ */
+/* ============================================ */
+
+input, select, textarea {
+    transition: all 0.2s ease;
+}
+
+input:focus, select:focus, textarea:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(251, 191, 36, 0.4);
+    border-color: #fbbf24;
+}
+
+/* Прибираємо стрілки у number input */
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+input[type=number] {
+    -moz-appearance: textfield;
+    appearance: textfield;
+}

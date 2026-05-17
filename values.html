@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Coin Values & Market Prices - Numismatist's Guide</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- FontAwesome 6 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    
+    <!-- AOS (анімація) -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    
+    <!-- Flatpickr (календар для вибору дат) -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/custom.css">
+    
+    <style>
+        .value-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .value-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3);
+        }
+        .calculator-input {
+            transition: all 0.2s ease;
+        }
+        .calculator-input:focus {
+            transform: translateY(-2px);
+        }
+        .table-row {
+            transition: background-color 0.2s ease;
+        }
+        .table-row:hover {
+            background-color: #374151;
+        }
+        html.dark {
+            background-color: #0a0a0a;
+        }
+        html.light {
+            background-color: #f5f5f5;
+        }
+        html.light .bg-gray-900 {
+            background-color: #ffffff !important;
+        }
+        html.light .text-gray-300 {
+            color: #4a4a4a !important;
+        }
+        html.light .border-gray-800 {
+            border-color: #e5e5e5 !important;
+        }
+        html.light .bg-gray-800 {
+            background-color: #f0f0f0 !important;
+        }
+        html.light .bg-gray-700 {
+            background-color: #e5e5e5 !important;
+        }
+        .up-trend {
+            color: #10b981;
+        }
+        .down-trend {
+            color: #ef4444;
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-gray-100 transition-colors duration-300">
+
+<div id="header-placeholder"></div>
+
+<!-- ============================================ -->
+<!-- ЗАГОЛОВОК СТОРІНКИ -->
+<!-- ============================================ -->
+<section class="bg-gradient-to-r from-gray-800 to-gray-900 py-12">
+    <div class="container mx-auto px-4 text-center" data-aos="fade-up">
+        <h1 class="text-4xl md:text-5xl font-bold mb-3"><i class="fas fa-chart-line text-yellow-500 mr-3"></i>Coin Values & Market Prices</h1>
+        <p class="text-gray-400 text-lg max-w-2xl mx-auto">Real-time market data, price trends, and coin valuation tools</p>
+    </div>
+</section>
+
+<!-- ============================================ -->
+<!-- КАРТКИ РИНКОВОЇ СТАТИСТИКИ -->
+<!-- ============================================ -->
+<section class="container mx-auto px-4 py-8">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6" data-aos="fade-up">
+        <div class="value-card bg-gray-800 rounded-xl p-6 text-center">
+            <i class="fas fa-chart-simple text-3xl text-yellow-500 mb-2"></i>
+            <p class="text-gray-400 text-sm">Gold Price (oz)</p>
+            <p id="goldPrice" class="text-2xl font-bold">$2,150</p>
+            <span class="up-trend text-sm"><i class="fas fa-arrow-up"></i> +2.3%</span>
+        </div>
+        <div class="value-card bg-gray-800 rounded-xl p-6 text-center">
+            <i class="fas fa-chart-simple text-3xl text-yellow-500 mb-2"></i>
+            <p class="text-gray-400 text-sm">Silver Price (oz)</p>
+            <p id="silverPrice" class="text-2xl font-bold">$25.40</p>
+            <span class="up-trend text-sm"><i class="fas fa-arrow-up"></i> +0.8%</span>
+        </div>
+        <div class="value-card bg-gray-800 rounded-xl p-6 text-center">
+            <i class="fas fa-coins text-3xl text-yellow-500 mb-2"></i>
+            <p class="text-gray-400 text-sm">USD/UAH Exchange</p>
+            <p id="exchangeRate" class="text-2xl font-bold">₴36.70</p>
+            <span class="down-trend text-sm"><i class="fas fa-arrow-down"></i> -0.2%</span>
+        </div>
+        <div class="value-card bg-gray-800 rounded-xl p-6 text-center">
+            <i class="fas fa-chart-line text-3xl text-yellow-500 mb-2"></i>
+            <p class="text-gray-400 text-sm">Market Cap (Coins)</p>
+            <p id="marketCap" class="text-2xl font-bold">$12.4B</p>
+            <span class="up-trend text-sm"><i class="fas fa-arrow-up"></i> +5.1%</span>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================ -->
+<!-- ГРАФІКИ ЦІН -->
+<!-- ============================================ -->
+<section class="container mx-auto px-4 py-8">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8" data-aos="fade-up">
+        <div class="bg-gray-800 rounded-xl p-6">
+            <h3 class="text-xl font-bold mb-4"><i class="fas fa-chart-line text-yellow-500 mr-2"></i>Gold Price History (5 years)</h3>
+            <canvas id="goldHistoryChart" height="250"></canvas>
+        </div>
+        <div class="bg-gray-800 rounded-xl p-6">
+            <h3 class="text-xl font-bold mb-4"><i class="fas fa-chart-line text-yellow-500 mr-2"></i>Silver Price History (5 years)</h3>
+            <canvas id="silverHistoryChart" height="250"></canvas>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================ -->
+<!-- КАЛЬКУЛЯТОР ВАРТОСТІ МОНЕТИ -->
+<!-- ============================================ -->
+<section class="container mx-auto px-4 py-8">
+    <div class="bg-gradient-to-r from-gray-800 to-gray-900 rounded-2xl p-6 md:p-8" data-aos="fade-up">
+        <h2 class="text-2xl md:text-3xl font-bold mb-6 text-center"><i class="fas fa-calculator text-yellow-500 mr-2"></i>Coin Value Calculator</h2>
+        <p class="text-gray-400 text-center mb-8">Estimate the current market value of your coin based on its specifications</p>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+                <label class="block text-gray-300 mb-2">Coin Metal</label>
+                <select id="calcMetal" class="calculator-input w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:border-yellow-500">
+                    <option value="gold">Gold</option>
+                    <option value="silver">Silver</option>
+                    <option value="bronze">Bronze</option>
+                    <option value="copper">Copper</option>
+                </select>
+            </div>
+            <div>
+                <label class="block text-gray-300 mb-2">Weight (grams)</label>
+                <input type="number" id="calcWeight" value="31.1" step="0.1" class="calculator-input w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:border-yellow-500">
+            </div>
+            <div>
+                <label class="block text-gray-300 mb-2">Purity (%)</label>
+                <select id="calcPurity" class="calculator-input w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:border-yellow-500">
+                    <option value="0.999">99.9% (Pure)</option>
+                    <option value="0.916">91.6% (22K)</option>
+                    <option value="0.900">90.0% (21.6K)</option>
+                    <option value="0.750">75.0% (18K)</option>
+                    <option value="0.585">58.5% (14K)</option>
+                    <option value="0.999">99.9% Silver</option>
+                    <option value="0.925">92.5% Sterling Silver</option>
+                    <option value="0.900">90.0% Coin Silver</option>
+                </select>
+            </div>
+            <div>
+                <label class="block text-gray-300 mb-2">Rarity Bonus (%)</label>
+                <select id="calcRarity" class="calculator-input w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:border-yellow-500">
+                    <option value="0">Common (0%)</option>
+                    <option value="25">Rare (+25%)</option>
+                    <option value="50">Very Rare (+50%)</option>
+                    <option value="100">Extremely Rare (+100%)</option>
+                    <option value="200">Unique (+200%)</option>
+                </select>
+            </div>
+        </div>
+        
+        <div class="mt-8 p-6 bg-gray-700 rounded-xl text-center">
+            <p class="text-gray-400 mb-2">Estimated Melt Value</p>
+            <p id="calcMeltValue" class="text-3xl font-bold text-yellow-500">$0.00</p>
+            <p class="text-gray-400 text-sm mt-1">Base value: <span id="calcBaseValue">$0.00</span> | With rarity: <span id="calcTotalValue">$0.00</span></p>
+        </div>
+        
+        <div class="text-center mt-6">
+            <button onclick="calculateValue()" class="bg-yellow-500 hover:bg-yellow-600 text-black font-bold px-8 py-3 rounded-lg transition">
+                <i class="fas fa-calculator mr-2"></i> Calculate Value
+            </button>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================ -->
+<!-- ТАБЛИЦЯ ЦІН НА МОНЕТИ -->
+<!-- ============================================ -->
+<section class="container mx-auto px-4 py-8">
+    <div class="bg-gray-800 rounded-xl p-6" data-aos="fade-up">
+        <div class="flex flex-wrap justify-between items-center mb-6 gap-4">
+            <h2 class="text-xl md:text-2xl font-bold"><i class="fas fa-table-list text-yellow-500 mr-2"></i>Top Valuable Coins</h2>
+            <div class="relative">
+                <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                <input type="text" id="tableSearch" placeholder="Search coins..." class="pl-10 pr-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:border-yellow-500">
+            </div>
+        </div>
+        
+        <div class="overflow-x-auto">
+            <table class="w-full">
+                <thead class="border-b border-gray-700">
+                    <tr class="text-left">
+                        <th class="py-3 px-4">Coin</th>
+                        <th class="py-3 px-4">Country</th>
+                        <th class="py-3 px-4">Year</th>
+                        <th class="py-3 px-4">Metal</th>
+                        <th class="py-3 px-4">Price (USD)</th>
+                        <th class="py-3 px-4">24h Change</th>
+                    </tr>
+                </thead>
+                <tbody id="valuesTableBody">
+                    <!-- Динамічне завантаження -->
+                </tbody>
+            </table>
+        </div>
+        
+        <div class="mt-4 text-center text-gray-400 text-sm">
+            <span id="tableCount">Showing 0 coins</span>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================ -->
+<!-- ПОРАДИ ДЛЯ ІНВЕСТОРІВ -->
+<!-- ============================================ -->
+<section class="container mx-auto px-4 py-8 mb-12">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6" data-aos="fade-up">
+        <div class="bg-gray-800 rounded-xl p-6 text-center">
+            <i class="fas fa-lightbulb text-3xl text-yellow-500 mb-3"></i>
+            <h3 class="text-lg font-bold mb-2">Investment Tip #1</h3>
+            <p class="text-gray-400 text-sm">Gold coins historically maintain value during economic uncertainty. Consider diversifying with pre-1933 US gold.</p>
+        </div>
+        <div class="bg-gray-800 rounded-xl p-6 text-center">
+            <i class="fas fa-chart-line text-3xl text-yellow-500 mb-3"></i>
+            <h3 class="text-lg font-bold mb-2">Market Insight</h3>
+            <p class="text-gray-400 text-sm">Silver coins have seen a 15% increase in demand this year. Morgan dollars remain top performers.</p>
+        </div>
+        <div class="bg-gray-800 rounded-xl p-6 text-center">
+            <i class="fas fa-star text-3xl text-yellow-500 mb-3"></i>
+            <h3 class="text-lg font-bold mb-2">Rarity Matters</h3>
+            <p class="text-gray-400 text-sm">Coins with mintage under 10,000 typically appreciate 8-12% annually. Focus on key dates.</p>
+        </div>
+    </div>
+</section>
+
+<!-- Підключення JS -->
+<script src="js/firebase-config.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/data.js"></script>
+<script src="js/main.js"></script>
+
+<script>
+    // ============================================
+    // VALUES.JS - РИНКОВІ ЦІНИ ТА ГРАФІКИ
+    // ============================================
+    
+    let goldChart = null;
+    let silverChart = null;
+    
+    function loadValuesData() {
+        const allCoins = loadCoins();
+        const approvedCoins = allCoins.filter(c => c.status === 'approved');
+        const topCoins = [...approvedCoins].sort((a, b) => b.priceUSD - a.priceUSD).slice(0, 20);
+        
+        renderValuesTable(topCoins);
+        initPriceCharts();
+        calculateValue();
+        
+        document.getElementById('tableCount').textContent = `Showing ${topCoins.length} coins`;
+        
+        const searchInput = document.getElementById('tableSearch');
+        if (searchInput) {
+            searchInput.addEventListener('input', () => {
+                const query = searchInput.value.toLowerCase();
+                const filtered = approvedCoins.filter(c => 
+                    c.name.en.toLowerCase().includes(query) || 
+                    c.country.toLowerCase().includes(query)
+                ).sort((a, b) => b.priceUSD - a.priceUSD).slice(0, 20);
+                renderValuesTable(filtered);
+                document.getElementById('tableCount').textContent = `Showing ${filtered.length} coins`;
+            });
+        }
+    }
+    
+    function renderValuesTable(coins) {
+        const tbody = document.getElementById('valuesTableBody');
+        
+        tbody.innerHTML = coins.map(coin => {
+            const change = ((Math.random() * 10) - 3).toFixed(1);
+            const isPositive = parseFloat(change) >= 0;
+            
+            return `
+                <tr class="table-row border-b border-gray-700 cursor-pointer" onclick="window.location.href='coin-detail.html?id=${coin.id}'">
+                    <td class="py-3 px-4 font-medium">${coin.name.en}</td>
+                    <td class="py-3 px-4 text-gray-400">${coin.country}</td>
+                    <td class="py-3 px-4 text-gray-400">${coin.year}</td>
+                    <td class="py-3 px-4 text-gray-400">${coin.metal}</td>
+                    <td class="py-3 px-4 text-yellow-500 font-bold">$${coin.priceUSD.toLocaleString()}</td>
+                    <td class="py-3 px-4 ${isPositive ? 'up-trend' : 'down-trend'}">
+                        <i class="fas fa-arrow-${isPositive ? 'up' : 'down'}"></i> ${Math.abs(change)}%
+                    </td>
+                </tr>
+            `;
+        }).join('');
+    }
+    
+    function initPriceCharts() {
+        const years = ['2022', '2023', '2024', '2025', '2026'];
+        const goldPrices = [1820, 1940, 2150, 2350, 2680];
+        const silverPrices = [22.5, 23.8, 25.4, 27.2, 29.8];
+        
+        const ctxGold = document.getElementById('goldHistoryChart');
+        if (ctxGold) {
+            if (goldChart) goldChart.destroy();
+            goldChart = new Chart(ctxGold, {
+                type: 'line',
+                data: {
+                    labels: years,
+                    datasets: [{
+                        label: 'Gold Price (USD/oz)',
+                        data: goldPrices,
+                        borderColor: '#fbbf24',
+                        backgroundColor: 'rgba(251, 191, 36, 0.1)',
+                        borderWidth: 3,
+                        fill: true,
+                        tension: 0.3,
+                        pointBackgroundColor: '#fbbf24'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: { legend: { labels: { color: '#e5e5e5' } } },
+                    scales: { y: { ticks: { color: '#e5e5e5' } }, x: { ticks: { color: '#e5e5e5' } } }
+                }
+            });
+        }
+        
+        const ctxSilver = document.getElementById('silverHistoryChart');
+        if (ctxSilver) {
+            if (silverChart) silverChart.destroy();
+            silverChart = new Chart(ctxSilver, {
+                type: 'line',
+                data: {
+                    labels: years,
+                    datasets: [{
+                        label: 'Silver Price (USD/oz)',
+                        data: silverPrices,
+                        borderColor: '#9ca3af',
+                        backgroundColor: 'rgba(156, 163, 175, 0.1)',
+                        borderWidth: 3,
+                        fill: true,
+                        tension: 0.3,
+                        pointBackgroundColor: '#9ca3af'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: { legend: { labels: { color: '#e5e5e5' } } },
+                    scales: { y: { ticks: { color: '#e5e5e5' } }, x: { ticks: { color: '#e5e5e5' } } }
+                }
+            });
+        }
+    }
+    
+    function calculateValue() {
+        const metal = document.getElementById('calcMetal').value;
+        const weight = parseFloat(document.getElementById('calcWeight').value) || 0;
+        const purity = parseFloat(document.getElementById('calcPurity').value) || 0.999;
+        const rarityBonus = parseFloat(document.getElementById('calcRarity').value) || 0;
+        
+        let pricePerGram = 0;
+        if (metal === 'gold') pricePerGram = 2150 / 31.1035;
+        else if (metal === 'silver') pricePerGram = 25.40 / 31.1035;
+        else if (metal === 'bronze') pricePerGram = 4.5 / 31.1035;
+        else pricePerGram = 4.0 / 31.1035;
+        
+        const meltValue = weight * purity * pricePerGram;
+        const totalValue = meltValue * (1 + rarityBonus / 100);
+        
+        document.getElementById('calcMeltValue').textContent = `$${meltValue.toFixed(2)}`;
+        document.getElementById('calcBaseValue').textContent = `$${meltValue.toFixed(2)}`;
+        document.getElementById('calcTotalValue').textContent = `$${totalValue.toFixed(2)}`;
+        
+        if (totalValue > meltValue) {
+            document.getElementById('calcMeltValue').parentElement.classList.add('border-yellow-500');
+        }
+    }
+    
+    function updateMarketStats() {
+        const allCoins = loadCoins();
+        const approvedCoins = allCoins.filter(c => c.status === 'approved');
+        const totalMarketCap = approvedCoins.reduce((sum, c) => sum + c.priceUSD, 0);
+        document.getElementById('marketCap').textContent = `$${(totalMarketCap / 1000000).toFixed(1)}M`;
+    }
+    
+    document.addEventListener('DOMContentLoaded', () => {
+        AOS.init({ duration: 600, once: true });
+        loadValuesData();
+        updateMarketStats();
+        
+        document.getElementById('calcMetal')?.addEventListener('change', calculateValue);
+        document.getElementById('calcWeight')?.addEventListener('input', calculateValue);
+        document.getElementById('calcPurity')?.addEventListener('change', calculateValue);
+        document.getElementById('calcRarity')?.addEventListener('change', calculateValue);
+    });
+    
+    window.calculateValue = calculateValue;
+</script>
+
+</body>
+</html>
