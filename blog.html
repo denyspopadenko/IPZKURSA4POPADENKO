@@ -69,6 +69,13 @@
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
+        /* Стилі для кнопок навігації */
+        .nav-link {
+            transition: color 0.2s ease;
+        }
+        .nav-link:hover {
+            color: #fbbf24;
+        }
     </style>
 </head>
 <body class="bg-gray-900 text-gray-100 transition-colors duration-300">
@@ -299,22 +306,29 @@
         document.getElementById('loginToComment')?.classList.toggle('hidden', isLoggedIn);
     }
     
-    // Примусове показування кнопок Profile та Add Coin
-    function showAllNavButtons() {
-        const profileLink = document.getElementById('nav-profile');
-        const addCoinLink = document.getElementById('nav-add-coin');
-        if (profileLink) profileLink.classList.remove('hidden');
-        if (addCoinLink) addCoinLink.classList.remove('hidden');
+    // ПРИМУСОВЕ ПОКАЗУВАННЯ КНОПОК (ЗАВЖДИ ВИДИМІ)
+    function forceShowNavButtons() {
+        // Знаходимо елементи навігації
+        const navProfile = document.getElementById('nav-profile');
+        const navAddCoin = document.getElementById('nav-add-coin');
         
+        // Примусово показуємо кнопки (видаляємо hidden)
+        if (navProfile) navProfile.classList.remove('hidden');
+        if (navAddCoin) navAddCoin.classList.remove('hidden');
+        
+        // Також показуємо в меню користувача
+        const userMenu = document.getElementById('userMenu');
+        if (userMenu) userMenu.classList.remove('hidden');
+        
+        // Оновлюємо меню користувача
         if (typeof updateUserMenu === 'function') updateUserMenu();
-        if (typeof updatePageAfterAuth === 'function') updatePageAfterAuth();
     }
     
     // Оновлення після авторизації
     window.updatePageAfterAuth = function() {
         updateCommentFormVisibility();
         if (currentArticleId) loadComments(currentArticleId);
-        showAllNavButtons();
+        forceShowNavButtons();
         if (typeof updateUserMenu === 'function') updateUserMenu();
         if (typeof window.updateUIAfterLogin === 'function' && window.currentUser) window.updateUIAfterLogin(window.currentUser);
     };
@@ -324,9 +338,9 @@
         loadBlogData();
         updateCommentFormVisibility();
         
-        // Примусове оновлення хедера після завантаження
+        // Примусове показування кнопок після завантаження
         setTimeout(() => {
-            showAllNavButtons();
+            forceShowNavButtons();
             if (window.currentUser && typeof window.updateUIAfterLogin === 'function') window.updateUIAfterLogin(window.currentUser);
         }, 200);
     });
