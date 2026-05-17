@@ -51,23 +51,12 @@
             transform: translateY(-8px);
             box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3);
         }
-        html.dark {
-            background-color: #0a0a0a;
+        .blog-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
-        html.light {
-            background-color: #f5f5f5;
-        }
-        html.light .bg-gray-900 {
-            background-color: #ffffff !important;
-        }
-        html.light .text-gray-300 {
-            color: #4a4a4a !important;
-        }
-        html.light .border-gray-800 {
-            border-color: #e5e5e5 !important;
-        }
-        html.light .bg-gray-800 {
-            background-color: #f0f0f0 !important;
+        .blog-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
         }
         /* Стилі для loader */
         .loader {
@@ -86,6 +75,23 @@
         .carousel-loader, .articles-loader {
             text-align: center;
             padding: 40px;
+        }
+        /* Виправлення для однакової висоти карток каруселі */
+        .swiper-slide {
+            height: auto !important;
+        }
+        .coin-carousel-card {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+        .coin-carousel-card .p-6 {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        .coin-carousel-card button {
+            margin-top: auto;
         }
     </style>
 </head>
@@ -269,9 +275,11 @@
             A Community That Shares Your Passion. Whether you're just starting out or a seasoned collector, 
             you'll find a place here to learn, share, and grow.
         </p>
-        <button onclick="openAuthModal()" class="bg-yellow-500 hover:bg-yellow-600 text-black font-bold px-8 py-3 rounded-lg transition text-lg">
-            Join Free Today <i class="fas fa-arrow-right ml-2"></i>
-        </button>
+        <div id="ctaButtonContainer">
+            <button onclick="openAuthModal()" class="bg-yellow-500 hover:bg-yellow-600 text-black font-bold px-8 py-3 rounded-lg transition text-lg">
+                Join Free Today <i class="fas fa-arrow-right ml-2"></i>
+            </button>
+        </div>
     </div>
 </section>
 
@@ -284,7 +292,7 @@
             <div class="lg:col-span-1">
                 <div class="flex items-center gap-2 mb-4">
                     <i class="fas fa-coins text-2xl text-yellow-500"></i>
-                    <span class="text-xl font-bold">COINPEDIA</span>
+                    <span class="text-xl font-bold">Numismatist's Guide</span>
                 </div>
                 <p class="text-gray-400 text-sm">The Collectible Reference. Your trusted source for coin information, values, history, and collecting knowledge.</p>
             </div>
@@ -331,7 +339,7 @@
         </div>
         
         <div class="border-t border-gray-800 mt-8 pt-8 text-center text-gray-500 text-sm">
-            &copy; 2025 Coinpedia. All rights reserved. Numismatist's Reference Guide.
+            &copy; 2025 Numismatist's Guide. All rights reserved.
         </div>
     </div>
 </footer>
@@ -344,17 +352,16 @@
 
 <script>
     // ============================================
-    // ІНІЦІАЛІЗАЦІЯ ГОЛОВНОЇ СТОРІНКИ (оновлена)
+    // ІНІЦІАЛІЗАЦІЯ ГОЛОВНОЇ СТОРІНКИ
     // ============================================
     
     let priceChart = null;
     let coinCarousel = null;
     
-    // Очікуємо завантаження всіх даних
     function waitForData() {
         return new Promise((resolve) => {
             const checkInterval = setInterval(() => {
-                if (window.loadCoins && window.loadArticles) {
+                if (typeof loadCoins === 'function' && typeof loadArticles === 'function') {
                     clearInterval(checkInterval);
                     resolve();
                 }
@@ -373,6 +380,7 @@
         initChart();
         initSearch();
         initAOS();
+        updateCTAButton();
     }
     
     function renderCarousel(coins) {
@@ -388,11 +396,11 @@
         
         wrapper.innerHTML = rareCoins.map(coin => `
             <div class="swiper-slide">
-                <div class="bg-gradient-to-br from-gray-800 to-gray-900 rounded-xl overflow-hidden shadow-xl">
+                <div class="coin-carousel-card bg-gradient-to-br from-gray-800 to-gray-900 rounded-xl overflow-hidden shadow-xl h-full flex flex-col">
                     <div class="h-64 bg-gray-700 flex items-center justify-center">
                         <i class="fas fa-coins text-6xl text-yellow-500"></i>
                     </div>
-                    <div class="p-6">
+                    <div class="p-6 flex flex-col flex-1">
                         <div class="flex justify-between items-start mb-2">
                             <h3 class="text-xl font-bold">${coin.name.en}</h3>
                             <span class="px-2 py-1 bg-yellow-500/20 text-yellow-500 rounded-full text-xs">Rarity ${coin.rarity}/10</span>
@@ -431,7 +439,7 @@
         }
         
         grid.innerHTML = recentArticles.map(article => `
-            <div class="bg-gray-900 rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition">
+            <div class="blog-card bg-gray-900 rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition cursor-pointer" onclick="window.location.href='blog.html?article=${article.id}'">
                 <div class="h-48 bg-gray-800 flex items-center justify-center">
                     <i class="fas fa-newspaper text-4xl text-yellow-500"></i>
                 </div>
@@ -440,9 +448,9 @@
                         <span><i class="far fa-calendar-alt mr-1"></i>${article.date}</span>
                         <span><i class="far fa-clock mr-1"></i>${article.readTime} min read</span>
                     </div>
-                    <h3 class="text-xl font-bold mb-2">${article.title.en}</h3>
+                    <h3 class="text-xl font-bold mb-2">${article.title?.en || article.title}</h3>
                     <p class="text-gray-400 mb-4">${article.excerpt?.en?.substring(0, 100) || ''}...</p>
-                    <a href="blog-post.html?id=${article.id}" class="text-yellow-500 hover:text-yellow-400 font-medium">Read More <i class="fas fa-arrow-right ml-1"></i></a>
+                    <button class="text-yellow-500 hover:text-yellow-400 font-medium transition">Read More <i class="fas fa-arrow-right ml-1"></i></button>
                 </div>
             </div>
         `).join('');
@@ -510,6 +518,23 @@
         AOS.init({ duration: 800, once: true, offset: 100 });
     }
     
+    function updateCTAButton() {
+        const container = document.getElementById('ctaButtonContainer');
+        if (!container) return;
+        
+        if (window.currentUser) {
+            container.innerHTML = `
+                <div class="inline-flex items-center gap-3 bg-gray-800 rounded-lg px-6 py-3">
+                    <i class="fas fa-check-circle text-green-500 text-xl"></i>
+                    <span class="text-gray-300">You are already a member!</span>
+                    <a href="profile.html" class="bg-yellow-500 hover:bg-yellow-600 text-black font-bold px-4 py-2 rounded-lg transition ml-2">
+                        Go to Profile <i class="fas fa-arrow-right ml-1"></i>
+                    </a>
+                </div>
+            `;
+        }
+    }
+    
     function updateChartTheme() {
         if (priceChart) {
             const isDark = document.documentElement.classList.contains('dark');
@@ -521,6 +546,14 @@
             priceChart.update();
         }
     }
+    
+    // Оновлення CTA кнопки після авторизації
+    window.updatePageAfterAuth = function() {
+        updateCTAButton();
+        if (typeof window.originalUpdatePageAfterAuth === 'function') {
+            window.originalUpdatePageAfterAuth();
+        }
+    };
     
     const observer = new MutationObserver(() => updateChartTheme());
     observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
