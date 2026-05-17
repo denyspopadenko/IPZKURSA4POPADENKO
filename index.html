@@ -90,8 +90,23 @@
             display: flex;
             flex-direction: column;
         }
+        .coin-carousel-card .coin-info {
+            flex: 1;
+        }
+        .coin-carousel-card .coin-price {
+            margin-top: 16px;
+        }
         .coin-carousel-card button {
-            margin-top: auto;
+            margin-top: 16px;
+            width: 100%;
+        }
+        /* Фікс для рівномірного відображення */
+        .coin-carousel-card .flex.justify-between {
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .coin-carousel-card .rarity-badge {
+            white-space: nowrap;
         }
     </style>
 </head>
@@ -381,6 +396,7 @@
         initSearch();
         initAOS();
         updateCTAButton();
+        updateNavAfterAuth();
     }
     
     function renderCarousel(coins) {
@@ -397,17 +413,19 @@
         wrapper.innerHTML = rareCoins.map(coin => `
             <div class="swiper-slide">
                 <div class="coin-carousel-card bg-gradient-to-br from-gray-800 to-gray-900 rounded-xl overflow-hidden shadow-xl h-full flex flex-col">
-                    <div class="h-64 bg-gray-700 flex items-center justify-center">
+                    <div class="h-56 bg-gray-700 flex items-center justify-center">
                         <i class="fas fa-coins text-6xl text-yellow-500"></i>
                     </div>
-                    <div class="p-6 flex flex-col flex-1">
-                        <div class="flex justify-between items-start mb-2">
-                            <h3 class="text-xl font-bold">${coin.name.en}</h3>
-                            <span class="px-2 py-1 bg-yellow-500/20 text-yellow-500 rounded-full text-xs">Rarity ${coin.rarity}/10</span>
+                    <div class="p-5 flex flex-col flex-1">
+                        <div class="flex justify-between items-start gap-2 mb-2">
+                            <h3 class="text-lg font-bold leading-tight">${(coin.name.en || coin.name).substring(0, 30)}${(coin.name.en || coin.name).length > 30 ? '...' : ''}</h3>
+                            <span class="rarity-badge px-2 py-1 bg-yellow-500/20 text-yellow-500 rounded-full text-xs whitespace-nowrap">R${coin.rarity}/10</span>
                         </div>
-                        <p class="text-gray-400 mb-2">${coin.country} • ${coin.year}</p>
-                        <p class="text-yellow-500 font-bold text-xl">$${coin.priceUSD}</p>
-                        <button onclick="window.location.href='coin-detail.html?id=${coin.id}'" class="mt-4 w-full bg-yellow-500 hover:bg-yellow-600 text-black font-bold py-2 rounded-lg transition">
+                        <p class="text-gray-400 text-sm mb-1">${coin.country} • ${coin.year}</p>
+                        <div class="coin-price mt-2">
+                            <p class="text-yellow-500 font-bold text-xl">$${coin.priceUSD.toLocaleString()}</p>
+                        </div>
+                        <button onclick="window.location.href='coin-detail.html?id=${coin.id}'" class="mt-4 w-full bg-yellow-500 hover:bg-yellow-600 text-black font-bold py-2 rounded-lg transition text-sm">
                             View Details <i class="fas fa-arrow-right ml-1"></i>
                         </button>
                     </div>
@@ -443,14 +461,14 @@
                 <div class="h-48 bg-gray-800 flex items-center justify-center">
                     <i class="fas fa-newspaper text-4xl text-yellow-500"></i>
                 </div>
-                <div class="p-6">
+                <div class="p-5">
                     <div class="flex justify-between items-center text-sm text-gray-400 mb-2">
                         <span><i class="far fa-calendar-alt mr-1"></i>${article.date}</span>
                         <span><i class="far fa-clock mr-1"></i>${article.readTime} min read</span>
                     </div>
-                    <h3 class="text-xl font-bold mb-2">${article.title?.en || article.title}</h3>
-                    <p class="text-gray-400 mb-4">${article.excerpt?.en?.substring(0, 100) || ''}...</p>
-                    <button class="text-yellow-500 hover:text-yellow-400 font-medium transition">Read More <i class="fas fa-arrow-right ml-1"></i></button>
+                    <h3 class="text-lg font-bold mb-2 line-clamp-2">${article.title?.en || article.title}</h3>
+                    <p class="text-gray-400 text-sm mb-3 line-clamp-3">${article.excerpt?.en?.substring(0, 100) || ''}...</p>
+                    <button class="text-yellow-500 hover:text-yellow-400 font-medium text-sm transition">Read More <i class="fas fa-arrow-right ml-1"></i></button>
                 </div>
             </div>
         `).join('');
@@ -535,6 +553,16 @@
         }
     }
     
+    function updateNavAfterAuth() {
+        // Оновлюємо навігацію після входу
+        if (typeof updatePageAfterAuth === 'function') {
+            updatePageAfterAuth();
+        }
+        if (typeof updateUserMenu === 'function') {
+            updateUserMenu();
+        }
+    }
+    
     function updateChartTheme() {
         if (priceChart) {
             const isDark = document.documentElement.classList.contains('dark');
@@ -548,10 +576,12 @@
     }
     
     // Оновлення CTA кнопки після авторизації
+    const originalUpdatePageAfterAuth = window.updatePageAfterAuth;
     window.updatePageAfterAuth = function() {
         updateCTAButton();
-        if (typeof window.originalUpdatePageAfterAuth === 'function') {
-            window.originalUpdatePageAfterAuth();
+        updateNavAfterAuth();
+        if (typeof originalUpdatePageAfterAuth === 'function') {
+            originalUpdatePageAfterAuth();
         }
     };
     
