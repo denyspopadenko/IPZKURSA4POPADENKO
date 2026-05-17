@@ -50,7 +50,7 @@ function updateThemeIcon(theme) {
 }
 
 // ============================================
-// 🌐 МОВА (УКР/АНГЛ) - ПОКРАЩЕНА ВЕРСІЯ
+// 🌐 МОВА (УКР/АНГЛ) - ПРОСТА ВЕРСІЯ З ПЕРЕЗАВАНТАЖЕННЯМ
 // ============================================
 
 let translations = { uk: {}, en: {} };
@@ -70,7 +70,7 @@ async function loadTranslations() {
 }
 
 function applyTranslations() {
-    // 1. Оновлення елементів з атрибутом data-i18n
+    // Оновлення елементів з атрибутом data-i18n
     const elements = document.querySelectorAll('[data-i18n]');
     elements.forEach(el => {
         const key = el.getAttribute('data-i18n');
@@ -88,214 +88,24 @@ function applyTranslations() {
         }
     });
     
-    // 2. Оновлення placeholder через data-i18n-placeholder
-    document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
-        const key = el.getAttribute('data-i18n-placeholder');
-        const translation = translations[window.currentLanguage]?.[key];
-        if (translation && el.placeholder !== undefined) {
-            el.placeholder = translation;
-        }
-    });
-    
-    // 3. Оновлення кнопки мови
+    // Оновлення кнопки мови
     const langText = document.getElementById('langText');
     if (langText) {
         langText.textContent = window.currentLanguage === 'uk' ? 'UA' : 'EN';
     }
     
-    // 4. Оновлення кнопки входу (якщо не залогінений)
+    // Оновлення кнопки входу (якщо не залогінений)
     const authButton = document.getElementById('authButton');
     if (authButton && !window.currentUser) {
         const signInText = window.currentLanguage === 'uk' ? 'Увійти' : 'Sign In';
         authButton.innerHTML = `<button onclick="openAuthModal()" class="bg-yellow-500 hover:bg-yellow-600 text-black px-4 py-2 rounded-lg font-medium transition"><i class="fas fa-user mr-2"></i>${signInText}</button>`;
     }
-    
-    // 5. Оновлення модального вікна авторизації
-    const modalTitle = document.getElementById('authModalTitle');
-    if (modalTitle) {
-        const loginForm = document.getElementById('loginForm');
-        const isLoginVisible = loginForm && !loginForm.classList.contains('hidden');
-        if (isLoginVisible) {
-            modalTitle.textContent = window.currentLanguage === 'uk' ? 'Вхід' : 'Sign In';
-        } else {
-            modalTitle.textContent = window.currentLanguage === 'uk' ? 'Реєстрація' : 'Sign Up';
-        }
-    }
-    
-    // 6. Оновлення вкладок авторизації
-    const loginTab = document.getElementById('loginTab');
-    const registerTab = document.getElementById('registerTab');
-    if (loginTab && registerTab) {
-        loginTab.textContent = window.currentLanguage === 'uk' ? 'Вхід' : 'Sign In';
-        registerTab.textContent = window.currentLanguage === 'uk' ? 'Реєстрація' : 'Sign Up';
-    }
-    
-    // 7. Оновлення кнопок в модальному вікні
-    const signInBtn = document.querySelector('#loginForm button[onclick="signInWithEmail()"]');
-    if (signInBtn) {
-        signInBtn.textContent = window.currentLanguage === 'uk' ? 'Увійти' : 'Sign In';
-    }
-    
-    const signUpBtn = document.querySelector('#registerForm button[onclick="signUpWithEmail()"]');
-    if (signUpBtn) {
-        signUpBtn.textContent = window.currentLanguage === 'uk' ? 'Створити акаунт' : 'Create Account';
-    }
-    
-    // 8. Оновлення тексту в user menu
-    const myProfileLink = document.querySelector('#userMenu a[href="profile.html"] span');
-    const addCoinLink = document.querySelector('#userMenu a[href="add-coin.html"] span');
-    const signOutBtn = document.querySelector('#userMenu button span');
-    
-    if (myProfileLink) {
-        myProfileLink.textContent = window.currentLanguage === 'uk' ? 'Мій профіль' : 'My Profile';
-    }
-    if (addCoinLink) {
-        addCoinLink.textContent = window.currentLanguage === 'uk' ? 'Додати монету' : 'Add Coin';
-    }
-    if (signOutBtn) {
-        signOutBtn.textContent = window.currentLanguage === 'uk' ? 'Вийти' : 'Sign Out';
-    }
-    
-    // 9. Оновлення категорій на головній сторінці
-    updateCategoryTexts();
-    
-    // 10. Оновлення футера
-    updateFooterTexts();
-    
-    // 11. Оновлення пошуку
-    updateSearchPlaceholder();
-    
-    // 12. Оновлення заголовків сторінок
-    updatePageTitles();
 }
 
-function updateCategoryTexts() {
-    const categories = [
-        { id: 'cat-us', uk: 'Монети США', en: 'US Coins' },
-        { id: 'cat-world', uk: 'Монети світу', en: 'World Coins' },
-        { id: 'cat-ancient', uk: 'Стародавні монети', en: 'Ancient Coins' },
-        { id: 'cat-gold', uk: 'Золоті монети', en: 'Gold Coins' },
-        { id: 'cat-error', uk: 'Монети з помилками', en: 'Error Coins' },
-        { id: 'cat-commonwealth', uk: 'Співдружність', en: 'Commonwealth' }
-    ];
-    
-    categories.forEach(cat => {
-        const el = document.getElementById(cat.id);
-        if (el) {
-            el.textContent = window.currentLanguage === 'uk' ? cat.uk : cat.en;
-        }
-    });
-    
-    // Кнопка Explore All Categories
-    const exploreBtn = document.querySelector('.explore-btn, a[href="catalog.html"] .btn-text');
-    if (exploreBtn) {
-        exploreBtn.textContent = window.currentLanguage === 'uk' ? 'Переглянути всі категорії' : 'Explore All Categories';
-    }
-}
-
-function updateFooterTexts() {
-    const footerTexts = {
-        'footer-explore': { uk: 'ДОСЛІДЖУЙТЕ', en: 'EXPLORE' },
-        'footer-resources': { uk: 'РЕСУРСИ', en: 'RESOURCES' },
-        'footer-company': { uk: 'КОМПАНІЯ', en: 'COMPANY' },
-        'footer-newsletter': { uk: 'РОЗСИЛКА', en: 'NEWSLETTER' },
-        'footer-coins': { uk: 'Монети', en: 'Coins' },
-        'footer-values': { uk: 'Ціни', en: 'Values' },
-        'footer-grades': { uk: 'Грейди', en: 'Grades' },
-        'footer-notes': { uk: 'Нотатки', en: 'Notes' },
-        'footer-grading-guide': { uk: 'Гайд з грейдування', en: 'Coin Grading Guide' },
-        'footer-value-charts': { uk: 'Таблиці цін', en: 'Value Charts' },
-        'footer-certification': { uk: 'Сертифікація', en: 'Coin Certification' },
-        'footer-faqs': { uk: 'Питання', en: 'FAQs' },
-        'footer-about': { uk: 'Про нас', en: 'About Us' },
-        'footer-contact': { uk: 'Контакти', en: 'Contact' },
-        'footer-privacy': { uk: 'Політика конфіденційності', en: 'Privacy Policy' },
-        'footer-copyright': { uk: 'Всі права захищені. Довідник нумізмата.', en: 'All rights reserved. Numismatist\'s Reference Guide.' }
-    };
-    
-    Object.keys(footerTexts).forEach(id => {
-        const el = document.getElementById(id);
-        if (el) {
-            el.textContent = footerTexts[id][window.currentLanguage];
-        }
-    });
-    
-    // Підписка на новини
-    const subscribeBtn = document.querySelector('.subscribe-btn, .newsletter-btn');
-    if (subscribeBtn) {
-        subscribeBtn.textContent = window.currentLanguage === 'uk' ? 'Підписатись' : 'Subscribe';
-    }
-    
-    const newsletterInput = document.querySelector('#newsletter-input, .newsletter-input');
-    if (newsletterInput) {
-        newsletterInput.placeholder = window.currentLanguage === 'uk' ? 'Введіть ваш email' : 'Enter your email';
-    }
-}
-
-function updateSearchPlaceholder() {
-    const searchInput = document.getElementById('globalSearch');
-    if (searchInput) {
-        searchInput.placeholder = window.currentLanguage === 'uk' 
-            ? 'Пошук монет за назвою, типом, країною або роком...' 
-            : 'Search coins by name, type, country, or year...';
-    }
-}
-
-function updatePageTitles() {
-    const pageTitle = document.querySelector('title');
-    if (pageTitle) {
-        const titles = {
-            uk: 'Довідник нумізмата - Рідкісні монети світу',
-            en: 'Numismatist\'s Guide - Rare Coins Directory'
-        };
-        pageTitle.textContent = titles[window.currentLanguage] || titles.en;
-    }
-    
-    const heroTitle = document.querySelector('.hero-title, h1[data-hero]');
-    if (heroTitle) {
-        heroTitle.textContent = window.currentLanguage === 'uk' 
-            ? 'Найнадійніший довідник монет у світі'
-            : 'The World\'s Most Trusted Coin Reference Directory';
-    }
-    
-    const heroSubtitle = document.querySelector('.hero-subtitle');
-    if (heroSubtitle) {
-        heroSubtitle.textContent = window.currentLanguage === 'uk'
-            ? 'Визначайте, досліджуйте та оцінюйте монети з усього світу. Створено колекціонерами для колекціонерів.'
-            : 'Identify, explore, and value coins from around the world. Built for collectors, by collectors.';
-    }
-    
-    const joinBtn = document.querySelector('.join-btn, .cta-button');
-    if (joinBtn) {
-        joinBtn.textContent = window.currentLanguage === 'uk' ? 'Приєднатися безкоштовно' : 'Join Free Today';
-    }
-}
-
+// ОСНОВНА ФУНКЦІЯ ЗМІНИ МОВИ (просте перезавантаження)
 function switchLanguage(lang) {
-    window.currentLanguage = lang;
     localStorage.setItem('language', lang);
-    
-    // Оновлюємо всі тексти на сторінці
-    applyTranslations();
-    
-    // Оновлюємо кнопку мови
-    const langBtn = document.querySelector('button[onclick*="switchLanguage"]');
-    if (langBtn) {
-        const newLang = window.currentLanguage === 'uk' ? 'en' : 'uk';
-        langBtn.setAttribute('onclick', `switchLanguage('${newLang}')`);
-    }
-    
-    // Оновлюємо динамічний контент (якщо є)
-    if (typeof updateDynamicContent === 'function') {
-        updateDynamicContent();
-    }
-    
-    // Оновлюємо каталог, якщо сторінка каталогу
-    if (typeof applyFilters === 'function') {
-        applyFilters();
-    }
-    
-    console.log(`Language switched to: ${lang}`);
+    location.reload();
 }
 
 // ============================================
@@ -344,6 +154,9 @@ function createHeader() {
     
     navHtml += `<a href="admin.html" id="adminLink" class="flex items-center gap-2 text-red-400 hover:text-red-300 transition hidden"><i class="fas fa-shield-alt"></i><span data-i18n="nav_admin">Admin</span></a>`;
     
+    // Поточний статус мови для кнопки
+    const currentLangForButton = window.currentLanguage === 'uk' ? 'en' : 'uk';
+    
     navHtml += `
                     </div>
                     
@@ -352,7 +165,7 @@ function createHeader() {
                             <i id="themeIcon" class="fas ${window.currentTheme === 'dark' ? 'fa-moon' : 'fa-sun'}"></i>
                         </button>
                         
-                        <button onclick="switchLanguage('${window.currentLanguage === 'uk' ? 'en' : 'uk'}')" class="p-2 rounded-lg bg-gray-800 text-yellow-500 hover:bg-gray-700 transition font-bold">
+                        <button onclick="switchLanguage('${currentLangForButton}')" class="p-2 rounded-lg bg-gray-800 text-yellow-500 hover:bg-gray-700 transition font-bold">
                             <span id="langText">${window.currentLanguage === 'uk' ? 'EN' : 'UA'}</span>
                         </button>
                         
@@ -386,21 +199,47 @@ function createHeader() {
 function updateUserMenu() {
     const userName = document.getElementById('userName');
     const userEmail = document.getElementById('userEmail');
+    const userMenu = document.getElementById('userMenu');
     
     if (window.currentUser) {
         if (userName) userName.textContent = window.currentUser.name;
         if (userEmail) userEmail.textContent = window.currentUser.email;
+        
+        // Оновлюємо кнопку входу на аватар
+        const authButton = document.getElementById('authButton');
+        if (authButton) {
+            const firstLetter = window.currentUser.name?.charAt(0) || 'U';
+            authButton.innerHTML = `
+                <div class="flex items-center gap-2 cursor-pointer" onclick="toggleUserMenu()">
+                    ${window.currentUser.photoURL 
+                        ? `<img src="${window.currentUser.photoURL}" class="w-8 h-8 rounded-full object-cover">` 
+                        : `<div class="w-8 h-8 rounded-full bg-yellow-500 flex items-center justify-center text-black font-bold">${firstLetter}</div>`
+                    }
+                    <span class="hidden md:inline">${window.currentUser.name?.split(' ')[0] || window.currentUser.name}</span>
+                    <i class="fas fa-chevron-down text-xs"></i>
+                </div>
+            `;
+        }
+    } else {
+        // Відновлюємо кнопку входу
+        const authButton = document.getElementById('authButton');
+        if (authButton) {
+            const signInText = window.currentLanguage === 'uk' ? 'Увійти' : 'Sign In';
+            authButton.innerHTML = `<button onclick="openAuthModal()" class="bg-yellow-500 hover:bg-yellow-600 text-black px-4 py-2 rounded-lg font-medium transition"><i class="fas fa-user mr-2"></i>${signInText}</button>`;
+        }
     }
 }
 
-function switchLanguage(lang) {
-    localStorage.setItem('language', lang);
-    location.reload();
+function toggleUserMenu() {
+    const userMenu = document.getElementById('userMenu');
+    if (userMenu) {
+        userMenu.classList.toggle('hidden');
+    }
 }
 
 window.updatePageAfterAuth = function() {
     const isLoggedIn = !!window.currentUser;
-    const protectedNavItems = ['nav-profile.html', 'nav-add-coin.html'];
+    const protectedNavItems = ['nav-profile', 'nav-add-coin'];
     
     protectedNavItems.forEach(itemId => {
         const el = document.getElementById(itemId);
@@ -410,8 +249,17 @@ window.updatePageAfterAuth = function() {
         }
     });
     
+    // Показуємо адмін-панель для адміністратора
+    const adminLink = document.getElementById('adminLink');
+    if (adminLink) {
+        if (window.currentUser && window.currentUser.role === 'admin') {
+            adminLink.classList.remove('hidden');
+        } else {
+            adminLink.classList.add('hidden');
+        }
+    }
+    
     updateUserMenu();
-    applyTranslations();
 };
 
 // ============================================
@@ -425,13 +273,13 @@ document.addEventListener('DOMContentLoaded', async () => {
     applyTranslations();
     
     if (window.currentUser) {
-        if (typeof updateUIAfterLogin === 'function') {
-            updateUIAfterLogin(window.currentUser);
-        }
         updateUserMenu();
+        window.updatePageAfterAuth();
     }
 });
 
+// Глобальні функції
 window.toggleTheme = toggleTheme;
 window.switchLanguage = switchLanguage;
 window.updatePageAfterAuth = window.updatePageAfterAuth;
+window.toggleUserMenu = toggleUserMenu;
