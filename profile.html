@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>My Profile - Numismatist's Guide</title>
+    <title data-i18n="profile_title">My Profile - Numismatist's Guide</title>
     
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -27,29 +27,13 @@
     <link rel="stylesheet" href="css/custom.css">
     
     <style>
-        .profile-tab {
-            transition: all 0.3s ease;
-        }
-        .profile-tab.active {
-            background-color: #fbbf24;
-            color: #000;
-        }
-        .profile-tab:not(.active):hover {
-            background-color: #374151;
-        }
-        .coin-list-item {
-            transition: all 0.2s ease;
-        }
-        .coin-list-item:hover {
-            background-color: #374151;
-            transform: translateX(5px);
-        }
-        .stat-card {
-            transition: transform 0.3s ease;
-        }
-        .stat-card:hover {
-            transform: translateY(-5px);
-        }
+        .profile-tab { transition: all 0.3s ease; }
+        .profile-tab.active { background-color: #fbbf24; color: #000; }
+        .profile-tab:not(.active):hover { background-color: #374151; }
+        .coin-list-item { transition: all 0.2s ease; }
+        .coin-list-item:hover { background-color: #374151; transform: translateX(5px); }
+        .stat-card { transition: transform 0.3s ease; }
+        .stat-card:hover { transform: translateY(-5px); }
     </style>
 </head>
 <body class="bg-gray-900 text-gray-100 transition-colors duration-300">
@@ -62,10 +46,10 @@
 <div id="unauthorizedMessage" class="min-h-screen flex items-center justify-center">
     <div class="text-center max-w-md mx-auto px-4">
         <i class="fas fa-lock text-6xl text-yellow-500 mb-4"></i>
-        <h2 class="text-3xl font-bold mb-2">Access Restricted</h2>
-        <p class="text-gray-400 mb-6">Please sign in to view your profile and collection.</p>
+        <h2 class="text-3xl font-bold mb-2" data-i18n="access_restricted">Access Restricted</h2>
+        <p class="text-gray-400 mb-6" data-i18n="please_sign_in_profile">Please sign in to view your profile and collection.</p>
         <button onclick="openAuthModal()" class="bg-yellow-500 hover:bg-yellow-600 text-black font-bold px-6 py-3 rounded-lg transition">
-            <i class="fas fa-sign-in-alt mr-2"></i> Sign In
+            <i class="fas fa-sign-in-alt mr-2"></i> <span data-i18n="sign_in">Sign In</span>
         </button>
     </div>
 </div>
@@ -78,15 +62,13 @@
     <section class="bg-gradient-to-r from-gray-800 to-gray-900 py-12">
         <div class="container mx-auto px-4">
             <div class="flex flex-col md:flex-row items-center gap-6" data-aos="fade-up">
-                <div id="profileAvatar" class="w-24 h-24 rounded-full bg-yellow-500 flex items-center justify-center text-3xl font-bold text-black">
-                    ?
-                </div>
+                <div id="profileAvatar" class="w-24 h-24 rounded-full bg-yellow-500 flex items-center justify-center text-3xl font-bold text-black">?</div>
                 <div class="text-center md:text-left">
                     <h1 id="profileName" class="text-3xl md:text-4xl font-bold">Loading...</h1>
                     <p id="profileEmail" class="text-gray-400 mt-1">email@example.com</p>
                     <div class="flex flex-wrap gap-3 mt-3 justify-center md:justify-start">
-                        <span class="px-3 py-1 bg-gray-700 rounded-full text-sm"><i class="fas fa-calendar-alt mr-1"></i> Member since 2025</span>
-                        <span id="profileRole" class="px-3 py-1 bg-yellow-500/20 text-yellow-500 rounded-full text-sm"><i class="fas fa-user mr-1"></i> Collector</span>
+                        <span class="px-3 py-1 bg-gray-700 rounded-full text-sm"><i class="fas fa-calendar-alt mr-1"></i> <span data-i18n="member_since">Member since</span> 2025</span>
+                        <span id="profileRole" class="px-3 py-1 bg-yellow-500/20 text-yellow-500 rounded-full text-sm"><i class="fas fa-user mr-1"></i> <span data-i18n="collector">Collector</span></span>
                     </div>
                 </div>
             </div>
@@ -96,19 +78,19 @@
     <section class="py-8 container mx-auto px-4">
         <div class="flex flex-wrap gap-2 mb-8 border-b border-gray-800 pb-2" data-aos="fade-up">
             <button onclick="switchProfileTab('collection')" id="tabCollection" class="profile-tab active px-6 py-2 rounded-lg font-medium transition">
-                <i class="fas fa-box mr-2"></i> My Collection
+                <i class="fas fa-box mr-2"></i> <span data-i18n="my_collection">My Collection</span>
             </button>
             <button onclick="switchProfileTab('wishlist')" id="tabWishlist" class="profile-tab px-6 py-2 rounded-lg font-medium transition">
-                <i class="fas fa-heart mr-2"></i> Wishlist
+                <i class="fas fa-heart mr-2"></i> <span data-i18n="wishlist">Wishlist</span>
             </button>
             <button onclick="switchProfileTab('submissions')" id="tabSubmissions" class="profile-tab px-6 py-2 rounded-lg font-medium transition">
-                <i class="fas fa-paper-plane mr-2"></i> My Submissions
+                <i class="fas fa-paper-plane mr-2"></i> <span data-i18n="my_submissions">My Submissions</span>
             </button>
             <button onclick="switchProfileTab('stats')" id="tabStats" class="profile-tab px-6 py-2 rounded-lg font-medium transition">
-                <i class="fas fa-chart-pie mr-2"></i> Statistics
+                <i class="fas fa-chart-pie mr-2"></i> <span data-i18n="statistics">Statistics</span>
             </button>
             <button onclick="switchProfileTab('settings')" id="tabSettings" class="profile-tab px-6 py-2 rounded-lg font-medium transition">
-                <i class="fas fa-cog mr-2"></i> Settings
+                <i class="fas fa-cog mr-2"></i> <span data-i18n="settings">Settings</span>
             </button>
         </div>
         
@@ -116,17 +98,17 @@
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6" data-aos="fade-up">
                 <div class="stat-card bg-gray-800 rounded-xl p-6 text-center">
                     <i class="fas fa-coins text-3xl text-yellow-500 mb-2"></i>
-                    <p class="text-gray-400">Total Coins</p>
+                    <p class="text-gray-400" data-i18n="total_coins">Total Coins</p>
                     <p id="totalCoinsCount" class="text-3xl font-bold">0</p>
                 </div>
                 <div class="stat-card bg-gray-800 rounded-xl p-6 text-center">
                     <i class="fas fa-chart-line text-3xl text-yellow-500 mb-2"></i>
-                    <p class="text-gray-400">Total Value (USD)</p>
+                    <p class="text-gray-400" data-i18n="total_value_usd">Total Value (USD)</p>
                     <p id="totalValue" class="text-3xl font-bold">$0</p>
                 </div>
                 <div class="stat-card bg-gray-800 rounded-xl p-6 text-center">
                     <i class="fas fa-star text-3xl text-yellow-500 mb-2"></i>
-                    <p class="text-gray-400">Avg. Rarity Score</p>
+                    <p class="text-gray-400" data-i18n="avg_rarity_score">Avg. Rarity Score</p>
                     <p id="avgRarity" class="text-3xl font-bold">0/10</p>
                 </div>
             </div>
@@ -135,16 +117,16 @@
         
         <div id="wishlistTab" class="profile-tab-content hidden">
             <div class="mb-4 flex justify-between items-center" data-aos="fade-up">
-                <h3 class="text-xl font-bold"><i class="fas fa-heart text-yellow-500 mr-2"></i>Coins You Want to Acquire</h3>
-                <p id="wishlistCount" class="text-gray-400">0 coins</p>
+                <h3 class="text-xl font-bold"><i class="fas fa-heart text-yellow-500 mr-2"></i> <span data-i18n="coins_you_want">Coins You Want to Acquire</span></h3>
+                <p id="wishlistCount" class="text-gray-400">0 <span data-i18n="coins">coins</span></p>
             </div>
             <div id="wishlistList" class="space-y-3" data-aos="fade-up"></div>
         </div>
         
         <div id="submissionsTab" class="profile-tab-content hidden">
             <div class="mb-4" data-aos="fade-up">
-                <h3 class="text-xl font-bold"><i class="fas fa-paper-plane text-yellow-500 mr-2"></i>Coins You've Submitted</h3>
-                <p class="text-gray-400 text-sm">Track the status of your coin submissions</p>
+                <h3 class="text-xl font-bold"><i class="fas fa-paper-plane text-yellow-500 mr-2"></i> <span data-i18n="coins_submitted">Coins You've Submitted</span></h3>
+                <p class="text-gray-400 text-sm" data-i18n="track_submissions">Track the status of your coin submissions</p>
             </div>
             <div id="submissionsList" class="space-y-3" data-aos="fade-up"></div>
         </div>
@@ -152,16 +134,16 @@
         <div id="statsTab" class="profile-tab-content hidden">
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-6" data-aos="fade-up">
                 <div class="bg-gray-800 rounded-xl p-6">
-                    <h3 class="text-lg font-bold mb-4"><i class="fas fa-chart-pie text-yellow-500 mr-2"></i>Collection by Metal Type</h3>
+                    <h3 class="text-lg font-bold mb-4"><i class="fas fa-chart-pie text-yellow-500 mr-2"></i> <span data-i18n="collection_by_metal">Collection by Metal Type</span></h3>
                     <canvas id="metalChart" height="250"></canvas>
                 </div>
                 <div class="bg-gray-800 rounded-xl p-6">
-                    <h3 class="text-lg font-bold mb-4"><i class="fas fa-chart-bar text-yellow-500 mr-2"></i>Collection by Country</h3>
+                    <h3 class="text-lg font-bold mb-4"><i class="fas fa-chart-bar text-yellow-500 mr-2"></i> <span data-i18n="collection_by_country">Collection by Country</span></h3>
                     <canvas id="countryChart" height="250"></canvas>
                 </div>
             </div>
             <div class="mt-6 bg-gray-800 rounded-xl p-6" data-aos="fade-up" data-aos-delay="100">
-                <h3 class="text-lg font-bold mb-4"><i class="fas fa-chart-line text-yellow-500 mr-2"></i>Collection Value Over Time</h3>
+                <h3 class="text-lg font-bold mb-4"><i class="fas fa-chart-line text-yellow-500 mr-2"></i> <span data-i18n="collection_value_over_time">Collection Value Over Time</span></h3>
                 <canvas id="valueChart" height="200"></canvas>
             </div>
         </div>
@@ -169,44 +151,44 @@
         <div id="settingsTab" class="profile-tab-content hidden">
             <div class="max-w-2xl" data-aos="fade-up">
                 <div class="bg-gray-800 rounded-xl p-6 mb-6">
-                    <h3 class="text-xl font-bold mb-4">Profile Settings</h3>
+                    <h3 class="text-xl font-bold mb-4" data-i18n="profile_settings">Profile Settings</h3>
                     <div class="mb-4">
-                        <label class="block text-gray-300 mb-2">Display Name</label>
+                        <label class="block text-gray-300 mb-2" data-i18n="display_name">Display Name</label>
                         <input type="text" id="displayName" class="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:border-yellow-500">
                     </div>
                     <div class="mb-4">
-                        <label class="block text-gray-300 mb-2">Email</label>
+                        <label class="block text-gray-300 mb-2" data-i18n="email">Email</label>
                         <input type="email" id="displayEmail" class="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:border-yellow-500" readonly>
                     </div>
                     <button onclick="updateProfile()" class="bg-yellow-500 hover:bg-yellow-600 text-black font-bold px-6 py-2 rounded-lg transition">
-                        Save Changes
+                        <span data-i18n="save_changes">Save Changes</span>
                     </button>
                 </div>
                 
                 <div class="bg-gray-800 rounded-xl p-6 mb-6">
-                    <h3 class="text-xl font-bold mb-4">Change Password</h3>
+                    <h3 class="text-xl font-bold mb-4" data-i18n="change_password">Change Password</h3>
                     <div class="mb-4">
-                        <label class="block text-gray-300 mb-2">Current Password</label>
+                        <label class="block text-gray-300 mb-2" data-i18n="current_password">Current Password</label>
                         <input type="password" id="currentPassword" class="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:border-yellow-500">
                     </div>
                     <div class="mb-4">
-                        <label class="block text-gray-300 mb-2">New Password</label>
+                        <label class="block text-gray-300 mb-2" data-i18n="new_password">New Password</label>
                         <input type="password" id="newPassword" class="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:border-yellow-500">
                     </div>
                     <div class="mb-4">
-                        <label class="block text-gray-300 mb-2">Confirm New Password</label>
+                        <label class="block text-gray-300 mb-2" data-i18n="confirm_new_password">Confirm New Password</label>
                         <input type="password" id="confirmPassword" class="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:border-yellow-500">
                     </div>
                     <button onclick="changePassword()" class="bg-yellow-500 hover:bg-yellow-600 text-black font-bold px-6 py-2 rounded-lg transition">
-                        Update Password
+                        <span data-i18n="update_password">Update Password</span>
                     </button>
                 </div>
                 
                 <div class="bg-gray-800 rounded-xl p-6">
-                    <h3 class="text-xl font-bold mb-4 text-red-400">Danger Zone</h3>
-                    <p class="text-gray-400 mb-4">Once you delete your account, there is no going back.</p>
+                    <h3 class="text-xl font-bold mb-4 text-red-400" data-i18n="danger_zone">Danger Zone</h3>
+                    <p class="text-gray-400 mb-4" data-i18n="delete_account_warning">Once you delete your account, there is no going back.</p>
                     <button onclick="deleteAccount()" class="bg-red-600 hover:bg-red-700 text-white font-bold px-6 py-2 rounded-lg transition">
-                        <i class="fas fa-trash-alt mr-2"></i> Delete Account
+                        <i class="fas fa-trash-alt mr-2"></i> <span data-i18n="delete_account">Delete Account</span>
                     </button>
                 </div>
             </div>
@@ -220,10 +202,6 @@
 <script src="js/main.js"></script>
 
 <script>
-    // ============================================
-    // ВСЯ ЛОГІКА ПРОФІЛЮ
-    // ============================================
-    
     let metalChart = null, countryChart = null, valueChart = null;
     
     function switchProfileTab(tabName) {
@@ -234,20 +212,12 @@
         
         document.querySelectorAll('.profile-tab-content').forEach(content => content.classList.add('hidden'));
         
-        const tabContentMap = {
-            'collection': 'collectionTab',
-            'wishlist': 'wishlistTab',
-            'submissions': 'submissionsTab',
-            'stats': 'statsTab',
-            'settings': 'settingsTab'
-        };
-        
+        const tabContentMap = { 'collection': 'collectionTab', 'wishlist': 'wishlistTab', 'submissions': 'submissionsTab', 'stats': 'statsTab', 'settings': 'settingsTab' };
         const contentId = tabContentMap[tabName];
         if (contentId) {
             const content = document.getElementById(contentId);
             if (content) content.classList.remove('hidden');
         }
-        
         if (tabName === 'stats') updateStatsCharts();
     }
     
@@ -300,13 +270,13 @@
         const container = document.getElementById('collectionList');
         if (container) {
             if (collectionCoins.length === 0) {
-                container.innerHTML = `<div class="text-center py-12"><i class="fas fa-box-open text-5xl text-gray-600 mb-4"></i><p class="text-gray-400">Your collection is empty. Start adding coins from the catalog!</p><a href="catalog.html" class="inline-block mt-4 bg-yellow-500 hover:bg-yellow-600 text-black px-6 py-2 rounded-lg">Browse Catalog</a></div>`;
+                container.innerHTML = `<div class="text-center py-12"><i class="fas fa-box-open text-5xl text-gray-600 mb-4"></i><p class="text-gray-400" data-i18n="collection_empty">Your collection is empty. Start adding coins from the catalog!</p><a href="catalog.html" class="inline-block mt-4 bg-yellow-500 hover:bg-yellow-600 text-black px-6 py-2 rounded-lg"><span data-i18n="browse_catalog">Browse Catalog</span></a></div>`;
             } else {
                 container.innerHTML = collectionCoins.map(coin => `
                     <div class="coin-list-item bg-gray-800 rounded-xl p-4 flex justify-between items-center">
                         <div class="flex items-center gap-4">
                             <i class="fas fa-coins text-3xl text-yellow-500"></i>
-                            <div><h4 class="font-bold">${coin.name.en}</h4><p class="text-sm text-gray-400">${coin.country} • ${coin.year} • Rarity ${coin.rarity}/10</p></div>
+                            <div><h4 class="font-bold">${coin.name.en}</h4><p class="text-sm text-gray-400">${coin.country} • ${coin.year} • <span data-i18n="rarity">Rarity</span> ${coin.rarity}/10</p></div>
                         </div>
                         <div class="flex items-center gap-4">
                             <span class="text-yellow-500 font-bold text-lg">$${coin.priceUSD}</span>
@@ -326,12 +296,12 @@
         const wishlistCoins = allCoins.filter(coin => wishlistIds.includes(coin.id));
         
         const wishlistCount = document.getElementById('wishlistCount');
-        if (wishlistCount) wishlistCount.textContent = `${wishlistCoins.length} coins`;
+        if (wishlistCount) wishlistCount.textContent = `${wishlistCoins.length} <span data-i18n="coins">coins</span>`;
         
         const container = document.getElementById('wishlistList');
         if (container) {
             if (wishlistCoins.length === 0) {
-                container.innerHTML = `<div class="text-center py-12"><i class="fas fa-heart-broken text-5xl text-gray-600 mb-4"></i><p class="text-gray-400">Your wishlist is empty. Add coins you want to acquire!</p></div>`;
+                container.innerHTML = `<div class="text-center py-12"><i class="fas fa-heart-broken text-5xl text-gray-600 mb-4"></i><p class="text-gray-400" data-i18n="wishlist_empty">Your wishlist is empty. Add coins you want to acquire!</p></div>`;
             } else {
                 container.innerHTML = wishlistCoins.map(coin => `
                     <div class="coin-list-item bg-gray-800 rounded-xl p-4 flex justify-between items-center">
@@ -358,7 +328,7 @@
         const container = document.getElementById('submissionsList');
         if (container) {
             if (submittedCoins.length === 0) {
-                container.innerHTML = `<div class="text-center py-12"><i class="fas fa-pen-fancy text-5xl text-gray-600 mb-4"></i><p class="text-gray-400">You haven't submitted any coins yet.</p><a href="add-coin.html" class="inline-block mt-4 bg-yellow-500 hover:bg-yellow-600 text-black px-6 py-2 rounded-lg">Add Your First Coin</a></div>`;
+                container.innerHTML = `<div class="text-center py-12"><i class="fas fa-pen-fancy text-5xl text-gray-600 mb-4"></i><p class="text-gray-400" data-i18n="no_submissions">You haven't submitted any coins yet.</p><a href="add-coin.html" class="inline-block mt-4 bg-yellow-500 hover:bg-yellow-600 text-black px-6 py-2 rounded-lg"><span data-i18n="add_first_coin">Add Your First Coin</span></a></div>`;
             } else {
                 container.innerHTML = submittedCoins.map(coin => `
                     <div class="coin-list-item bg-gray-800 rounded-xl p-4 flex justify-between items-center">
@@ -366,7 +336,7 @@
                             <i class="fas fa-paper-plane text-2xl ${coin.status === 'approved' ? 'text-green-500' : coin.status === 'pending' ? 'text-yellow-500' : 'text-red-500'}"></i>
                             <div><h4 class="font-bold">${coin.name.en}</h4><p class="text-sm text-gray-400">${coin.country} • ${coin.year}</p></div>
                         </div>
-                        <div><span class="px-3 py-1 rounded-full text-xs font-bold ${coin.status === 'approved' ? 'bg-green-500/20 text-green-500' : coin.status === 'pending' ? 'bg-yellow-500/20 text-yellow-500' : 'bg-red-500/20 text-red-500'}">${coin.status === 'approved' ? 'Approved' : coin.status === 'pending' ? 'Pending Review' : 'Rejected'}</span></div>
+                        <div><span class="px-3 py-1 rounded-full text-xs font-bold ${coin.status === 'approved' ? 'bg-green-500/20 text-green-500' : coin.status === 'pending' ? 'bg-yellow-500/20 text-yellow-500' : 'bg-red-500/20 text-red-500'}">${coin.status === 'approved' ? '<span data-i18n="approved">Approved</span>' : coin.status === 'pending' ? '<span data-i18n="pending_review">Pending Review</span>' : '<span data-i18n="rejected">Rejected</span>'}</span></div>
                     </div>
                 `).join('');
             }
@@ -391,10 +361,7 @@
             if (metalChart) metalChart.destroy();
             metalChart = new Chart(metalChartCanvas, { 
                 type: 'pie', 
-                data: { 
-                    labels: ['Gold', 'Silver', 'Bronze'], 
-                    datasets: [{ data: [metalCounts.gold, metalCounts.silver, metalCounts.bronze], backgroundColor: ['#fbbf24', '#9ca3af', '#d97706'] }] 
-                }, 
+                data: { labels: ['Gold', 'Silver', 'Bronze'], datasets: [{ data: [metalCounts.gold, metalCounts.silver, metalCounts.bronze], backgroundColor: ['#fbbf24', '#9ca3af', '#d97706'] }] }, 
                 options: { responsive: true, plugins: { legend: { labels: { color: '#e5e5e5' } } } } 
             });
         }
@@ -408,10 +375,7 @@
             if (countryChart) countryChart.destroy();
             countryChart = new Chart(countryChartCanvas, { 
                 type: 'bar', 
-                data: { 
-                    labels: topCountries.map(c => c[0]), 
-                    datasets: [{ label: 'Number of Coins', data: topCountries.map(c => c[1]), backgroundColor: '#fbbf24' }] 
-                }, 
+                data: { labels: topCountries.map(c => c[0]), datasets: [{ label: 'Number of Coins', data: topCountries.map(c => c[1]), backgroundColor: '#fbbf24' }] }, 
                 options: { responsive: true, scales: { y: { ticks: { color: '#e5e5e5' } }, x: { ticks: { color: '#e5e5e5' } } } } 
             });
         }
@@ -421,10 +385,7 @@
             if (valueChart) valueChart.destroy();
             valueChart = new Chart(valueChartCanvas, { 
                 type: 'line', 
-                data: { 
-                    labels: collectionCoins.slice(0, 10).map((_, i) => `Coin ${i+1}`), 
-                    datasets: [{ label: 'Value (USD)', data: collectionCoins.slice(0, 10).map(c => c.priceUSD), borderColor: '#fbbf24', fill: true }] 
-                }, 
+                data: { labels: collectionCoins.slice(0, 10).map((_, i) => `Coin ${i+1}`), datasets: [{ label: 'Value (USD)', data: collectionCoins.slice(0, 10).map(c => c.priceUSD), borderColor: '#fbbf24', fill: true }] }, 
                 options: { responsive: true } 
             });
         }
@@ -433,7 +394,8 @@
     function removeFromCollection(coinId) {
         if (!window.currentUser) return;
         removeFromUserCollection(window.currentUser.uid, coinId);
-        if (typeof showToast === 'function') showToast('Coin removed from your collection', 'success');
+        const msg = window.currentLanguage === 'uk' ? 'Монету видалено з колекції' : 'Coin removed from your collection';
+        if (typeof showToast === 'function') showToast(msg, 'success');
         loadUserCollection();
         loadUserWishlist();
     }
@@ -441,7 +403,8 @@
     function removeFromWishlist(coinId) {
         if (!window.currentUser) return;
         removeFromWishlist(window.currentUser.uid, coinId);
-        if (typeof showToast === 'function') showToast('Coin removed from your wishlist', 'success');
+        const msg = window.currentLanguage === 'uk' ? 'Монету видалено зі списку бажань' : 'Coin removed from your wishlist';
+        if (typeof showToast === 'function') showToast(msg, 'success');
         loadUserWishlist();
     }
     
@@ -450,7 +413,8 @@
         if (newName && window.currentUser) {
             window.currentUser.name = newName;
             localStorage.setItem('currentUser', JSON.stringify(window.currentUser));
-            if (typeof showToast === 'function') showToast('Profile updated successfully!', 'success');
+            const msg = window.currentLanguage === 'uk' ? 'Профіль оновлено успішно!' : 'Profile updated successfully!';
+            if (typeof showToast === 'function') showToast(msg, 'success');
             loadProfileData();
             if (typeof updateUIAfterLogin === 'function') updateUIAfterLogin(window.currentUser);
         }
@@ -461,15 +425,18 @@
         const newPwd = document.getElementById('newPassword').value;
         const confirm = document.getElementById('confirmPassword').value;
         if (!current || !newPwd || !confirm) { 
-            if (typeof showToast === 'function') showToast('Please fill all password fields', 'error'); 
+            const msg = window.currentLanguage === 'uk' ? 'Будь ласка, заповніть всі поля' : 'Please fill all password fields';
+            if (typeof showToast === 'function') showToast(msg, 'error'); 
             return; 
         }
         if (newPwd !== confirm) { 
-            if (typeof showToast === 'function') showToast('New passwords do not match', 'error'); 
+            const msg = window.currentLanguage === 'uk' ? 'Нові паролі не співпадають' : 'New passwords do not match';
+            if (typeof showToast === 'function') showToast(msg, 'error'); 
             return; 
         }
         if (newPwd.length < 6) { 
-            if (typeof showToast === 'function') showToast('Password must be at least 6 characters', 'error'); 
+            const msg = window.currentLanguage === 'uk' ? 'Пароль має бути не менше 6 символів' : 'Password must be at least 6 characters';
+            if (typeof showToast === 'function') showToast(msg, 'error'); 
             return; 
         }
         try {
@@ -477,7 +444,8 @@
             const credential = firebase.auth.EmailAuthProvider.credential(user.email, current);
             await user.reauthenticateWithCredential(credential);
             await user.updatePassword(newPwd);
-            if (typeof showToast === 'function') showToast('Password updated successfully!', 'success');
+            const msg = window.currentLanguage === 'uk' ? 'Пароль оновлено успішно!' : 'Password updated successfully!';
+            if (typeof showToast === 'function') showToast(msg, 'success');
             document.getElementById('currentPassword').value = '';
             document.getElementById('newPassword').value = '';
             document.getElementById('confirmPassword').value = '';
@@ -487,11 +455,13 @@
     }
     
     async function deleteAccount() {
-        if (confirm('Are you sure you want to delete your account? This action cannot be undone!')) {
+        const msg = window.currentLanguage === 'uk' ? 'Ви впевнені, що хочете видалити свій акаунт? Цю дію не можна скасувати!' : 'Are you sure you want to delete your account? This action cannot be undone!';
+        if (confirm(msg)) {
             try {
                 await firebase.auth().currentUser.delete();
                 localStorage.removeItem('currentUser');
-                if (typeof showToast === 'function') showToast('Account deleted successfully', 'success');
+                const successMsg = window.currentLanguage === 'uk' ? 'Акаунт видалено успішно' : 'Account deleted successfully';
+                if (typeof showToast === 'function') showToast(successMsg, 'success');
                 setTimeout(() => window.location.href = 'index.html', 1500);
             } catch (error) { 
                 if (typeof showToast === 'function') showToast(error.message, 'error'); 
@@ -514,12 +484,20 @@
         }
     }
     
+    function showAllNavButtons() {
+        const profileLink = document.getElementById('nav-profile');
+        const addCoinLink = document.getElementById('nav-add-coin');
+        if (profileLink) profileLink.classList.remove('hidden');
+        if (addCoinLink) addCoinLink.classList.remove('hidden');
+        if (typeof updateUserMenu === 'function') updateUserMenu();
+    }
+    
     document.addEventListener('DOMContentLoaded', () => {
         AOS.init({ duration: 600, once: true });
         checkAuthAndLoad();
+        showAllNavButtons();
     });
     
-    // Слідкуємо за зміною авторизації
     const authCheckInterval = setInterval(() => {
         if (window.currentUser !== undefined) {
             clearInterval(authCheckInterval);
@@ -533,6 +511,7 @@
     window.updateProfile = updateProfile;
     window.changePassword = changePassword;
     window.deleteAccount = deleteAccount;
+    window.showAllNavButtons = showAllNavButtons;
 </script>
 
 </body>

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>Numismatist's Guide - Rare Coins Directory</title>
+    <title data-i18n="site_title">Numismatist's Guide - Rare Coins Directory</title>
     
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -41,7 +41,6 @@
         .swiper-button-next:after, .swiper-button-prev:after { font-size: 20px !important; }
         .swiper-pagination-bullet-active { background: #fbbf24 !important; }
         
-        /* Зміщуємо пагінацію вниз, щоб не заважала карткам */
         .coinCarousel {
             padding-bottom: 40px !important;
         }
@@ -78,7 +77,6 @@
         .carousel-loader, .articles-loader { text-align: center; padding: 40px; }
         .swiper-slide { height: auto !important; }
         
-        /* Фікс для карток каруселі */
         .coin-carousel-card {
             height: 100%;
             display: flex;
@@ -119,17 +117,17 @@
     </div>
     <div class="relative z-10 container mx-auto px-4 py-16 md:py-24">
         <div class="text-center max-w-4xl mx-auto" data-aos="fade-up">
-            <h1 class="text-4xl md:text-6xl font-bold mb-4 bg-gradient-to-r from-yellow-400 to-yellow-600 bg-clip-text text-transparent">
+            <h1 class="text-4xl md:text-6xl font-bold mb-4 bg-gradient-to-r from-yellow-400 to-yellow-600 bg-clip-text text-transparent" data-i18n="hero_title">
                 The World's Most Trusted<br>Coin Reference Directory
             </h1>
-            <p class="text-xl text-gray-300 mb-8">
+            <p class="text-xl text-gray-300 mb-8" data-i18n="hero_subtitle">
                 Identify, explore, and value coins from around the world.<br>
                 Built for collectors, by collectors.
             </p>
             
             <div class="relative max-w-2xl mx-auto mb-6">
                 <i class="fas fa-search absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
-                <input type="text" id="globalSearch" placeholder="Search coins by name, type, country, or year..." 
+                <input type="text" id="globalSearch" data-i18n-placeholder="search_placeholder" placeholder="Search coins by name, type, country, or year..." 
                     class="w-full pl-12 pr-4 py-4 bg-gray-800 border border-gray-700 rounded-xl text-white focus:outline-none focus:border-yellow-500 transition">
             </div>
             
@@ -146,12 +144,12 @@
 <!-- КАРУСЕЛЬ РІДКІСНИХ МОНЕТ -->
 <section class="py-16 container mx-auto px-4">
     <div class="text-center mb-12" data-aos="fade-up">
-        <h2 class="text-3xl md:text-4xl font-bold mb-2">Rare Coins Gallery</h2>
-        <p class="text-gray-400">Discover the most valuable treasures of numismatics</p>
+        <h2 class="text-3xl md:text-4xl font-bold mb-2" data-i18n="rare_coins_gallery">Rare Coins Gallery</h2>
+        <p class="text-gray-400" data-i18n="rare_coins_subtitle">Discover the most valuable treasures of numismatics</p>
     </div>
     <div class="swiper coinCarousel" data-aos="fade-up" data-aos-delay="100">
         <div class="swiper-wrapper" id="carouselWrapper">
-            <div class="swiper-slide"><div class="carousel-loader"><div class="loader"></div><p class="text-gray-400 mt-4">Loading coins...</p></div></div>
+            <div class="swiper-slide"><div class="carousel-loader"><div class="loader"></div><p class="text-gray-400 mt-4" data-i18n="loading_coins">Loading coins...</p></div></div>
         </div>
         <div class="swiper-pagination"></div>
         <div class="swiper-button-next"></div>
@@ -163,49 +161,49 @@
 <section class="py-16 bg-gray-800/50">
     <div class="container mx-auto px-4">
         <div class="text-center mb-12" data-aos="fade-up">
-            <h2 class="text-3xl md:text-4xl font-bold mb-2">Identify Coins</h2>
-            <p class="text-gray-400">Accurate tools and detailed information to help you identify any coin</p>
+            <h2 class="text-3xl md:text-4xl font-bold mb-2" data-i18n="identify_coins_title">Identify Coins</h2>
+            <p class="text-gray-400" data-i18n="identify_coins_subtitle">Accurate tools and detailed information to help you identify any coin</p>
         </div>
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             <div class="category-card bg-gray-900 rounded-xl p-6 text-center cursor-pointer hover:bg-gray-800 transition" onclick="window.location.href='catalog.html?category=us'">
                 <div class="w-20 h-20 mx-auto mb-4 rounded-full bg-yellow-500/20 flex items-center justify-center"><i class="fas fa-dollar-sign text-3xl text-yellow-500"></i></div>
-                <h3 class="text-xl font-bold mb-1">US Coins</h3>
+                <h3 class="text-xl font-bold mb-1" data-i18n="us_coins">US Coins</h3>
                 <p class="text-gray-400">1792-Now</p>
-                <p class="text-yellow-500 font-bold mt-2">1,245 Coins</p>
+                <p class="text-yellow-500 font-bold mt-2">1,245 <span data-i18n="coins">Coins</span></p>
             </div>
             <div class="category-card bg-gray-900 rounded-xl p-6 text-center cursor-pointer hover:bg-gray-800 transition" onclick="window.location.href='catalog.html?category=world'">
                 <div class="w-20 h-20 mx-auto mb-4 rounded-full bg-yellow-500/20 flex items-center justify-center"><i class="fas fa-globe text-3xl text-yellow-500"></i></div>
-                <h3 class="text-xl font-bold mb-1">World Coins</h3>
+                <h3 class="text-xl font-bold mb-1" data-i18n="world_coins">World Coins</h3>
                 <p class="text-gray-400">American-Now</p>
-                <p class="text-yellow-500 font-bold mt-2">2,377 Coins</p>
+                <p class="text-yellow-500 font-bold mt-2">2,377 <span data-i18n="coins">Coins</span></p>
             </div>
             <div class="category-card bg-gray-900 rounded-xl p-6 text-center cursor-pointer hover:bg-gray-800 transition" onclick="window.location.href='catalog.html?category=ancient'">
                 <div class="w-20 h-20 mx-auto mb-4 rounded-full bg-yellow-500/20 flex items-center justify-center"><i class="fas fa-landmark text-3xl text-yellow-500"></i></div>
-                <h3 class="text-xl font-bold mb-1">Ancient Coins</h3>
+                <h3 class="text-xl font-bold mb-1" data-i18n="ancient_coins">Ancient Coins</h3>
                 <p class="text-gray-400">3000 BC-500 AD</p>
-                <p class="text-yellow-500 font-bold mt-2">684 Coins</p>
+                <p class="text-yellow-500 font-bold mt-2">684 <span data-i18n="coins">Coins</span></p>
             </div>
             <div class="category-card bg-gray-900 rounded-xl p-6 text-center cursor-pointer hover:bg-gray-800 transition" onclick="window.location.href='catalog.html?category=gold'">
                 <div class="w-20 h-20 mx-auto mb-4 rounded-full bg-yellow-500/20 flex items-center justify-center"><i class="fas fa-crown text-3xl text-yellow-500"></i></div>
-                <h3 class="text-xl font-bold mb-1">Gold Coins</h3>
+                <h3 class="text-xl font-bold mb-1" data-i18n="gold_coins">Gold Coins</h3>
                 <p class="text-gray-400">Pre-1933-Now</p>
-                <p class="text-yellow-500 font-bold mt-2">503 Coins</p>
+                <p class="text-yellow-500 font-bold mt-2">503 <span data-i18n="coins">Coins</span></p>
             </div>
             <div class="category-card bg-gray-900 rounded-xl p-6 text-center cursor-pointer hover:bg-gray-800 transition" onclick="window.location.href='catalog.html?category=error'">
                 <div class="w-20 h-20 mx-auto mb-4 rounded-full bg-yellow-500/20 flex items-center justify-center"><i class="fas fa-exclamation-triangle text-3xl text-yellow-500"></i></div>
-                <h3 class="text-xl font-bold mb-1">Error Coins</h3>
+                <h3 class="text-xl font-bold mb-1" data-i18n="error_coins">Error Coins</h3>
                 <p class="text-gray-400">Mint Errors</p>
-                <p class="text-yellow-500 font-bold mt-2">1,023 Coins</p>
+                <p class="text-yellow-500 font-bold mt-2">1,023 <span data-i18n="coins">Coins</span></p>
             </div>
             <div class="category-card bg-gray-900 rounded-xl p-6 text-center cursor-pointer hover:bg-gray-800 transition" onclick="window.location.href='catalog.html?category=commonwealth'">
                 <div class="w-20 h-20 mx-auto mb-4 rounded-full bg-yellow-500/20 flex items-center justify-center"><i class="fas fa-flag-checkered text-3xl text-yellow-500"></i></div>
-                <h3 class="text-xl font-bold mb-1">Commonwealth</h3>
+                <h3 class="text-xl font-bold mb-1" data-i18n="commonwealth">Commonwealth</h3>
                 <p class="text-gray-400">1892-Now</p>
-                <p class="text-yellow-500 font-bold mt-2">902 Coins</p>
+                <p class="text-yellow-500 font-bold mt-2">902 <span data-i18n="coins">Coins</span></p>
             </div>
         </div>
         <div class="text-center mt-10">
-            <a href="catalog.html" class="inline-block bg-yellow-500 hover:bg-yellow-600 text-black font-bold px-8 py-3 rounded-lg transition">Explore All Categories <i class="fas fa-arrow-right ml-2"></i></a>
+            <a href="catalog.html" class="inline-block bg-yellow-500 hover:bg-yellow-600 text-black font-bold px-8 py-3 rounded-lg transition" data-i18n="explore_all_categories">Explore All Categories <i class="fas fa-arrow-right ml-2"></i></a>
         </div>
     </div>
 </section>
@@ -213,8 +211,8 @@
 <!-- ГРАФІК РИНКОВИХ ЦІН -->
 <section class="py-16 container mx-auto px-4">
     <div class="text-center mb-12" data-aos="fade-up">
-        <h2 class="text-3xl md:text-4xl font-bold mb-2">Market Trends 2025-2026</h2>
-        <p class="text-gray-400">Average gold coin prices over the last 5 years</p>
+        <h2 class="text-3xl md:text-4xl font-bold mb-2" data-i18n="market_trends_title">Market Trends 2025-2026</h2>
+        <p class="text-gray-400" data-i18n="market_trends_subtitle">Average gold coin prices over the last 5 years</p>
     </div>
     <div class="bg-gray-800 rounded-xl p-6 max-w-4xl mx-auto" data-aos="fade-up" data-aos-delay="100">
         <canvas id="priceChart" height="300"></canvas>
@@ -225,14 +223,14 @@
 <section class="py-16 bg-gray-800/50">
     <div class="container mx-auto px-4">
         <div class="text-center mb-12" data-aos="fade-up">
-            <h2 class="text-3xl md:text-4xl font-bold mb-2">LATEST GUIDES & ARTICLES</h2>
-            <p class="text-gray-400">Fresh Knowledge for Collectors</p>
+            <h2 class="text-3xl md:text-4xl font-bold mb-2" data-i18n="latest_articles_title">LATEST GUIDES & ARTICLES</h2>
+            <p class="text-gray-400" data-i18n="latest_articles_subtitle">Fresh Knowledge for Collectors</p>
         </div>
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="articlesGrid">
-            <div class="articles-loader"><div class="loader"></div><p class="text-gray-400 mt-4">Loading articles...</p></div>
+            <div class="articles-loader"><div class="loader"></div><p class="text-gray-400 mt-4" data-i18n="loading_articles">Loading articles...</p></div>
         </div>
         <div class="text-center mt-10">
-            <a href="blog.html" class="inline-block bg-yellow-500 hover:bg-yellow-600 text-black font-bold px-8 py-3 rounded-lg transition">View All Articles <i class="fas fa-arrow-right ml-2"></i></a>
+            <a href="blog.html" class="inline-block bg-yellow-500 hover:bg-yellow-600 text-black font-bold px-8 py-3 rounded-lg transition" data-i18n="view_all_articles">View All Articles <i class="fas fa-arrow-right ml-2"></i></a>
         </div>
     </div>
 </section>
@@ -241,10 +239,10 @@
 <section class="py-20 container mx-auto px-4 text-center">
     <div class="max-w-3xl mx-auto" data-aos="fade-up">
         <i class="fas fa-users text-5xl text-yellow-500 mb-4"></i>
-        <h2 class="text-3xl md:text-4xl font-bold mb-4">JOIN THOUSANDS OF COLLECTORS</h2>
-        <p class="text-xl text-gray-300 mb-6">A Community That Shares Your Passion. Whether you're just starting out or a seasoned collector, you'll find a place here to learn, share, and grow.</p>
+        <h2 class="text-3xl md:text-4xl font-bold mb-4" data-i18n="cta_title">JOIN THOUSANDS OF COLLECTORS</h2>
+        <p class="text-xl text-gray-300 mb-6" data-i18n="cta_text">A Community That Shares Your Passion. Whether you're just starting out or a seasoned collector, you'll find a place here to learn, share, and grow.</p>
         <div id="ctaButtonContainer">
-            <button onclick="openAuthModal()" class="bg-yellow-500 hover:bg-yellow-600 text-black font-bold px-8 py-3 rounded-lg transition text-lg">Join Free Today <i class="fas fa-arrow-right ml-2"></i></button>
+            <button onclick="openAuthModal()" class="bg-yellow-500 hover:bg-yellow-600 text-black font-bold px-8 py-3 rounded-lg transition text-lg" data-i18n="join_free">Join Free Today <i class="fas fa-arrow-right ml-2"></i></button>
         </div>
     </div>
 </section>
@@ -256,46 +254,46 @@
             <div class="lg:col-span-1">
                 <div class="flex items-center gap-2 mb-4">
                     <i class="fas fa-coins text-2xl text-yellow-500"></i>
-                    <span class="text-xl font-bold">Numismatist's Guide</span>
+                    <span class="text-xl font-bold" data-i18n="site_name">Numismatist's Guide</span>
                 </div>
-                <p class="text-gray-400 text-sm">The Collectible Reference. Your trusted source for coin information, values, history, and collecting knowledge.</p>
+                <p class="text-gray-400 text-sm" data-i18n="footer_description">The Collectible Reference. Your trusted source for coin information, values, history, and collecting knowledge.</p>
             </div>
             <div>
-                <h4 class="font-bold mb-3">EXPLORE</h4>
+                <h4 class="font-bold mb-3" data-i18n="footer_explore">EXPLORE</h4>
                 <ul class="space-y-2 text-gray-400 text-sm">
-                    <li><a href="catalog.html" class="hover:text-yellow-500 transition">Coins</a></li>
-                    <li><a href="values.html" class="hover:text-yellow-500 transition">Values</a></li>
-                    <li><a href="grades.html" class="hover:text-yellow-500 transition">Grades</a></li>
-                    <li><a href="blog.html" class="hover:text-yellow-500 transition">Notes</a></li>
+                    <li><a href="catalog.html" class="hover:text-yellow-500 transition" data-i18n="footer_coins">Coins</a></li>
+                    <li><a href="values.html" class="hover:text-yellow-500 transition" data-i18n="footer_values">Values</a></li>
+                    <li><a href="grades.html" class="hover:text-yellow-500 transition" data-i18n="footer_grades">Grades</a></li>
+                    <li><a href="blog.html" class="hover:text-yellow-500 transition" data-i18n="footer_notes">Notes</a></li>
                 </ul>
             </div>
             <div>
-                <h4 class="font-bold mb-3">RESOURCES</h4>
+                <h4 class="font-bold mb-3" data-i18n="footer_resources">RESOURCES</h4>
                 <ul class="space-y-2 text-gray-400 text-sm">
-                    <li><a href="blog.html?article=grading" class="hover:text-yellow-500 transition">Coin Grading Guide</a></li>
-                    <li><a href="values.html" class="hover:text-yellow-500 transition">Value Charts</a></li>
-                    <li><a href="#" class="hover:text-yellow-500 transition">Coin Certification</a></li>
-                    <li><a href="#" class="hover:text-yellow-500 transition">FAQs</a></li>
+                    <li><a href="blog.html?article=grading" class="hover:text-yellow-500 transition" data-i18n="footer_grading_guide">Coin Grading Guide</a></li>
+                    <li><a href="values.html" class="hover:text-yellow-500 transition" data-i18n="footer_value_charts">Value Charts</a></li>
+                    <li><a href="#" class="hover:text-yellow-500 transition" data-i18n="footer_certification">Coin Certification</a></li>
+                    <li><a href="#" class="hover:text-yellow-500 transition" data-i18n="footer_faqs">FAQs</a></li>
                 </ul>
             </div>
             <div>
-                <h4 class="font-bold mb-3">COMPANY</h4>
+                <h4 class="font-bold mb-3" data-i18n="footer_company">COMPANY</h4>
                 <ul class="space-y-2 text-gray-400 text-sm">
-                    <li><a href="#" class="hover:text-yellow-500 transition">About Us</a></li>
-                    <li><a href="#" class="hover:text-yellow-500 transition">Contact</a></li>
-                    <li><a href="#" class="hover:text-yellow-500 transition">Privacy Policy</a></li>
+                    <li><a href="#" class="hover:text-yellow-500 transition" data-i18n="footer_about">About Us</a></li>
+                    <li><a href="#" class="hover:text-yellow-500 transition" data-i18n="footer_contact">Contact</a></li>
+                    <li><a href="#" class="hover:text-yellow-500 transition" data-i18n="footer_privacy">Privacy Policy</a></li>
                 </ul>
             </div>
             <div>
-                <h4 class="font-bold mb-3">NEWSLETTER</h4>
-                <p class="text-gray-400 text-sm mb-3">Get the latest coin news, values, and collecting tips.</p>
+                <h4 class="font-bold mb-3" data-i18n="footer_newsletter">NEWSLETTER</h4>
+                <p class="text-gray-400 text-sm mb-3" data-i18n="newsletter_text">Get the latest coin news, values, and collecting tips.</p>
                 <div class="flex">
-                    <input type="email" placeholder="Enter your email" class="flex-1 px-3 py-2 bg-gray-800 border border-gray-700 rounded-l-lg text-white focus:outline-none focus:border-yellow-500">
+                    <input type="email" data-i18n-placeholder="newsletter_placeholder" placeholder="Enter your email" class="flex-1 px-3 py-2 bg-gray-800 border border-gray-700 rounded-l-lg text-white focus:outline-none focus:border-yellow-500">
                     <button class="bg-yellow-500 hover:bg-yellow-600 text-black px-4 rounded-r-lg transition"><i class="fas fa-paper-plane"></i></button>
                 </div>
             </div>
         </div>
-        <div class="border-t border-gray-800 mt-8 pt-8 text-center text-gray-500 text-sm">&copy; 2025 Numismatist's Guide. All rights reserved.</div>
+        <div class="border-t border-gray-800 mt-8 pt-8 text-center text-gray-500 text-sm" data-i18n="footer_copyright">&copy; 2025 Numismatist's Guide. All rights reserved.</div>
     </div>
 </footer>
 
@@ -349,7 +347,7 @@
         const rareCoins = [...coins].filter(c => c.status === 'approved').sort((a, b) => b.rarity - a.rarity).slice(0, 8);
         
         if (rareCoins.length === 0) {
-            wrapper.innerHTML = `<div class="swiper-slide"><div class="text-center p-8"><p class="text-gray-400">No coins available</p></div></div>`;
+            wrapper.innerHTML = `<div class="swiper-slide"><div class="text-center p-8"><p class="text-gray-400" data-i18n="no_coins_available">No coins available</p></div></div>`;
             return;
         }
         
@@ -368,7 +366,7 @@
                         <p class="text-gray-400 text-sm">${coin.country || 'Unknown'} • ${coin.year || 'N/A'}</p>
                         <div class="coin-footer">
                             <p class="text-yellow-500 font-bold text-xl mt-3">$${(coin.priceUSD || 0).toLocaleString()}</p>
-                            <button onclick="window.location.href='coin-detail.html?id=${coin.id}'" class="mt-3 w-full bg-yellow-500 hover:bg-yellow-600 text-black font-bold py-2 rounded-lg transition text-sm">View Details <i class="fas fa-arrow-right ml-1"></i></button>
+                            <button onclick="window.location.href='coin-detail.html?id=${coin.id}'" class="mt-3 w-full bg-yellow-500 hover:bg-yellow-600 text-black font-bold py-2 rounded-lg transition text-sm" data-i18n="view_details">View Details <i class="fas fa-arrow-right ml-1"></i></button>
                         </div>
                     </div>
                 </div>
@@ -393,7 +391,7 @@
         
         const recentArticles = articles.slice(0, 3);
         if (recentArticles.length === 0) {
-            grid.innerHTML = `<div class="col-span-full text-center py-8"><p class="text-gray-400">No articles available</p></div>`;
+            grid.innerHTML = `<div class="col-span-full text-center py-8"><p class="text-gray-400" data-i18n="no_articles">No articles available</p></div>`;
             return;
         }
         
@@ -403,11 +401,11 @@
                 <div class="p-5">
                     <div class="flex justify-between items-center text-sm text-gray-400 mb-2">
                         <span><i class="far fa-calendar-alt mr-1"></i>${article.date}</span>
-                        <span><i class="far fa-clock mr-1"></i>${article.readTime} min read</span>
+                        <span><i class="far fa-clock mr-1"></i>${article.readTime} <span data-i18n="min_read">min read</span></span>
                     </div>
                     <h3 class="text-lg font-bold mb-2 line-clamp-2">${article.title?.en || article.title}</h3>
                     <p class="text-gray-400 text-sm mb-3 line-clamp-3">${(article.excerpt?.en || '').substring(0, 100)}...</p>
-                    <button class="text-yellow-500 hover:text-yellow-400 font-medium text-sm transition">Read More <i class="fas fa-arrow-right ml-1"></i></button>
+                    <button class="text-yellow-500 hover:text-yellow-400 font-medium text-sm transition" data-i18n="read_more">Read More <i class="fas fa-arrow-right ml-1"></i></button>
                 </div>
             </div>
         `).join('');
@@ -448,7 +446,7 @@
         const container = document.getElementById('ctaButtonContainer');
         if (!container) return;
         if (window.currentUser) {
-            container.innerHTML = `<div class="inline-flex items-center gap-3 bg-gray-800 rounded-lg px-6 py-3"><i class="fas fa-check-circle text-green-500 text-xl"></i><span class="text-gray-300">You are already a member!</span><a href="profile.html" class="bg-yellow-500 hover:bg-yellow-600 text-black font-bold px-4 py-2 rounded-lg transition ml-2">Go to Profile <i class="fas fa-arrow-right ml-1"></i></a></div>`;
+            container.innerHTML = `<div class="inline-flex items-center gap-3 bg-gray-800 rounded-lg px-6 py-3"><i class="fas fa-check-circle text-green-500 text-xl"></i><span class="text-gray-300" data-i18n="already_member">You are already a member!</span><a href="profile.html" class="bg-yellow-500 hover:bg-yellow-600 text-black font-bold px-4 py-2 rounded-lg transition ml-2" data-i18n="go_to_profile">Go to Profile <i class="fas fa-arrow-right ml-1"></i></a></div>`;
         }
     }
     

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>Coin Catalog - Numismatist's Guide</title>
+    <title data-i18n="catalog_title">Coin Catalog - Numismatist's Guide</title>
     
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -75,8 +75,8 @@
 <!-- ============================================ -->
 <section class="bg-gradient-to-r from-gray-800 to-gray-900 py-12">
     <div class="container mx-auto px-4">
-        <h1 class="text-4xl md:text-5xl font-bold text-center" data-aos="fade-up">Coin Catalog</h1>
-        <p class="text-gray-400 text-center mt-2" data-aos="fade-up" data-aos-delay="100">Explore our collection of rare and valuable coins from around the world</p>
+        <h1 class="text-4xl md:text-5xl font-bold text-center" data-aos="fade-up" data-i18n="catalog_heading">Coin Catalog</h1>
+        <p class="text-gray-400 text-center mt-2" data-aos="fade-up" data-aos-delay="100" data-i18n="catalog_subheading">Explore our collection of rare and valuable coins from around the world</p>
     </div>
 </section>
 
@@ -90,22 +90,22 @@
         <div class="lg:w-80 filter-sidebar">
             <div class="bg-gray-800 rounded-xl p-6 sticky top-24">
                 <div class="flex justify-between items-center mb-6">
-                    <h3 class="text-xl font-bold"><i class="fas fa-filter mr-2 text-yellow-500"></i> Filters</h3>
-                    <button onclick="resetFilters()" class="text-sm text-yellow-500 hover:text-yellow-400 transition">Reset All</button>
+                    <h3 class="text-xl font-bold"><i class="fas fa-filter mr-2 text-yellow-500"></i> <span data-i18n="filters_title">Filters</span></h3>
+                    <button onclick="resetFilters()" class="text-sm text-yellow-500 hover:text-yellow-400 transition"><span data-i18n="reset_all">Reset All</span></button>
                 </div>
                 
                 <!-- Пошук -->
                 <div class="mb-6">
-                    <label class="block text-gray-300 mb-2">Search</label>
-                    <input type="text" id="searchInput" placeholder="Coin name, country..." 
+                    <label class="block text-gray-300 mb-2" data-i18n="search_label">Search</label>
+                    <input type="text" id="searchInput" data-i18n-placeholder="search_placeholder" placeholder="Coin name, country..." 
                         class="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:border-yellow-500">
                 </div>
                 
                 <!-- Країна -->
                 <div class="mb-6">
-                    <label class="block text-gray-300 mb-2">Country</label>
+                    <label class="block text-gray-300 mb-2" data-i18n="country_label">Country</label>
                     <select id="countryFilter" class="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:border-yellow-500">
-                        <option value="">All Countries</option>
+                        <option value="" data-i18n="all_countries">All Countries</option>
                         <option value="Ukraine">Ukraine</option>
                         <option value="USA">USA</option>
                         <option value="United Kingdom">United Kingdom</option>
@@ -118,52 +118,52 @@
                 
                 <!-- Метал -->
                 <div class="mb-6">
-                    <label class="block text-gray-300 mb-2">Metal Type</label>
+                    <label class="block text-gray-300 mb-2" data-i18n="metal_label">Metal Type</label>
                     <div class="space-y-2">
                         <label class="flex items-center gap-2 cursor-pointer">
                             <input type="checkbox" value="gold" class="metal-filter w-4 h-4 rounded border-gray-600 bg-gray-700 text-yellow-500">
-                            <span>Gold <span class="text-gray-500 text-sm">(503 coins)</span></span>
+                            <span><span data-i18n="gold">Gold</span> <span class="text-gray-500 text-sm">(503 coins)</span></span>
                         </label>
                         <label class="flex items-center gap-2 cursor-pointer">
                             <input type="checkbox" value="silver" class="metal-filter w-4 h-4 rounded border-gray-600 bg-gray-700 text-yellow-500">
-                            <span>Silver <span class="text-gray-500 text-sm">(1,245 coins)</span></span>
+                            <span><span data-i18n="silver">Silver</span> <span class="text-gray-500 text-sm">(1,245 coins)</span></span>
                         </label>
                         <label class="flex items-center gap-2 cursor-pointer">
                             <input type="checkbox" value="bronze" class="metal-filter w-4 h-4 rounded border-gray-600 bg-gray-700 text-yellow-500">
-                            <span>Bronze <span class="text-gray-500 text-sm">(684 coins)</span></span>
+                            <span><span data-i18n="bronze">Bronze</span> <span class="text-gray-500 text-sm">(684 coins)</span></span>
                         </label>
                     </div>
                 </div>
                 
                 <!-- Діапазон років -->
                 <div class="mb-6">
-                    <label class="block text-gray-300 mb-2">Year Range</label>
+                    <label class="block text-gray-300 mb-2" data-i18n="year_range">Year Range</label>
                     <div class="flex gap-3">
-                        <input type="number" id="yearFrom" placeholder="From" class="w-1/2 px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:border-yellow-500">
-                        <input type="number" id="yearTo" placeholder="To" class="w-1/2 px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:border-yellow-500">
+                        <input type="number" id="yearFrom" data-i18n-placeholder="from_placeholder" placeholder="From" class="w-1/2 px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:border-yellow-500">
+                        <input type="number" id="yearTo" data-i18n-placeholder="to_placeholder" placeholder="To" class="w-1/2 px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:border-yellow-500">
                     </div>
                 </div>
                 
                 <!-- Діапазон цін -->
                 <div class="mb-6">
-                    <label class="block text-gray-300 mb-2">Price Range (USD)</label>
+                    <label class="block text-gray-300 mb-2" data-i18n="price_range">Price Range (USD)</label>
                     <div class="flex gap-3">
-                        <input type="number" id="priceMin" placeholder="Min $" class="w-1/2 px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:border-yellow-500">
-                        <input type="number" id="priceMax" placeholder="Max $" class="w-1/2 px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:border-yellow-500">
+                        <input type="number" id="priceMin" data-i18n-placeholder="min_placeholder" placeholder="Min $" class="w-1/2 px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:border-yellow-500">
+                        <input type="number" id="priceMax" data-i18n-placeholder="max_placeholder" placeholder="Max $" class="w-1/2 px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:border-yellow-500">
                     </div>
                 </div>
                 
                 <!-- Рідкість -->
                 <div class="mb-6">
-                    <label class="block text-gray-300 mb-2">Rarity (1-10)</label>
+                    <label class="block text-gray-300 mb-2" data-i18n="rarity_label">Rarity (1-10)</label>
                     <div class="flex gap-3">
-                        <input type="number" id="rarityMin" min="1" max="10" placeholder="Min" class="w-1/2 px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:border-yellow-500">
-                        <input type="number" id="rarityMax" min="1" max="10" placeholder="Max" class="w-1/2 px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:border-yellow-500">
+                        <input type="number" id="rarityMin" min="1" max="10" data-i18n-placeholder="min_placeholder" placeholder="Min" class="w-1/2 px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:border-yellow-500">
+                        <input type="number" id="rarityMax" min="1" max="10" data-i18n-placeholder="max_placeholder" placeholder="Max" class="w-1/2 px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:border-yellow-500">
                     </div>
                 </div>
                 
                 <button onclick="applyFilters()" class="w-full bg-yellow-500 hover:bg-yellow-600 text-black font-bold py-2 rounded-lg transition">
-                    <i class="fas fa-search mr-2"></i> Apply Filters
+                    <i class="fas fa-search mr-2"></i> <span data-i18n="apply_filters">Apply Filters</span>
                 </button>
             </div>
         </div>
@@ -174,16 +174,16 @@
             <!-- Сортування -->
             <div class="bg-gray-800 rounded-xl p-4 mb-6 flex flex-wrap justify-between items-center gap-4">
                 <div class="flex items-center gap-3">
-                    <span class="text-gray-400"><i class="fas fa-sort mr-1"></i> Sort by:</span>
+                    <span class="text-gray-400"><i class="fas fa-sort mr-1"></i> <span data-i18n="sort_by">Sort by:</span></span>
                     <select id="sortBy" class="px-3 py-1 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:border-yellow-500">
-                        <option value="newest">Newest First</option>
-                        <option value="oldest">Oldest First</option>
-                        <option value="priceLow">Price: Low to High</option>
-                        <option value="priceHigh">Price: High to Low</option>
-                        <option value="rarityHigh">Rarity: High to Low</option>
+                        <option value="newest" data-i18n="sort_newest">Newest First</option>
+                        <option value="oldest" data-i18n="sort_oldest">Oldest First</option>
+                        <option value="priceLow" data-i18n="sort_price_low">Price: Low to High</option>
+                        <option value="priceHigh" data-i18n="sort_price_high">Price: High to Low</option>
+                        <option value="rarityHigh" data-i18n="sort_rarity_high">Rarity: High to Low</option>
                     </select>
                 </div>
-                <div class="text-gray-400 text-sm" id="resultsCount">Showing 0 coins</div>
+                <div class="text-gray-400 text-sm" id="resultsCount"><span data-i18n="showing">Showing</span> 0 <span data-i18n="coins">coins</span></div>
             </div>
             
             <!-- Сітка монет -->
@@ -206,7 +206,7 @@
 <div id="coinModal" class="fixed inset-0 bg-black bg-opacity-75 z-50 hidden items-center justify-center p-4" onclick="if(event.target === this) closeModal()">
     <div class="bg-gray-800 rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
         <div class="sticky top-0 bg-gray-800 p-4 border-b border-gray-700 flex justify-between items-center">
-            <h3 id="modalTitle" class="text-2xl font-bold text-yellow-500">Coin Details</h3>
+            <h3 id="modalTitle" class="text-2xl font-bold text-yellow-500" data-i18n="coin_details">Coin Details</h3>
             <button onclick="closeModal()" class="text-gray-400 hover:text-white text-2xl">&times;</button>
         </div>
         <div id="modalContent" class="p-6">
@@ -220,11 +220,10 @@
 <script src="js/auth.js"></script>
 <script src="js/data.js"></script>
 <script src="js/main.js"></script>
-<script src="js/catalog.js"></script>
 
 <script>
     // ============================================
-    // CATALOG.JS - ЛОГІКА КАТАЛОГУ (повний дубляж на всяк випадок)
+    // CATALOG.JS - ЛОГІКА КАТАЛОГУ
     // ============================================
     
     let allCoins = [];
@@ -233,13 +232,11 @@
     const coinsPerPage = 9;
     let currentCoinId = null;
     
-    // Завантаження даних
     function loadCatalogData() {
         allCoins = loadCoins().filter(c => c.status === 'approved');
         applyFilters();
     }
     
-    // Застосування фільтрів
     function applyFilters() {
         const search = document.getElementById('searchInput')?.value.toLowerCase() || '';
         const country = document.getElementById('countryFilter')?.value || '';
@@ -252,22 +249,15 @@
         const rarityMax = parseInt(document.getElementById('rarityMax')?.value) || 10;
         
         filteredCoins = allCoins.filter(coin => {
-            // Пошук
             if (search && !coin.name.en.toLowerCase().includes(search) && !coin.country.toLowerCase().includes(search)) return false;
-            // Країна
             if (country && coin.country !== country) return false;
-            // Метал
             if (metals.length > 0 && !metals.includes(coin.metalType)) return false;
-            // Рік
             if (coin.year < yearFrom || coin.year > yearTo) return false;
-            // Ціна
             if (coin.priceUSD < priceMin || coin.priceUSD > priceMax) return false;
-            // Рідкість
             if (coin.rarity < rarityMin || coin.rarity > rarityMax) return false;
             return true;
         });
         
-        // Сортування
         const sortBy = document.getElementById('sortBy')?.value || 'newest';
         if (sortBy === 'newest') filteredCoins.sort((a, b) => b.year - a.year);
         else if (sortBy === 'oldest') filteredCoins.sort((a, b) => a.year - b.year);
@@ -275,13 +265,13 @@
         else if (sortBy === 'priceHigh') filteredCoins.sort((a, b) => b.priceUSD - a.priceUSD);
         else if (sortBy === 'rarityHigh') filteredCoins.sort((a, b) => b.rarity - a.rarity);
         
-        document.getElementById('resultsCount').innerHTML = `Showing ${filteredCoins.length} coins`;
+        const showingText = window.currentLanguage === 'uk' ? 'Показано' : 'Showing';
+        document.getElementById('resultsCount').innerHTML = `${showingText} ${filteredCoins.length} ${window.currentLanguage === 'uk' ? 'монет' : 'coins'}`;
         currentPage = 1;
         renderCoins();
         renderPagination();
     }
     
-    // Відображення монет
     function renderCoins() {
         const grid = document.getElementById('coinsGrid');
         if (!grid) return;
@@ -291,7 +281,7 @@
         const pageCoins = filteredCoins.slice(start, end);
         
         if (pageCoins.length === 0) {
-            grid.innerHTML = `<div class="col-span-full text-center py-12"><i class="fas fa-search text-5xl text-gray-600 mb-4"></i><p class="text-gray-400">No coins found matching your criteria</p></div>`;
+            grid.innerHTML = `<div class="col-span-full text-center py-12"><i class="fas fa-search text-5xl text-gray-600 mb-4"></i><p class="text-gray-400">${window.currentLanguage === 'uk' ? 'Монет не знайдено за вашим запитом' : 'No coins found matching your criteria'}</p></div>`;
             return;
         }
         
@@ -318,7 +308,6 @@
         `).join('');
     }
     
-    // Пагінація
     function renderPagination() {
         const container = document.getElementById('pagination');
         if (!container) return;
@@ -348,7 +337,6 @@
         window.scrollTo({ top: 0, behavior: 'smooth' });
     }
     
-    // Модальне вікно
     function openModal(coinId) {
         const coin = allCoins.find(c => c.id === coinId);
         if (!coin) return;
@@ -360,6 +348,19 @@
         
         modalTitle.textContent = coin.name.en;
         
+        const countryText = window.currentLanguage === 'uk' ? 'Країна' : 'Country';
+        const yearText = window.currentLanguage === 'uk' ? 'Рік' : 'Year';
+        const denominationText = window.currentLanguage === 'uk' ? 'Номінал' : 'Denomination';
+        const metalText = window.currentLanguage === 'uk' ? 'Метал' : 'Metal';
+        const weightText = window.currentLanguage === 'uk' ? 'Вага' : 'Weight';
+        const diameterText = window.currentLanguage === 'uk' ? 'Діаметр' : 'Diameter';
+        const mintageText = window.currentLanguage === 'uk' ? 'Тираж' : 'Mintage';
+        const rarityText = window.currentLanguage === 'uk' ? 'Рідкість' : 'Rarity';
+        const priceText = window.currentLanguage === 'uk' ? 'Ціна' : 'Price';
+        const historyText = window.currentLanguage === 'uk' ? 'Історія' : 'History';
+        const addToCollectionText = window.currentLanguage === 'uk' ? 'Додати до колекції' : 'Add to Collection';
+        const addToWishlistText = window.currentLanguage === 'uk' ? 'Додати до списку бажань' : 'Add to Wishlist';
+        
         modalContent.innerHTML = `
             <div class="flex flex-col md:flex-row gap-6">
                 <div class="md:w-1/2">
@@ -369,28 +370,28 @@
                 </div>
                 <div class="md:w-1/2">
                     <div class="space-y-3">
-                        <p><span class="text-gray-400">Country:</span> ${coin.country}</p>
-                        <p><span class="text-gray-400">Year:</span> ${coin.year}</p>
-                        <p><span class="text-gray-400">Denomination:</span> ${coin.denomination}</p>
-                        <p><span class="text-gray-400">Metal:</span> ${coin.metal}</p>
-                        <p><span class="text-gray-400">Weight:</span> ${coin.weight}g</p>
-                        <p><span class="text-gray-400">Diameter:</span> ${coin.diameter}mm</p>
-                        <p><span class="text-gray-400">Mintage:</span> ${coin.mintage?.toLocaleString() || 'Unknown'}</p>
-                        <p><span class="text-gray-400">Rarity:</span> <span class="text-yellow-500 font-bold">${coin.rarity}/10</span></p>
-                        <p><span class="text-gray-400">Price:</span> <span class="text-yellow-500 font-bold text-2xl">$${coin.priceUSD}</span> / ${coin.priceUAH} UAH</p>
+                        <p><span class="text-gray-400">${countryText}:</span> ${coin.country}</p>
+                        <p><span class="text-gray-400">${yearText}:</span> ${coin.year}</p>
+                        <p><span class="text-gray-400">${denominationText}:</span> ${coin.denomination}</p>
+                        <p><span class="text-gray-400">${metalText}:</span> ${coin.metal}</p>
+                        <p><span class="text-gray-400">${weightText}:</span> ${coin.weight}g</p>
+                        <p><span class="text-gray-400">${diameterText}:</span> ${coin.diameter}mm</p>
+                        <p><span class="text-gray-400">${mintageText}:</span> ${coin.mintage?.toLocaleString() || 'Unknown'}</p>
+                        <p><span class="text-gray-400">${rarityText}:</span> <span class="text-yellow-500 font-bold">${coin.rarity}/10</span></p>
+                        <p><span class="text-gray-400">${priceText}:</span> <span class="text-yellow-500 font-bold text-2xl">$${coin.priceUSD}</span> / ${coin.priceUAH} UAH</p>
                     </div>
                 </div>
             </div>
             <div class="mt-6 p-4 bg-gray-700 rounded-xl">
-                <h4 class="font-bold text-yellow-500 mb-2"><i class="fas fa-history mr-2"></i>History</h4>
+                <h4 class="font-bold text-yellow-500 mb-2"><i class="fas fa-history mr-2"></i>${historyText}</h4>
                 <p class="text-gray-300">${coin.history?.en || 'No historical information available for this coin.'}</p>
             </div>
             <div class="flex gap-3 mt-6">
                 <button onclick="addToCollection('${coin.id}')" class="flex-1 bg-yellow-500 hover:bg-yellow-600 text-black font-bold py-2 rounded-lg transition">
-                    <i class="fas fa-plus-circle mr-2"></i>Add to Collection
+                    <i class="fas fa-plus-circle mr-2"></i>${addToCollectionText}
                 </button>
                 <button onclick="addToWishlist('${coin.id}')" class="flex-1 bg-gray-700 hover:bg-gray-600 text-white font-bold py-2 rounded-lg transition">
-                    <i class="fas fa-heart mr-2"></i>Add to Wishlist
+                    <i class="fas fa-heart mr-2"></i>${addToWishlistText}
                 </button>
             </div>
         `;
@@ -406,25 +407,28 @@
         currentCoinId = null;
     }
     
-    // Додавання до колекції
     function addToCollection(coinId) {
         if (!window.currentUser) {
-            showToast('Please sign in to add coins to your collection', 'error');
+            const msg = window.currentLanguage === 'uk' ? 'Увійдіть, щоб додати монету до колекції' : 'Please sign in to add coins to your collection';
+            showToast(msg, 'error');
             openAuthModal();
             return;
         }
         addToUserCollection(window.currentUser.uid, coinId);
-        showToast('Coin added to your collection!', 'success');
+        const successMsg = window.currentLanguage === 'uk' ? 'Монету додано до колекції!' : 'Coin added to your collection!';
+        showToast(successMsg, 'success');
     }
     
     function addToWishlist(coinId) {
         if (!window.currentUser) {
-            showToast('Please sign in to add coins to your wishlist', 'error');
+            const msg = window.currentLanguage === 'uk' ? 'Увійдіть, щоб додати монету до списку бажань' : 'Please sign in to add coins to your wishlist';
+            showToast(msg, 'error');
             openAuthModal();
             return;
         }
         addToWishlist(window.currentUser.uid, coinId);
-        showToast('Coin added to your wishlist!', 'success');
+        const successMsg = window.currentLanguage === 'uk' ? 'Монету додано до списку бажань!' : 'Coin added to your wishlist!';
+        showToast(successMsg, 'success');
     }
     
     function resetFilters() {
@@ -440,13 +444,20 @@
         applyFilters();
     }
     
-    // Ініціалізація
     document.addEventListener('DOMContentLoaded', () => {
         loadCatalogData();
         AOS.init({ duration: 600, once: true });
+        showAllNavButtons();
     });
     
-    // Глобальний експорт
+    function showAllNavButtons() {
+        const profileLink = document.getElementById('nav-profile');
+        const addCoinLink = document.getElementById('nav-add-coin');
+        if (profileLink) profileLink.classList.remove('hidden');
+        if (addCoinLink) addCoinLink.classList.remove('hidden');
+        if (typeof updateUserMenu === 'function') updateUserMenu();
+    }
+    
     window.applyFilters = applyFilters;
     window.resetFilters = resetFilters;
     window.changePage = changePage;
@@ -454,6 +465,7 @@
     window.closeModal = closeModal;
     window.addToCollection = addToCollection;
     window.addToWishlist = addToWishlist;
+    window.showAllNavButtons = showAllNavButtons;
 </script>
 
 </body>

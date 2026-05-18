@@ -59,19 +59,19 @@ function createAuthModal() {
 
                 <div id="loginForm" class="p-6">
                     <div class="mb-4">
-                        <label class="block text-gray-300 mb-2">Email</label>
-                        <input type="email" id="loginEmail" placeholder="your@email.com" class="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white focus:outline-none focus:border-yellow-500">
+                        <label class="block text-gray-300 mb-2" data-i18n="email">Email</label>
+                        <input type="email" id="loginEmail" data-i18n-placeholder="email_placeholder" placeholder="your@email.com" class="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white focus:outline-none focus:border-yellow-500">
                     </div>
                     <div class="mb-4">
-                        <label class="block text-gray-300 mb-2">Password</label>
-                        <input type="password" id="loginPassword" placeholder="••••••••" class="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white focus:outline-none focus:border-yellow-500">
+                        <label class="block text-gray-300 mb-2" data-i18n="password">Password</label>
+                        <input type="password" id="loginPassword" data-i18n-placeholder="password_placeholder" placeholder="••••••••" class="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white focus:outline-none focus:border-yellow-500">
                     </div>
                     <button onclick="signInWithEmail()" class="w-full bg-yellow-500 hover:bg-yellow-600 text-black font-bold py-2 rounded-lg transition mb-4">
-                        Sign In
+                        <span data-i18n="sign_in">Sign In</span>
                     </button>
                     <div class="relative my-4">
                         <div class="absolute inset-0 flex items-center"><div class="w-full border-t border-gray-700"></div></div>
-                        <div class="relative flex justify-center text-sm"><span class="px-2 bg-gray-900 text-gray-400">Or continue with</span></div>
+                        <div class="relative flex justify-center text-sm"><span class="px-2 bg-gray-900 text-gray-400" data-i18n="or_continue_with">Or continue with</span></div>
                     </div>
                     <button onclick="signInWithGoogle()" class="w-full bg-white hover:bg-gray-100 text-gray-800 font-bold py-2 rounded-lg transition flex items-center justify-center gap-2">
                         <i class="fab fa-google"></i> Google
@@ -80,27 +80,27 @@ function createAuthModal() {
 
                 <div id="registerForm" class="p-6 hidden">
                     <div class="mb-4">
-                        <label class="block text-gray-300 mb-2">Full Name</label>
-                        <input type="text" id="registerName" placeholder="John Doe" class="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white focus:outline-none focus:border-yellow-500">
+                        <label class="block text-gray-300 mb-2" data-i18n="full_name">Full Name</label>
+                        <input type="text" id="registerName" data-i18n-placeholder="full_name_placeholder" placeholder="John Doe" class="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white focus:outline-none focus:border-yellow-500">
                     </div>
                     <div class="mb-4">
-                        <label class="block text-gray-300 mb-2">Email</label>
-                        <input type="email" id="registerEmail" placeholder="your@email.com" class="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white focus:outline-none focus:border-yellow-500">
+                        <label class="block text-gray-300 mb-2" data-i18n="email">Email</label>
+                        <input type="email" id="registerEmail" data-i18n-placeholder="email_placeholder" placeholder="your@email.com" class="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white focus:outline-none focus:border-yellow-500">
                     </div>
                     <div class="mb-4">
-                        <label class="block text-gray-300 mb-2">Password</label>
-                        <input type="password" id="registerPassword" placeholder="••••••••" class="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white focus:outline-none focus:border-yellow-500">
+                        <label class="block text-gray-300 mb-2" data-i18n="password">Password</label>
+                        <input type="password" id="registerPassword" data-i18n-placeholder="password_placeholder" placeholder="••••••••" class="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white focus:outline-none focus:border-yellow-500">
                     </div>
                     <div class="mb-4">
-                        <label class="block text-gray-300 mb-2">Confirm Password</label>
-                        <input type="password" id="registerConfirmPassword" placeholder="••••••••" class="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white focus:outline-none focus:border-yellow-500">
+                        <label class="block text-gray-300 mb-2" data-i18n="confirm_password">Confirm Password</label>
+                        <input type="password" id="registerConfirmPassword" data-i18n-placeholder="confirm_password_placeholder" placeholder="••••••••" class="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white focus:outline-none focus:border-yellow-500">
                     </div>
                     <button onclick="signUpWithEmail()" class="w-full bg-yellow-500 hover:bg-yellow-600 text-black font-bold py-2 rounded-lg transition mb-4">
-                        Create Account
+                        <span data-i18n="create_account">Create Account</span>
                     </button>
                     <div class="relative my-4">
                         <div class="absolute inset-0 flex items-center"><div class="w-full border-t border-gray-700"></div></div>
-                        <div class="relative flex justify-center text-sm"><span class="px-2 bg-gray-900 text-gray-400">Or continue with</span></div>
+                        <div class="relative flex justify-center text-sm"><span class="px-2 bg-gray-900 text-gray-400" data-i18n="or_continue_with">Or continue with</span></div>
                     </div>
                     <button onclick="signInWithGoogle()" class="w-full bg-white hover:bg-gray-100 text-gray-800 font-bold py-2 rounded-lg transition flex items-center justify-center gap-2">
                         <i class="fab fa-google"></i> Google
@@ -187,14 +187,12 @@ async function signInWithGoogle() {
         localStorage.setItem('currentUser', JSON.stringify(userData));
         window.currentUser = userData;
 
-        showToast(`Welcome ${user.displayName}!`, 'success');
+        const welcomeMsg = window.currentLanguage === 'uk' ? `Ласкаво просимо ${user.displayName}!` : `Welcome ${user.displayName}!`;
+        showToast(welcomeMsg, 'success');
         closeAuthModal();
         updateUIAfterLogin(userData);
         
-        // Оновлюємо хедер на всіх сторінках
         if (typeof updatePageAfterAuth === 'function') updatePageAfterAuth();
-        
-        // Перезавантажуємо сторінку для оновлення всього інтерфейсу
         setTimeout(() => location.reload(), 500);
     } catch (error) {
         console.error('Google Sign-In Error:', error);
@@ -228,7 +226,8 @@ async function signInWithEmail() {
         localStorage.setItem('currentUser', JSON.stringify(userData));
         window.currentUser = userData;
 
-        showToast(`Welcome ${userData.name}!`, 'success');
+        const welcomeMsg = window.currentLanguage === 'uk' ? `Ласкаво просимо ${userData.name}!` : `Welcome ${userData.name}!`;
+        showToast(welcomeMsg, 'success');
         closeAuthModal();
         updateUIAfterLogin(userData);
         
@@ -286,7 +285,8 @@ async function signUpWithEmail() {
         localStorage.setItem('currentUser', JSON.stringify(userData));
         window.currentUser = userData;
 
-        showToast(`Account created! Welcome ${name}!`, 'success');
+        const createdMsg = window.currentLanguage === 'uk' ? `Акаунт створено! Ласкаво просимо ${name}!` : `Account created! Welcome ${name}!`;
+        showToast(createdMsg, 'success');
         closeAuthModal();
         updateUIAfterLogin(userData);
         
@@ -310,12 +310,11 @@ async function signOut() {
         await firebase.auth().signOut();
         localStorage.removeItem('currentUser');
         window.currentUser = null;
-        showToast(window.currentLanguage === 'uk' ? 'Ви вийшли з аккаунту' : 'Signed out successfully', 'success');
+        const signOutMsg = window.currentLanguage === 'uk' ? 'Ви вийшли з аккаунту' : 'Signed out successfully';
+        showToast(signOutMsg, 'success');
         updateUIAfterLogout();
         
         if (typeof updatePageAfterAuth === 'function') updatePageAfterAuth();
-        
-        // Перезавантажуємо сторінку для оновлення інтерфейсу
         setTimeout(() => location.reload(), 500);
     } catch (error) {
         console.error('Sign Out Error:', error);

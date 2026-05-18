@@ -19,7 +19,6 @@ function initTheme() {
 
 function toggleTheme() {
     // Функція більше не працює - тема завжди темна
-    // Можна залишити порожньою або приховати кнопку
     return;
 }
 
@@ -69,6 +68,16 @@ function applyTranslations() {
         }
     });
     
+    // Оновлення елементів з атрибутом data-i18n-placeholder
+    const placeholderElements = document.querySelectorAll('[data-i18n-placeholder]');
+    placeholderElements.forEach(el => {
+        const key = el.getAttribute('data-i18n-placeholder');
+        const translation = translations[window.currentLanguage]?.[key];
+        if (translation && el.placeholder !== undefined) {
+            el.placeholder = translation;
+        }
+    });
+    
     // Оновлення кнопки мови
     const langText = document.getElementById('langText');
     if (langText) {
@@ -81,9 +90,19 @@ function applyTranslations() {
         const signInText = window.currentLanguage === 'uk' ? 'Увійти' : 'Sign In';
         authButton.innerHTML = `<button onclick="openAuthModal()" class="bg-yellow-500 hover:bg-yellow-600 text-black px-4 py-2 rounded-lg font-medium transition"><i class="fas fa-user mr-2"></i>${signInText}</button>`;
     }
+    
+    // Оновлення заголовка сторінки
+    const pageTitle = document.querySelector('title');
+    if (pageTitle) {
+        const titles = {
+            uk: 'Довідник нумізмата - Каталог рідкісних монет',
+            en: 'Numismatist\'s Guide - Rare Coins Directory'
+        };
+        pageTitle.textContent = titles[window.currentLanguage] || titles.en;
+    }
 }
 
-// ОСНОВНА ФУНКЦІЯ ЗМІНИ МОВИ
+// ОСНОВНА ФУНКЦІЯ ЗМІНИ МОВИ (з перезавантаженням)
 function switchLanguage(lang) {
     localStorage.setItem('language', lang);
     location.reload();
@@ -118,7 +137,7 @@ function createHeader() {
                 <div class="flex justify-between items-center py-4">
                     <a href="index.html" class="flex items-center gap-2 text-2xl font-bold text-yellow-500">
                         <i class="fas fa-coins"></i>
-                        <span class="hidden sm:inline">Numismatist's Guide</span>
+                        <span class="hidden sm:inline" data-i18n="site_name">Numismatist's Guide</span>
                     </a>
                     
                     <div class="hidden md:flex items-center gap-6">
@@ -130,10 +149,10 @@ function createHeader() {
     });
     
     protectedItems.forEach(item => {
-        navHtml += `<a href="${item.href}" id="nav-${item.href.split('.')[0]}" class="flex items-center gap-2 text-gray-300 hover:text-yellow-500 transition hidden"><i class="fas ${item.icon}"></i><span data-i18n="${item.key}">${item.label}</span></a>`;
+        navHtml += `<a href="${item.href}" id="nav-${item.href.split('.')[0]}" class="flex items-center gap-2 text-gray-300 hover:text-yellow-500 transition"><i class="fas ${item.icon}"></i><span data-i18n="${item.key}">${item.label}</span></a>`;
     });
     
-    navHtml += `<a href="admin.html" id="adminLink" class="flex items-center gap-2 text-red-400 hover:text-red-300 transition hidden"><i class="fas fa-shield-alt"></i><span data-i18n="nav_admin">Admin</span></a>`;
+    navHtml += `<a href="admin.html" id="adminLink" class="flex items-center gap-2 text-red-400 hover:text-red-300 transition"><i class="fas fa-shield-alt"></i><span data-i18n="nav_admin">Admin</span></a>`;
     
     // Поточний статус мови для кнопки
     const currentLangForButton = window.currentLanguage === 'uk' ? 'en' : 'uk';
@@ -257,5 +276,5 @@ document.addEventListener('DOMContentLoaded', async () => {
 // Глобальні функції
 window.toggleTheme = toggleTheme;
 window.switchLanguage = switchLanguage;
-window.updatePageAfterAuth = window.updatePageAfterAuth;
+window.updatePageAfterAuth = updatePageAfterAuth;
 window.toggleUserMenu = toggleUserMenu;

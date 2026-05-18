@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>Coin Grading Guide - Numismatist's Guide</title>
+    <title data-i18n="grades_title">Coin Grading Guide - Numismatist's Guide</title>
     
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -47,27 +47,6 @@
             background-color: #fbbf24;
             color: #000;
         }
-        html.dark {
-            background-color: #0a0a0a;
-        }
-        html.light {
-            background-color: #f5f5f5;
-        }
-        html.light .bg-gray-900 {
-            background-color: #ffffff !important;
-        }
-        html.light .text-gray-300 {
-            color: #4a4a4a !important;
-        }
-        html.light .border-gray-800 {
-            border-color: #e5e5e5 !important;
-        }
-        html.light .bg-gray-800 {
-            background-color: #f0f0f0 !important;
-        }
-        html.light .bg-gray-700 {
-            background-color: #e5e5e5 !important;
-        }
         .info-icon {
             transition: transform 0.2s ease;
         }
@@ -85,8 +64,8 @@
 <!-- ============================================ -->
 <section class="bg-gradient-to-r from-gray-800 to-gray-900 py-12">
     <div class="container mx-auto px-4 text-center" data-aos="fade-up">
-        <h1 class="text-4xl md:text-5xl font-bold mb-3"><i class="fas fa-star text-yellow-500 mr-3"></i>Coin Grading Guide</h1>
-        <p class="text-gray-400 text-lg max-w-2xl mx-auto">Learn how to professionally grade coins using the Sheldon Scale (1-70)</p>
+        <h1 class="text-4xl md:text-5xl font-bold mb-3"><i class="fas fa-star text-yellow-500 mr-3"></i><span data-i18n="grades_heading">Coin Grading Guide</span></h1>
+        <p class="text-gray-400 text-lg max-w-2xl mx-auto" data-i18n="grades_subheading">Learn how to professionally grade coins using the Sheldon Scale (1-70)</p>
     </div>
 </section>
 
@@ -95,19 +74,19 @@
 <!-- ============================================ -->
 <section class="container mx-auto px-4 py-8">
     <div class="bg-gray-800 rounded-2xl p-6 md:p-8" data-aos="fade-up">
-        <h2 class="text-2xl font-bold mb-6 text-center"><i class="fas fa-chart-line text-yellow-500 mr-2"></i>Sheldon Grading Scale (1-70)</h2>
+        <h2 class="text-2xl font-bold mb-6 text-center"><i class="fas fa-chart-line text-yellow-500 mr-2"></i><span data-i18n="sheldon_scale_title">Sheldon Grading Scale (1-70)</span></h2>
         
         <div class="relative mb-12">
             <div class="flex justify-between text-xs text-gray-400 mb-2">
-                <span>Poor</span>
-                <span>Fair</span>
-                <span>Good</span>
-                <span>Very Good</span>
-                <span>Fine</span>
-                <span>Very Fine</span>
-                <span>Extremely Fine</span>
-                <span>About Uncirculated</span>
-                <span>Mint State</span>
+                <span data-i18n="grade_poor">Poor</span>
+                <span data-i18n="grade_fair">Fair</span>
+                <span data-i18n="grade_good">Good</span>
+                <span data-i18n="grade_very_good">Very Good</span>
+                <span data-i18n="grade_fine">Fine</span>
+                <span data-i18n="grade_very_fine">Very Fine</span>
+                <span data-i18n="grade_extremely_fine">Extremely Fine</span>
+                <span data-i18n="grade_about_uncirculated">About Uncirculated</span>
+                <span data-i18n="grade_mint_state">Mint State</span>
             </div>
             <input type="range" id="gradeSlider" min="1" max="70" value="60" class="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer accent-yellow-500">
             <div class="flex justify-between mt-2">
@@ -134,67 +113,49 @@
 <!-- ДЕТАЛЬНІ КАТЕГОРІЇ ГРЕЙДУВАННЯ -->
 <!-- ============================================ -->
 <section class="container mx-auto px-4 py-8">
-    <h2 class="text-2xl md:text-3xl font-bold mb-8 text-center" data-aos="fade-up">Grading Categories</h2>
+    <h2 class="text-2xl md:text-3xl font-bold mb-8 text-center" data-aos="fade-up" data-i18n="grading_categories_title">Grading Categories</h2>
     
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        <!-- Poor to Fair -->
         <div class="grade-card bg-gray-800 rounded-xl p-6 cursor-pointer" data-aos="fade-up" data-aos-delay="0" onclick="selectGrade('Poor')">
-            <div class="w-16 h-16 rounded-full bg-red-500/20 flex items-center justify-center mb-4 mx-auto">
-                <i class="fas fa-circle-exclamation text-2xl text-red-400"></i>
-            </div>
-            <h3 class="text-xl font-bold text-center mb-2">Poor to Fair</h3>
+            <div class="w-16 h-16 rounded-full bg-red-500/20 flex items-center justify-center mb-4 mx-auto"><i class="fas fa-circle-exclamation text-2xl text-red-400"></i></div>
+            <h3 class="text-xl font-bold text-center mb-2" data-i18n="grade_poor_fair">Poor to Fair</h3>
             <p class="text-gray-400 text-sm text-center">PO-1 to FR-2</p>
-            <p class="text-gray-500 text-xs text-center mt-3">Badly worn, possibly damaged. Only for key dates.</p>
+            <p class="text-gray-500 text-xs text-center mt-3" data-i18n="grade_poor_desc">Badly worn, possibly damaged. Only for key dates.</p>
         </div>
         
-        <!-- Good to Very Good -->
         <div class="grade-card bg-gray-800 rounded-xl p-6 cursor-pointer" data-aos="fade-up" data-aos-delay="100" onclick="selectGrade('Good')">
-            <div class="w-16 h-16 rounded-full bg-orange-500/20 flex items-center justify-center mb-4 mx-auto">
-                <i class="fas fa-coins text-2xl text-orange-400"></i>
-            </div>
-            <h3 class="text-xl font-bold text-center mb-2">Good to Very Good</h3>
+            <div class="w-16 h-16 rounded-full bg-orange-500/20 flex items-center justify-center mb-4 mx-auto"><i class="fas fa-coins text-2xl text-orange-400"></i></div>
+            <h3 class="text-xl font-bold text-center mb-2" data-i18n="grade_good_very_good">Good to Very Good</h3>
             <p class="text-gray-400 text-sm text-center">G-4 to VG-10</p>
-            <p class="text-gray-500 text-xs text-center mt-3">Heavy wear, major details visible but flat.</p>
+            <p class="text-gray-500 text-xs text-center mt-3" data-i18n="grade_good_desc">Heavy wear, major details visible but flat.</p>
         </div>
         
-        <!-- Fine to Very Fine -->
         <div class="grade-card bg-gray-800 rounded-xl p-6 cursor-pointer" data-aos="fade-up" data-aos-delay="200" onclick="selectGrade('Fine')">
-            <div class="w-16 h-16 rounded-full bg-yellow-500/20 flex items-center justify-center mb-4 mx-auto">
-                <i class="fas fa-chart-line text-2xl text-yellow-400"></i>
-            </div>
-            <h3 class="text-xl font-bold text-center mb-2">Fine to Very Fine</h3>
+            <div class="w-16 h-16 rounded-full bg-yellow-500/20 flex items-center justify-center mb-4 mx-auto"><i class="fas fa-chart-line text-2xl text-yellow-400"></i></div>
+            <h3 class="text-xl font-bold text-center mb-2" data-i18n="grade_fine_very_fine">Fine to Very Fine</h3>
             <p class="text-gray-400 text-sm text-center">F-12 to VF-35</p>
-            <p class="text-gray-500 text-xs text-center mt-3">Moderate wear, all details clear but not sharp.</p>
+            <p class="text-gray-500 text-xs text-center mt-3" data-i18n="grade_fine_desc">Moderate wear, all details clear but not sharp.</p>
         </div>
         
-        <!-- Extremely Fine -->
         <div class="grade-card bg-gray-800 rounded-xl p-6 cursor-pointer" data-aos="fade-up" data-aos-delay="300" onclick="selectGrade('XF')">
-            <div class="w-16 h-16 rounded-full bg-green-500/20 flex items-center justify-center mb-4 mx-auto">
-                <i class="fas fa-gem text-2xl text-green-400"></i>
-            </div>
-            <h3 class="text-xl font-bold text-center mb-2">Extremely Fine</h3>
+            <div class="w-16 h-16 rounded-full bg-green-500/20 flex items-center justify-center mb-4 mx-auto"><i class="fas fa-gem text-2xl text-green-400"></i></div>
+            <h3 class="text-xl font-bold text-center mb-2" data-i18n="grade_extremely_fine_title">Extremely Fine</h3>
             <p class="text-gray-400 text-sm text-center">XF-40 to XF-45</p>
-            <p class="text-gray-500 text-xs text-center mt-3">Light wear on highest points. 90% of details sharp.</p>
+            <p class="text-gray-500 text-xs text-center mt-3" data-i18n="grade_xf_desc">Light wear on highest points. 90% of details sharp.</p>
         </div>
         
-        <!-- About Uncirculated -->
         <div class="grade-card bg-gray-800 rounded-xl p-6 cursor-pointer" data-aos="fade-up" data-aos-delay="400" onclick="selectGrade('AU')">
-            <div class="w-16 h-16 rounded-full bg-blue-500/20 flex items-center justify-center mb-4 mx-auto">
-                <i class="fas fa-crown text-2xl text-blue-400"></i>
-            </div>
-            <h3 class="text-xl font-bold text-center mb-2">About Uncirculated</h3>
+            <div class="w-16 h-16 rounded-full bg-blue-500/20 flex items-center justify-center mb-4 mx-auto"><i class="fas fa-crown text-2xl text-blue-400"></i></div>
+            <h3 class="text-xl font-bold text-center mb-2" data-i18n="grade_about_uncirculated_title">About Uncirculated</h3>
             <p class="text-gray-400 text-sm text-center">AU-50 to AU-58</p>
-            <p class="text-gray-500 text-xs text-center mt-3">Trace wear only. Most luster remains.</p>
+            <p class="text-gray-500 text-xs text-center mt-3" data-i18n="grade_au_desc">Trace wear only. Most luster remains.</p>
         </div>
         
-        <!-- Mint State -->
         <div class="grade-card bg-gray-800 rounded-xl p-6 cursor-pointer" data-aos="fade-up" data-aos-delay="500" onclick="selectGrade('MS')">
-            <div class="w-16 h-16 rounded-full bg-purple-500/20 flex items-center justify-center mb-4 mx-auto">
-                <i class="fas fa-medal text-2xl text-purple-400"></i>
-            </div>
-            <h3 class="text-xl font-bold text-center mb-2">Mint State</h3>
+            <div class="w-16 h-16 rounded-full bg-purple-500/20 flex items-center justify-center mb-4 mx-auto"><i class="fas fa-medal text-2xl text-purple-400"></i></div>
+            <h3 class="text-xl font-bold text-center mb-2" data-i18n="grade_mint_state_title">Mint State</h3>
             <p class="text-gray-400 text-sm text-center">MS-60 to MS-70</p>
-            <p class="text-gray-500 text-xs text-center mt-3">No wear. Perfect strike. Full luster.</p>
+            <p class="text-gray-500 text-xs text-center mt-3" data-i18n="grade_ms_desc">No wear. Perfect strike. Full luster.</p>
         </div>
     </div>
 </section>
@@ -211,19 +172,19 @@
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
             <div class="lg:col-span-2">
                 <p class="text-gray-300 mb-4">About Uncirculated coins show only the slightest trace of wear on the highest points of the design. These coins retain most of their original mint luster and have strong eye appeal.</p>
-                <h4 class="font-bold text-yellow-500 mb-2">Characteristics:</h4>
+                <h4 class="font-bold text-yellow-500 mb-2" data-i18n="characteristics_title">Characteristics:</h4>
                 <ul class="list-disc list-inside text-gray-400 space-y-1 mb-4">
-                    <li>Light friction on highest points</li>
-                    <li>75-90% of original mint luster present</li>
-                    <li>Full details visible with minor flatness</li>
-                    <li>No significant marks or damage</li>
+                    <li data-i18n="char1">Light friction on highest points</li>
+                    <li data-i18n="char2">75-90% of original mint luster present</li>
+                    <li data-i18n="char3">Full details visible with minor flatness</li>
+                    <li data-i18n="char4">No significant marks or damage</li>
                 </ul>
-                <h4 class="font-bold text-yellow-500 mb-2">Value Impact:</h4>
-                <p class="text-gray-300">AU coins typically command 50-75% of the price of uncirculated specimens, making them excellent value for collectors.</p>
+                <h4 class="font-bold text-yellow-500 mb-2" data-i18n="value_impact_title">Value Impact:</h4>
+                <p class="text-gray-300" data-i18n="value_impact_text">AU coins typically command 50-75% of the price of uncirculated specimens, making them excellent value for collectors.</p>
             </div>
             <div class="bg-gray-700 rounded-xl p-4 text-center">
                 <i class="fas fa-chart-line text-4xl text-yellow-500 mb-3"></i>
-                <p class="text-sm text-gray-300 mb-2">Typical Value Range</p>
+                <p class="text-sm text-gray-300 mb-2" data-i18n="typical_value_range">Typical Value Range</p>
                 <p class="text-2xl font-bold text-yellow-500">$$$-$$$</p>
                 <p class="text-xs text-gray-500 mt-3">vs. MS-60: ~60-75%</p>
             </div>
@@ -236,29 +197,29 @@
 <!-- ============================================ -->
 <section class="container mx-auto px-4 py-8">
     <div class="bg-gray-800 rounded-xl p-6" data-aos="fade-up">
-        <h2 class="text-xl md:text-2xl font-bold mb-6"><i class="fas fa-table-list text-yellow-500 mr-2"></i>Complete Sheldon Grading Scale</h2>
+        <h2 class="text-xl md:text-2xl font-bold mb-6"><i class="fas fa-table-list text-yellow-500 mr-2"></i><span data-i18n="complete_scale_title">Complete Sheldon Grading Scale</span></h2>
         
         <div class="overflow-x-auto">
             <table class="w-full">
                 <thead class="border-b border-gray-700">
                     <tr class="text-left">
-                        <th class="py-3 px-4">Grade</th>
-                        <th class="py-3 px-4">Abbreviation</th>
-                        <th class="py-3 px-4">Numeric Value</th>
-                        <th class="py-3 px-4">Description</th>
+                        <th class="py-3 px-4" data-i18n="table_grade">Grade</th>
+                        <th class="py-3 px-4" data-i18n="table_abbreviation">Abbreviation</th>
+                        <th class="py-3 px-4" data-i18n="table_numeric">Numeric Value</th>
+                        <th class="py-3 px-4" data-i18n="table_description">Description</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr class="border-b border-gray-700"><td class="py-3 px-4">Poor</td><td class="py-3 px-4">PO</td><td class="py-3 px-4">1</td><td class="py-3 px-4 text-gray-400">Barely identifiable, heavily worn</td></tr>
-                    <tr class="border-b border-gray-700"><td class="py-3 px-4">Fair</td><td class="py-3 px-4">FR</td><td class="py-3 px-4">2</td><td class="py-3 px-4 text-gray-400">Major details visible, very worn</td></tr>
-                    <tr class="border-b border-gray-700"><td class="py-3 px-4">About Good</td><td class="py-3 px-4">AG</td><td class="py-3 px-4">3</td><td class="py-3 px-4 text-gray-400">Smooth edges, details flat</td></tr>
-                    <tr class="border-b border-gray-700"><td class="py-3 px-4">Good</td><td class="py-3 px-4">G</td><td class="py-3 px-4">4,6</td><td class="py-3 px-4 text-gray-400">Major designs visible, rims worn</td></tr>
-                    <tr class="border-b border-gray-700"><td class="py-3 px-4">Very Good</td><td class="py-3 px-4">VG</td><td class="py-3 px-4">8,10</td><td class="py-3 px-4 text-gray-400">Full rims, some detail remaining</td></tr>
-                    <tr class="border-b border-gray-700"><td class="py-3 px-4">Fine</td><td class="py-3 px-4">F</td><td class="py-3 px-4">12,15</td><td class="py-3 px-4 text-gray-400">Clear details, moderate wear</td></tr>
-                    <tr class="border-b border-gray-700"><td class="py-3 px-4">Very Fine</td><td class="py-3 px-4">VF</td><td class="py-3 px-4">20,25,30,35</td><td class="py-3 px-4 text-gray-400">Light wear, sharp details</td></tr>
-                    <tr class="border-b border-gray-700"><td class="py-3 px-4">Extremely Fine</td><td class="py-3 px-4">XF/EF</td><td class="py-3 px-4">40,45</td><td class="py-3 px-4 text-gray-400">Trace wear, high points sharp</td></tr>
-                    <tr class="border-b border-gray-700"><td class="py-3 px-4">About Uncirculated</td><td class="py-3 px-4">AU</td><td class="py-3 px-4">50,53,55,58</td><td class="py-3 px-4 text-gray-400">Faint wear, full luster</td></tr>
-                    <tr class="border-b border-gray-700"><td class="py-3 px-4">Mint State</td><td class="py-3 px-4">MS</td><td class="py-3 px-4">60-70</td><td class="py-3 px-4 text-gray-400">No wear, perfect condition</td></tr>
+                    <tr class="border-b border-gray-700"><td class="py-3 px-4" data-i18n="grade_poor_table">Poor</td><td class="py-3 px-4">PO</td><td class="py-3 px-4">1</td><td class="py-3 px-4 text-gray-400" data-i18n="grade_poor_table_desc">Barely identifiable, heavily worn</td></tr>
+                    <tr class="border-b border-gray-700"><td class="py-3 px-4" data-i18n="grade_fair_table">Fair</td><td class="py-3 px-4">FR</td><td class="py-3 px-4">2</td><td class="py-3 px-4 text-gray-400" data-i18n="grade_fair_table_desc">Major details visible, very worn</td></tr>
+                    <tr class="border-b border-gray-700"><td class="py-3 px-4" data-i18n="grade_about_good">About Good</td><td class="py-3 px-4">AG</td><td class="py-3 px-4">3</td><td class="py-3 px-4 text-gray-400" data-i18n="grade_about_good_desc">Smooth edges, details flat</td></tr>
+                    <tr class="border-b border-gray-700"><td class="py-3 px-4" data-i18n="grade_good_table">Good</td><td class="py-3 px-4">G</td><td class="py-3 px-4">4,6</td><td class="py-3 px-4 text-gray-400" data-i18n="grade_good_table_desc">Major designs visible, rims worn</td></tr>
+                    <tr class="border-b border-gray-700"><td class="py-3 px-4" data-i18n="grade_very_good_table">Very Good</td><td class="py-3 px-4">VG</td><td class="py-3 px-4">8,10</td><td class="py-3 px-4 text-gray-400" data-i18n="grade_very_good_table_desc">Full rims, some detail remaining</td></tr>
+                    <tr class="border-b border-gray-700"><td class="py-3 px-4" data-i18n="grade_fine_table">Fine</td><td class="py-3 px-4">F</td><td class="py-3 px-4">12,15</td><td class="py-3 px-4 text-gray-400" data-i18n="grade_fine_table_desc">Clear details, moderate wear</td></tr>
+                    <tr class="border-b border-gray-700"><td class="py-3 px-4" data-i18n="grade_very_fine_table">Very Fine</td><td class="py-3 px-4">VF</td><td class="py-3 px-4">20,25,30,35</td><td class="py-3 px-4 text-gray-400" data-i18n="grade_very_fine_table_desc">Light wear, sharp details</td></tr>
+                    <tr class="border-b border-gray-700"><td class="py-3 px-4" data-i18n="grade_extremely_fine_table">Extremely Fine</td><td class="py-3 px-4">XF/EF</td><td class="py-3 px-4">40,45</td><td class="py-3 px-4 text-gray-400" data-i18n="grade_extremely_fine_table_desc">Trace wear, high points sharp</td></tr>
+                    <tr class="border-b border-gray-700"><td class="py-3 px-4" data-i18n="grade_about_uncirculated_table">About Uncirculated</td><td class="py-3 px-4">AU</td><td class="py-3 px-4">50,53,55,58</td><td class="py-3 px-4 text-gray-400" data-i18n="grade_about_uncirculated_table_desc">Faint wear, full luster</td></tr>
+                    <tr class="border-b border-gray-700"><td class="py-3 px-4" data-i18n="grade_mint_state_table">Mint State</td><td class="py-3 px-4">MS</td><td class="py-3 px-4">60-70</td><td class="py-3 px-4 text-gray-400" data-i18n="grade_mint_state_table_desc">No wear, perfect condition</td></tr>
                 </tbody>
             </table>
         </div>
@@ -269,37 +230,32 @@
 <!-- ПОРАДИ ДЛЯ ПОЧАТКІВЦІВ -->
 <!-- ============================================ -->
 <section class="container mx-auto px-4 py-8 mb-12">
-    <h2 class="text-2xl md:text-3xl font-bold mb-8 text-center" data-aos="fade-up">Tips for Beginner Graders</h2>
+    <h2 class="text-2xl md:text-3xl font-bold mb-8 text-center" data-aos="fade-up" data-i18n="tips_title">Tips for Beginner Graders</h2>
     
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
         <div class="bg-gray-800 rounded-xl p-6" data-aos="fade-up" data-aos-delay="0">
             <i class="fas fa-lightbulb text-3xl text-yellow-500 mb-3"></i>
-            <h3 class="text-lg font-bold mb-2">Use Good Lighting</h3>
-            <p class="text-gray-400 text-sm">Natural daylight or 75-watt incandescent bulb at 45-degree angle reveals wear patterns best.</p>
+            <h3 class="text-lg font-bold mb-2" data-i18n="tip1_title">Use Good Lighting</h3>
+            <p class="text-gray-400 text-sm" data-i18n="tip1_text">Natural daylight or 75-watt incandescent bulb at 45-degree angle reveals wear patterns best.</p>
         </div>
         <div class="bg-gray-800 rounded-xl p-6" data-aos="fade-up" data-aos-delay="100">
             <i class="fas fa-microscope text-3xl text-yellow-500 mb-3"></i>
-            <h3 class="text-lg font-bold mb-2">Magnify Carefully</h3>
-            <p class="text-gray-400 text-sm">Use 5x-10x magnifier. Higher magnification can exaggerate minor flaws.</p>
+            <h3 class="text-lg font-bold mb-2" data-i18n="tip2_title">Magnify Carefully</h3>
+            <p class="text-gray-400 text-sm" data-i18n="tip2_text">Use 5x-10x magnifier. Higher magnification can exaggerate minor flaws.</p>
         </div>
         <div class="bg-gray-800 rounded-xl p-6" data-aos="fade-up" data-aos-delay="200">
             <i class="fas fa-chart-line text-3xl text-yellow-500 mb-3"></i>
-            <h3 class="text-lg font-bold mb-2">Practice Often</h3>
-            <p class="text-gray-400 text-sm">Start with common coins. Compare your grades with certified slabs to improve accuracy.</p>
+            <h3 class="text-lg font-bold mb-2" data-i18n="tip3_title">Practice Often</h3>
+            <p class="text-gray-400 text-sm" data-i18n="tip3_text">Start with common coins. Compare your grades with certified slabs to improve accuracy.</p>
         </div>
     </div>
 </section>
 
-<!-- Підключення JS -->
 <script src="js/firebase-config.js"></script>
 <script src="js/auth.js"></script>
 <script src="js/main.js"></script>
 
 <script>
-    // ============================================
-    // GRADES.JS - ЛОГІКА ГРЕЙДУВАННЯ
-    // ============================================
-    
     const gradeData = {
         'Poor': { name: 'Poor (PO-1)', desc: 'Barely identifiable, heavily worn with major details missing. Often damaged or corroded.', value: '5-10% of MS price', range: '1-2' },
         'Good': { name: 'Good to Very Good (G-4 to VG-10)', desc: 'Heavy wear but major details visible. Rims may be worn but complete. Date readable.', value: '10-25% of MS price', range: '4-10' },
@@ -313,6 +269,12 @@
         const data = gradeData[gradeKey];
         if (!data) return;
         
+        const characteristicsTitle = window.currentLanguage === 'uk' ? 'Характеристики:' : 'Characteristics:';
+        const numericRangeTitle = window.currentLanguage === 'uk' ? 'Числовий діапазон:' : 'Numeric Range:';
+        const valueImpactTitle = window.currentLanguage === 'uk' ? 'Вплив на вартість:' : 'Value Impact:';
+        const marketDemand = window.currentLanguage === 'uk' ? 'Ринковий попит' : 'Market Demand';
+        const collectorInterest = window.currentLanguage === 'uk' ? 'Рівень зацікавленості колекціонерів' : 'Collector interest level';
+        
         document.getElementById('gradeFullDetail').innerHTML = `
             <div class="flex items-center gap-3 mb-4">
                 <i class="fas fa-info-circle text-yellow-500 text-2xl"></i>
@@ -321,34 +283,31 @@
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 <div class="lg:col-span-2">
                     <p class="text-gray-300 mb-4">${data.desc}</p>
-                    <h4 class="font-bold text-yellow-500 mb-2">Numeric Range:</h4>
+                    <h4 class="font-bold text-yellow-500 mb-2">${numericRangeTitle}</h4>
                     <p class="text-gray-300 mb-4">${data.range}</p>
-                    <h4 class="font-bold text-yellow-500 mb-2">Value Impact:</h4>
+                    <h4 class="font-bold text-yellow-500 mb-2">${valueImpactTitle}</h4>
                     <p class="text-gray-300">${data.value}</p>
                 </div>
                 <div class="bg-gray-700 rounded-xl p-4 text-center">
                     <i class="fas fa-chart-line text-4xl text-yellow-500 mb-3"></i>
-                    <p class="text-sm text-gray-300 mb-2">Market Demand</p>
+                    <p class="text-sm text-gray-300 mb-2">${marketDemand}</p>
                     <div class="w-full bg-gray-600 rounded-full h-2 mb-2">
                         <div class="bg-yellow-500 rounded-full h-2" style="width: ${gradeKey === 'Poor' ? '20' : gradeKey === 'Good' ? '35' : gradeKey === 'Fine' ? '50' : gradeKey === 'XF' ? '70' : gradeKey === 'AU' ? '85' : '100'}%"></div>
                     </div>
-                    <p class="text-xs text-gray-500">Collector interest level</p>
+                    <p class="text-xs text-gray-500">${collectorInterest}</p>
                 </div>
             </div>
         `;
         
         document.querySelectorAll('.grade-card').forEach(card => card.classList.remove('selected'));
         event.currentTarget.classList.add('selected');
-        
         document.getElementById('gradeDetail').scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
     
     function updateGradeFromSlider() {
         const slider = document.getElementById('gradeSlider');
         const value = parseInt(slider.value);
-        let gradeName = '';
-        let gradeDesc = '';
-        let gradeRange = '';
+        let gradeName = '', gradeDesc = '', gradeRange = '';
         
         if (value <= 2) { gradeName = 'Poor (PO-1)'; gradeDesc = 'Barely identifiable, heavily worn. Major details missing.'; gradeRange = '1-2'; }
         else if (value <= 10) { gradeName = 'Good to Very Good (G-4 to VG-10)'; gradeDesc = 'Heavy wear but major details visible. Date readable.'; gradeRange = '4-10'; }
@@ -357,7 +316,6 @@
         else if (value <= 58) { gradeName = 'About Uncirculated (AU-50 to AU-58)'; gradeDesc = 'Trace wear on highest points. Most luster remains.'; gradeRange = '50-58'; }
         else { gradeName = 'Mint State (MS-60 to MS-70)'; gradeDesc = 'No wear whatsoever. Full mint luster. Perfect condition.'; gradeRange = '60-70'; }
         
-        const valuePercent = ((value - 1) / 69) * 100;
         let valueEstimate = '';
         if (value <= 10) valueEstimate = '5-15% of MS price';
         else if (value <= 35) valueEstimate = '15-40% of MS price';
@@ -365,22 +323,30 @@
         else if (value <= 58) valueEstimate = '65-85% of MS price';
         else valueEstimate = '100%+ of catalog value';
         
+        const estimatedText = window.currentLanguage === 'uk' ? 'Орієнтовна вартість' : 'Estimated value';
         document.getElementById('gradeName').textContent = gradeName;
         document.getElementById('gradeDescription').textContent = gradeDesc;
-        document.getElementById('gradeValue').innerHTML = `Estimated value: ${valueEstimate} | Grade: ${value}/70`;
+        document.getElementById('gradeValue').innerHTML = `${estimatedText}: ${valueEstimate} | Grade: ${value}/70`;
+    }
+    
+    function showAllNavButtons() {
+        const profileLink = document.getElementById('nav-profile');
+        const addCoinLink = document.getElementById('nav-add-coin');
+        if (profileLink) profileLink.classList.remove('hidden');
+        if (addCoinLink) addCoinLink.classList.remove('hidden');
+        if (typeof updateUserMenu === 'function') updateUserMenu();
     }
     
     document.addEventListener('DOMContentLoaded', () => {
         AOS.init({ duration: 600, once: true });
-        
+        showAllNavButtons();
         const slider = document.getElementById('gradeSlider');
-        if (slider) {
-            slider.addEventListener('input', updateGradeFromSlider);
-        }
+        if (slider) slider.addEventListener('input', updateGradeFromSlider);
     });
     
     window.selectGrade = selectGrade;
     window.updateGradeFromSlider = updateGradeFromSlider;
+    window.showAllNavButtons = showAllNavButtons;
 </script>
 
 </body>

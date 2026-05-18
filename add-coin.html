@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>Add New Coin - Numismatist's Guide</title>
+    <title data-i18n="add_coin_title">Add New Coin - Numismatist's Guide</title>
     
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -28,45 +28,15 @@
     <link rel="stylesheet" href="css/custom.css">
     
     <style>
-        .form-input, .form-select, .form-textarea {
-            transition: all 0.2s ease;
-        }
-        .form-input:focus, .form-select:focus, .form-textarea:focus {
-            transform: translateY(-2px);
-        }
-        .preview-card {
-            transition: transform 0.3s ease;
-        }
-        .preview-card:hover {
-            transform: scale(1.02);
-        }
-        .rarity-slider {
-            -webkit-appearance: none;
-            appearance: none;
-            height: 8px;
-            background: #374151;
-            border-radius: 5px;
-        }
-        .rarity-slider::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            appearance: none;
-            width: 20px;
-            height: 20px;
-            background: #fbbf24;
-            border-radius: 50%;
-            cursor: pointer;
-        }
-        .step-indicator {
-            transition: all 0.3s ease;
-        }
-        .step-indicator.active {
-            background-color: #fbbf24;
-            color: #000;
-        }
-        .step-indicator.completed {
-            background-color: #10b981;
-            color: #fff;
-        }
+        .form-input, .form-select, .form-textarea { transition: all 0.2s ease; }
+        .form-input:focus, .form-select:focus, .form-textarea:focus { transform: translateY(-2px); }
+        .preview-card { transition: transform 0.3s ease; }
+        .preview-card:hover { transform: scale(1.02); }
+        .rarity-slider { -webkit-appearance: none; appearance: none; height: 8px; background: #374151; border-radius: 5px; }
+        .rarity-slider::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 20px; height: 20px; background: #fbbf24; border-radius: 50%; cursor: pointer; }
+        .step-indicator { transition: all 0.3s ease; }
+        .step-indicator.active { background-color: #fbbf24; color: #000; }
+        .step-indicator.completed { background-color: #10b981; color: #fff; }
     </style>
 </head>
 <body class="bg-gray-900 text-gray-100 transition-colors duration-300">
@@ -79,10 +49,10 @@
 <div id="unauthorizedMessage" class="min-h-screen flex items-center justify-center">
     <div class="text-center max-w-md mx-auto px-4">
         <i class="fas fa-lock text-6xl text-yellow-500 mb-4"></i>
-        <h2 class="text-3xl font-bold mb-2">Authentication Required</h2>
-        <p class="text-gray-400 mb-6">Please sign in to add new coins to the catalog.</p>
+        <h2 class="text-3xl font-bold mb-2" data-i18n="auth_required_add">Authentication Required</h2>
+        <p class="text-gray-400 mb-6" data-i18n="please_sign_in_add">Please sign in to add new coins to the catalog.</p>
         <button onclick="openAuthModal()" class="bg-yellow-500 hover:bg-yellow-600 text-black font-bold px-6 py-3 rounded-lg transition">
-            <i class="fas fa-sign-in-alt mr-2"></i> Sign In
+            <i class="fas fa-sign-in-alt mr-2"></i> <span data-i18n="sign_in">Sign In</span>
         </button>
     </div>
 </div>
@@ -94,9 +64,9 @@
     
     <section class="bg-gradient-to-r from-gray-800 to-gray-900 py-12">
         <div class="container mx-auto px-4 text-center" data-aos="fade-up">
-            <h1 class="text-4xl md:text-5xl font-bold mb-2">Add New Coin</h1>
-            <p class="text-gray-400">Share your numismatic discovery with the community</p>
-            <p class="text-yellow-500 text-sm mt-2"><i class="fas fa-info-circle mr-1"></i> Your submission will be reviewed by an admin before being published</p>
+            <h1 class="text-4xl md:text-5xl font-bold mb-2" data-i18n="add_new_coin">Add New Coin</h1>
+            <p class="text-gray-400" data-i18n="share_discovery">Share your numismatic discovery with the community</p>
+            <p class="text-yellow-500 text-sm mt-2"><i class="fas fa-info-circle mr-1"></i> <span data-i18n="submission_review">Your submission will be reviewed by an admin before being published</span></p>
         </div>
     </section>
     
@@ -115,12 +85,12 @@
             
             <!-- КРОК 1 -->
             <div id="step1" class="form-step">
-                <h2 class="text-2xl font-bold mb-6 text-yellow-500"><i class="fas fa-info-circle mr-2"></i>Basic Information</h2>
+                <h2 class="text-2xl font-bold mb-6 text-yellow-500"><i class="fas fa-info-circle mr-2"></i> <span data-i18n="basic_information">Basic Information</span></h2>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
-                        <label class="block text-gray-300 mb-2">Country <span class="text-red-400">*</span></label>
+                        <label class="block text-gray-300 mb-2"><span data-i18n="country">Country</span> <span class="text-red-400">*</span></label>
                         <select id="country" class="form-select w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:border-yellow-500" required>
-                            <option value="">Select Country</option>
+                            <option value="" data-i18n="select_country">Select Country</option>
                             <option value="Ukraine">Ukraine</option>
                             <option value="USA">USA</option>
                             <option value="United Kingdom">United Kingdom</option>
@@ -134,31 +104,31 @@
                         </select>
                     </div>
                     <div>
-                        <label class="block text-gray-300 mb-2">Year <span class="text-red-400">*</span></label>
-                        <input type="number" id="year" placeholder="e.g., 1884" class="form-input w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:border-yellow-500" required>
+                        <label class="block text-gray-300 mb-2"><span data-i18n="year">Year</span> <span class="text-red-400">*</span></label>
+                        <input type="number" id="year" data-i18n-placeholder="year_placeholder" placeholder="e.g., 1884" class="form-input w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:border-yellow-500" required>
                     </div>
                     <div class="md:col-span-2">
-                        <label class="block text-gray-300 mb-2">Coin Name (English) <span class="text-red-400">*</span></label>
-                        <input type="text" id="nameEn" placeholder="e.g., Morgan Dollar" class="form-input w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:border-yellow-500" required>
+                        <label class="block text-gray-300 mb-2"><span data-i18n="coin_name_en">Coin Name (English)</span> <span class="text-red-400">*</span></label>
+                        <input type="text" id="nameEn" data-i18n-placeholder="coin_name_en_placeholder" placeholder="e.g., Morgan Dollar" class="form-input w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:border-yellow-500" required>
                     </div>
                     <div class="md:col-span-2">
-                        <label class="block text-gray-300 mb-2">Coin Name (Ukrainian) <span class="text-red-400">*</span></label>
-                        <input type="text" id="nameUk" placeholder="e.g., Морган Долар" class="form-input w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:border-yellow-500" required>
+                        <label class="block text-gray-300 mb-2"><span data-i18n="coin_name_uk">Coin Name (Ukrainian)</span> <span class="text-red-400">*</span></label>
+                        <input type="text" id="nameUk" data-i18n-placeholder="coin_name_uk_placeholder" placeholder="e.g., Морган Долар" class="form-input w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:border-yellow-500" required>
                     </div>
                     <div>
-                        <label class="block text-gray-300 mb-2">Denomination <span class="text-red-400">*</span></label>
-                        <input type="text" id="denomination" placeholder="e.g., 1 Dollar" class="form-input w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:border-yellow-500" required>
+                        <label class="block text-gray-300 mb-2"><span data-i18n="denomination">Denomination</span> <span class="text-red-400">*</span></label>
+                        <input type="text" id="denomination" data-i18n-placeholder="denomination_placeholder" placeholder="e.g., 1 Dollar" class="form-input w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:border-yellow-500" required>
                     </div>
                     <div>
-                        <label class="block text-gray-300 mb-2">Metal Type <span class="text-red-400">*</span></label>
+                        <label class="block text-gray-300 mb-2"><span data-i18n="metal_type">Metal Type</span> <span class="text-red-400">*</span></label>
                         <select id="metalType" class="form-select w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:border-yellow-500" required>
-                            <option value="">Select Metal</option>
-                            <option value="gold">Gold</option>
-                            <option value="silver">Silver</option>
-                            <option value="bronze">Bronze</option>
-                            <option value="copper">Copper</option>
-                            <option value="platinum">Platinum</option>
-                            <option value="other">Other</option>
+                            <option value="" data-i18n="select_metal">Select Metal</option>
+                            <option value="gold" data-i18n="gold">Gold</option>
+                            <option value="silver" data-i18n="silver">Silver</option>
+                            <option value="bronze" data-i18n="bronze">Bronze</option>
+                            <option value="copper" data-i18n="copper">Copper</option>
+                            <option value="platinum" data-i18n="platinum">Platinum</option>
+                            <option value="other" data-i18n="other">Other</option>
                         </select>
                     </div>
                 </div>
@@ -166,54 +136,54 @@
             
             <!-- КРОК 2 -->
             <div id="step2" class="form-step hidden">
-                <h2 class="text-2xl font-bold mb-6 text-yellow-500"><i class="fas fa-ruler-combined mr-2"></i>Technical Specifications</h2>
+                <h2 class="text-2xl font-bold mb-6 text-yellow-500"><i class="fas fa-ruler-combined mr-2"></i> <span data-i18n="technical_specifications">Technical Specifications</span></h2>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
-                        <label class="block text-gray-300 mb-2">Weight (grams)</label>
-                        <input type="number" id="weight" step="0.01" placeholder="e.g., 26.73" class="form-input w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:border-yellow-500">
+                        <label class="block text-gray-300 mb-2"><span data-i18n="weight_grams">Weight (grams)</span></label>
+                        <input type="number" id="weight" step="0.01" data-i18n-placeholder="weight_placeholder" placeholder="e.g., 26.73" class="form-input w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:border-yellow-500">
                     </div>
                     <div>
-                        <label class="block text-gray-300 mb-2">Diameter (mm)</label>
-                        <input type="number" id="diameter" step="0.1" placeholder="e.g., 38.1" class="form-input w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:border-yellow-500">
+                        <label class="block text-gray-300 mb-2"><span data-i18n="diameter_mm">Diameter (mm)</span></label>
+                        <input type="number" id="diameter" step="0.1" data-i18n-placeholder="diameter_placeholder" placeholder="e.g., 38.1" class="form-input w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:border-yellow-500">
                     </div>
                     <div>
-                        <label class="block text-gray-300 mb-2">Mintage</label>
-                        <input type="number" id="mintage" placeholder="e.g., 14100000" class="form-input w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:border-yellow-500">
+                        <label class="block text-gray-300 mb-2"><span data-i18n="mintage">Mintage</span></label>
+                        <input type="number" id="mintage" data-i18n-placeholder="mintage_placeholder" placeholder="e.g., 14100000" class="form-input w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:border-yellow-500">
                     </div>
                     <div>
-                        <label class="block text-gray-300 mb-2">Rarity (1-10) <span class="text-red-400">*</span></label>
+                        <label class="block text-gray-300 mb-2"><span data-i18n="rarity_scale">Rarity (1-10)</span> <span class="text-red-400">*</span></label>
                         <input type="range" id="rarity" min="1" max="10" value="5" class="rarity-slider w-full">
                         <div class="flex justify-between text-sm text-gray-400 mt-1">
-                            <span>Very Common</span>
+                            <span data-i18n="very_common">Very Common</span>
                             <span id="rarityValue" class="text-yellow-500 font-bold">5/10</span>
-                            <span>Extremely Rare</span>
+                            <span data-i18n="extremely_rare">Extremely Rare</span>
                         </div>
                     </div>
                     <div>
-                        <label class="block text-gray-300 mb-2">Price (USD) <span class="text-red-400">*</span></label>
-                        <input type="number" id="priceUSD" step="0.01" placeholder="e.g., 45" class="form-input w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:border-yellow-500" required>
+                        <label class="block text-gray-300 mb-2"><span data-i18n="price_usd">Price (USD)</span> <span class="text-red-400">*</span></label>
+                        <input type="number" id="priceUSD" step="0.01" data-i18n-placeholder="price_usd_placeholder" placeholder="e.g., 45" class="form-input w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:border-yellow-500" required>
                     </div>
                     <div>
-                        <label class="block text-gray-300 mb-2">Price (UAH)</label>
-                        <input type="number" id="priceUAH" step="0.01" placeholder="e.g., 1650" class="form-input w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:border-yellow-500">
+                        <label class="block text-gray-300 mb-2"><span data-i18n="price_uah">Price (UAH)</span></label>
+                        <input type="number" id="priceUAH" step="0.01" data-i18n-placeholder="price_uah_placeholder" placeholder="e.g., 1650" class="form-input w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:border-yellow-500">
                     </div>
                 </div>
             </div>
             
             <!-- КРОК 3 -->
             <div id="step3" class="form-step hidden">
-                <h2 class="text-2xl font-bold mb-6 text-yellow-500"><i class="fas fa-history mr-2"></i>History & Description</h2>
+                <h2 class="text-2xl font-bold mb-6 text-yellow-500"><i class="fas fa-history mr-2"></i> <span data-i18n="history_description">History & Description</span></h2>
                 <div class="space-y-6">
                     <div>
-                        <label class="block text-gray-300 mb-2">History (English) <span class="text-red-400">*</span></label>
-                        <textarea id="historyEn" rows="4" placeholder="Describe the historical significance of this coin..." class="form-textarea w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:border-yellow-500" required></textarea>
+                        <label class="block text-gray-300 mb-2"><span data-i18n="history_en">History (English)</span> <span class="text-red-400">*</span></label>
+                        <textarea id="historyEn" rows="4" data-i18n-placeholder="history_en_placeholder" placeholder="Describe the historical significance of this coin..." class="form-textarea w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:border-yellow-500" required></textarea>
                     </div>
                     <div>
-                        <label class="block text-gray-300 mb-2">History (Ukrainian) <span class="text-red-400">*</span></label>
-                        <textarea id="historyUk" rows="4" placeholder="Опишіть історичне значення цієї монети..." class="form-textarea w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:border-yellow-500" required></textarea>
+                        <label class="block text-gray-300 mb-2"><span data-i18n="history_uk">History (Ukrainian)</span> <span class="text-red-400">*</span></label>
+                        <textarea id="historyUk" rows="4" data-i18n-placeholder="history_uk_placeholder" placeholder="Опишіть історичне значення цієї монети..." class="form-textarea w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:border-yellow-500" required></textarea>
                     </div>
                     <div class="bg-gray-700 rounded-xl p-4">
-                        <h3 class="font-bold mb-3"><i class="fas fa-eye mr-2"></i>Preview</h3>
+                        <h3 class="font-bold mb-3"><i class="fas fa-eye mr-2"></i> <span data-i18n="preview">Preview</span></h3>
                         <div id="previewCard" class="preview-card bg-gray-800 rounded-xl p-4 flex gap-4">
                             <i class="fas fa-coins text-4xl text-yellow-500"></i>
                             <div>
@@ -228,13 +198,13 @@
             
             <div class="flex justify-between mt-8 pt-4 border-t border-gray-700">
                 <button type="button" id="prevBtn" class="px-6 py-2 bg-gray-700 hover:bg-gray-600 text-white rounded-lg transition hidden">
-                    <i class="fas fa-arrow-left mr-2"></i> Previous
+                    <i class="fas fa-arrow-left mr-2"></i> <span data-i18n="previous">Previous</span>
                 </button>
                 <button type="button" id="nextBtn" class="px-6 py-2 bg-yellow-500 hover:bg-yellow-600 text-black font-bold rounded-lg transition ml-auto">
-                    Next <i class="fas fa-arrow-right ml-2"></i>
+                    <span data-i18n="next">Next</span> <i class="fas fa-arrow-right ml-2"></i>
                 </button>
                 <button type="submit" id="submitBtn" class="px-6 py-2 bg-green-600 hover:bg-green-700 text-white font-bold rounded-lg transition hidden">
-                    <i class="fas fa-check-circle mr-2"></i> Submit Coin
+                    <i class="fas fa-check-circle mr-2"></i> <span data-i18n="submit_coin">Submit Coin</span>
                 </button>
             </div>
         </form>
@@ -255,15 +225,9 @@
         for (let i = 0; i < indicators.length; i++) {
             const indicator = indicators[i];
             indicator.classList.remove('active', 'completed');
-            if (i < currentStep - 1) {
-                indicator.classList.add('completed');
-                indicator.classList.remove('bg-gray-700', 'text-gray-400');
-            } else if (i === currentStep - 1) {
-                indicator.classList.add('active');
-                indicator.classList.remove('bg-gray-700', 'text-gray-400');
-            } else {
-                indicator.classList.add('bg-gray-700', 'text-gray-400');
-            }
+            if (i < currentStep - 1) { indicator.classList.add('completed'); indicator.classList.remove('bg-gray-700', 'text-gray-400'); }
+            else if (i === currentStep - 1) { indicator.classList.add('active'); indicator.classList.remove('bg-gray-700', 'text-gray-400'); }
+            else { indicator.classList.add('bg-gray-700', 'text-gray-400'); }
         }
     }
     
@@ -280,34 +244,31 @@
         if (step === 1) prevBtn.classList.add('hidden');
         else prevBtn.classList.remove('hidden');
         
-        if (step === totalSteps) {
-            nextBtn.classList.add('hidden');
-            submitBtn.classList.remove('hidden');
-        } else {
-            nextBtn.classList.remove('hidden');
-            submitBtn.classList.add('hidden');
-        }
+        if (step === totalSteps) { nextBtn.classList.add('hidden'); submitBtn.classList.remove('hidden'); }
+        else { nextBtn.classList.remove('hidden'); submitBtn.classList.add('hidden'); }
         
         updateStepIndicators();
     }
     
     function validateStep(step) {
+        const msgRequired = window.currentLanguage === 'uk' ? 'Будь ласка, заповніть це поле' : 'Please fill this field';
+        
         if (step === 1) {
-            if (!document.getElementById('country').value) { showToast('Please select a country', 'error'); return false; }
-            if (!document.getElementById('year').value) { showToast('Please enter the year', 'error'); return false; }
-            if (!document.getElementById('nameEn').value) { showToast('Please enter the coin name (English)', 'error'); return false; }
-            if (!document.getElementById('nameUk').value) { showToast('Please enter the coin name (Ukrainian)', 'error'); return false; }
-            if (!document.getElementById('denomination').value) { showToast('Please enter the denomination', 'error'); return false; }
-            if (!document.getElementById('metalType').value) { showToast('Please select the metal type', 'error'); return false; }
+            if (!document.getElementById('country').value) { showToast(msgRequired, 'error'); return false; }
+            if (!document.getElementById('year').value) { showToast(msgRequired, 'error'); return false; }
+            if (!document.getElementById('nameEn').value) { showToast(msgRequired, 'error'); return false; }
+            if (!document.getElementById('nameUk').value) { showToast(msgRequired, 'error'); return false; }
+            if (!document.getElementById('denomination').value) { showToast(msgRequired, 'error'); return false; }
+            if (!document.getElementById('metalType').value) { showToast(msgRequired, 'error'); return false; }
             return true;
         }
         if (step === 2) {
-            if (!document.getElementById('priceUSD').value) { showToast('Please enter the price in USD', 'error'); return false; }
+            if (!document.getElementById('priceUSD').value) { showToast(msgRequired, 'error'); return false; }
             return true;
         }
         if (step === 3) {
-            if (!document.getElementById('historyEn').value) { showToast('Please enter the history (English)', 'error'); return false; }
-            if (!document.getElementById('historyUk').value) { showToast('Please enter the history (Ukrainian)', 'error'); return false; }
+            if (!document.getElementById('historyEn').value) { showToast(msgRequired, 'error'); return false; }
+            if (!document.getElementById('historyUk').value) { showToast(msgRequired, 'error'); return false; }
             return true;
         }
         return true;
@@ -333,18 +294,11 @@
     });
     
     document.getElementById('nextBtn')?.addEventListener('click', () => {
-        if (validateStep(currentStep)) {
-            currentStep++;
-            showStep(currentStep);
-            updatePreview();
-        }
+        if (validateStep(currentStep)) { currentStep++; showStep(currentStep); updatePreview(); }
     });
     
     document.getElementById('prevBtn')?.addEventListener('click', () => {
-        if (currentStep > 1) {
-            currentStep--;
-            showStep(currentStep);
-        }
+        if (currentStep > 1) { currentStep--; showStep(currentStep); }
     });
     
     document.getElementById('coinForm')?.addEventListener('submit', async (e) => {
@@ -352,7 +306,8 @@
         
         if (!validateStep(currentStep)) return;
         if (!window.currentUser) {
-            showToast('You must be logged in to submit a coin', 'error');
+            const msg = window.currentLanguage === 'uk' ? 'Ви повинні увійти, щоб подати монету' : 'You must be logged in to submit a coin';
+            showToast(msg, 'error');
             openAuthModal();
             return;
         }
@@ -360,10 +315,7 @@
         const newCoin = {
             country: document.getElementById('country').value,
             countryCode: document.getElementById('country').value.substring(0, 2).toUpperCase(),
-            name: {
-                en: document.getElementById('nameEn').value,
-                uk: document.getElementById('nameUk').value
-            },
+            name: { en: document.getElementById('nameEn').value, uk: document.getElementById('nameUk').value },
             year: parseInt(document.getElementById('year').value),
             denomination: document.getElementById('denomination').value,
             metal: document.getElementById('metalType').value,
@@ -375,24 +327,19 @@
             priceUSD: parseFloat(document.getElementById('priceUSD').value),
             priceUAH: parseFloat(document.getElementById('priceUAH').value) || parseFloat(document.getElementById('priceUSD').value) * 36.7,
             image: "assets/images/placeholder-coin.jpg",
-            history: {
-                en: document.getElementById('historyEn').value,
-                uk: document.getElementById('historyUk').value
-            },
+            history: { en: document.getElementById('historyEn').value, uk: document.getElementById('historyUk').value },
             status: 'pending',
             addedBy: window.currentUser.uid,
             dateAdded: new Date().toISOString().split('T')[0]
         };
         
         addCoin(newCoin);
-        showToast('Your coin has been submitted for review!', 'success');
+        const successMsg = window.currentLanguage === 'uk' ? 'Вашу монету подано на розгляд!' : 'Your coin has been submitted for review!';
+        showToast(successMsg, 'success');
         
-        setTimeout(() => {
-            window.location.href = 'profile.html';
-        }, 2000);
+        setTimeout(() => { window.location.href = 'profile.html'; }, 2000);
     });
     
-    // Перевірка авторизації
     function checkAuth() {
         if (window.currentUser) {
             document.getElementById('unauthorizedMessage').classList.add('hidden');
@@ -403,13 +350,21 @@
         }
     }
     
+    function showAllNavButtons() {
+        const profileLink = document.getElementById('nav-profile');
+        const addCoinLink = document.getElementById('nav-add-coin');
+        if (profileLink) profileLink.classList.remove('hidden');
+        if (addCoinLink) addCoinLink.classList.remove('hidden');
+        if (typeof updateUserMenu === 'function') updateUserMenu();
+    }
+    
     document.addEventListener('DOMContentLoaded', () => {
         AOS.init({ duration: 600, once: true });
         updatePreview();
         checkAuth();
+        showAllNavButtons();
     });
     
-    // Слідкуємо за зміною авторизації
     const authCheckInterval = setInterval(() => {
         if (window.currentUser !== undefined) {
             clearInterval(authCheckInterval);
@@ -418,6 +373,7 @@
     }, 100);
     
     window.updatePreview = updatePreview;
+    window.showAllNavButtons = showAllNavButtons;
 </script>
 
 </body>
