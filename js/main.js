@@ -3,7 +3,8 @@
 // ============================================
 
 // Глобальні змінні
-window.currentLanguage = localStorage.getItem('language') || 'en';
+// ЗМІНЕНО: мова за замовчуванням 'uk' замість 'en'
+window.currentLanguage = localStorage.getItem('language') || 'uk';
 window.currentTheme = 'dark'; // Тільки темна тема
 
 // ============================================
@@ -37,12 +38,19 @@ let translations = { uk: {}, en: {} };
 
 async function loadTranslations() {
     try {
+        // ДОДАНО: версіонування для обходу кешу
+        const timestamp = Date.now();
         const [ukRes, enRes] = await Promise.all([
-            fetch('locales/uk.json'),
-            fetch('locales/en.json')
+            fetch(`locales/uk.json?t=${timestamp}`),
+            fetch(`locales/en.json?t=${timestamp}`)
         ]);
         translations.uk = await ukRes.json();
         translations.en = await enRes.json();
+        
+        // ДОДАНО: логування для перевірки
+        console.log('Translations loaded:', Object.keys(translations.uk).length, 'keys in uk.json');
+        console.log('Current language:', window.currentLanguage);
+        
         applyTranslations();
     } catch (error) {
         console.error('Error loading translations:', error);
@@ -50,8 +58,16 @@ async function loadTranslations() {
 }
 
 function applyTranslations() {
+    // ДОДАНО: перевірка, чи завантажені переклади
+    if (!translations[window.currentLanguage] || Object.keys(translations[window.currentLanguage]).length === 0) {
+        console.log('Translations not ready, skipping...');
+        return;
+    }
+    
     // Оновлення елементів з атрибутом data-i18n
     const elements = document.querySelectorAll('[data-i18n]');
+    console.log('Found elements with data-i18n:', elements.length);
+    
     elements.forEach(el => {
         const key = el.getAttribute('data-i18n');
         const translation = translations[window.currentLanguage]?.[key];
@@ -271,6 +287,13 @@ document.addEventListener('DOMContentLoaded', async () => {
         updateUserMenu();
         window.updatePageAfterAuth();
     }
+    
+    // ДОДАНО: повторне застосування перекладу через 1 секунду
+    setTimeout(() => {
+        if (window.currentLanguage === 'uk') {
+            applyTranslations();
+        }
+    }, 1000);
 });
 
 // Глобальні функції
