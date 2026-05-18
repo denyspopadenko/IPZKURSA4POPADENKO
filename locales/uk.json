@@ -452,5 +452,7 @@
 "email_placeholder": "your@email.com",
 "password_placeholder": "••••••••",
 "full_name_placeholder": "Ім'я Прізвище",
-"confirm_password_placeholder": "••••••••"
+"confirm_password_placeholder": "••••••••",
+"identify_coins_title": "Визначення монет",
+"identify_coins_subtitle": "Точні інструменти та детальна інформація для визначення будь-якої монети"
 }
