@@ -42,19 +42,15 @@ function createAuthModal() {
         <div id="authModal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden items-center justify-center p-4 transition-all">
             <div class="bg-gray-900 rounded-2xl max-w-md w-full shadow-2xl transform transition-all scale-95 opacity-0" id="authModalContent">
                 <div class="flex justify-between items-center p-6 border-b border-gray-700">
-                    <h3 class="text-2xl font-bold text-white" id="authModalTitle">Sign In</h3>
+                    <h3 class="text-2xl font-bold text-white" id="authModalTitle" data-i18n="sign_in">Sign In</h3>
                     <button onclick="closeAuthModal()" class="text-gray-400 hover:text-white transition">
                         <i class="fas fa-times text-2xl"></i>
                     </button>
                 </div>
 
                 <div class="flex border-b border-gray-700">
-                    <button onclick="switchAuthTab('login')" id="loginTab" class="flex-1 py-3 text-center font-medium transition-all border-b-2 border-yellow-500 text-yellow-500">
-                        Sign In
-                    </button>
-                    <button onclick="switchAuthTab('register')" id="registerTab" class="flex-1 py-3 text-center font-medium transition-all border-b-2 border-transparent text-gray-400 hover:text-white">
-                        Sign Up
-                    </button>
+                    <button onclick="switchAuthTab('login')" id="loginTab" class="flex-1 py-3 text-center font-medium transition-all border-b-2 border-yellow-500 text-yellow-500" data-i18n="sign_in">Sign In</button>
+                    <button onclick="switchAuthTab('register')" id="registerTab" class="flex-1 py-3 text-center font-medium transition-all border-b-2 border-transparent text-gray-400 hover:text-white" data-i18n="sign_up">Sign Up</button>
                 </div>
 
                 <div id="loginForm" class="p-6">
@@ -66,9 +62,7 @@ function createAuthModal() {
                         <label class="block text-gray-300 mb-2" data-i18n="password">Password</label>
                         <input type="password" id="loginPassword" data-i18n-placeholder="password_placeholder" placeholder="••••••••" class="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white focus:outline-none focus:border-yellow-500">
                     </div>
-                    <button onclick="signInWithEmail()" class="w-full bg-yellow-500 hover:bg-yellow-600 text-black font-bold py-2 rounded-lg transition mb-4">
-                        <span data-i18n="sign_in">Sign In</span>
-                    </button>
+                    <button onclick="signInWithEmail()" class="w-full bg-yellow-500 hover:bg-yellow-600 text-black font-bold py-2 rounded-lg transition mb-4" data-i18n="sign_in">Sign In</button>
                     <div class="relative my-4">
                         <div class="absolute inset-0 flex items-center"><div class="w-full border-t border-gray-700"></div></div>
                         <div class="relative flex justify-center text-sm"><span class="px-2 bg-gray-900 text-gray-400" data-i18n="or_continue_with">Or continue with</span></div>
@@ -95,9 +89,7 @@ function createAuthModal() {
                         <label class="block text-gray-300 mb-2" data-i18n="confirm_password">Confirm Password</label>
                         <input type="password" id="registerConfirmPassword" data-i18n-placeholder="confirm_password_placeholder" placeholder="••••••••" class="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white focus:outline-none focus:border-yellow-500">
                     </div>
-                    <button onclick="signUpWithEmail()" class="w-full bg-yellow-500 hover:bg-yellow-600 text-black font-bold py-2 rounded-lg transition mb-4">
-                        <span data-i18n="create_account">Create Account</span>
-                    </button>
+                    <button onclick="signUpWithEmail()" class="w-full bg-yellow-500 hover:bg-yellow-600 text-black font-bold py-2 rounded-lg transition mb-4" data-i18n="create_account">Create Account</button>
                     <div class="relative my-4">
                         <div class="absolute inset-0 flex items-center"><div class="w-full border-t border-gray-700"></div></div>
                         <div class="relative flex justify-center text-sm"><span class="px-2 bg-gray-900 text-gray-400" data-i18n="or_continue_with">Or continue with</span></div>

@@ -31,21 +31,39 @@
     <link rel="stylesheet" href="css/custom.css">
     
     <style>
+        /* Стрілки каруселі ЗЗОВНІ карток, по центру */
+        .coinCarousel {
+            position: relative;
+            padding: 0 50px;
+        }
         .swiper-button-next, .swiper-button-prev {
             color: #fbbf24 !important;
-            background: rgba(0,0,0,0.5);
-            width: 40px !important;
-            height: 40px !important;
+            background: rgba(0,0,0,0.6);
+            width: 44px !important;
+            height: 44px !important;
             border-radius: 50%;
+            top: 50%;
+            transform: translateY(-50%);
         }
-        .swiper-button-next:after, .swiper-button-prev:after { font-size: 20px !important; }
+        .swiper-button-next {
+            right: -10px !important;
+            left: auto !important;
+        }
+        .swiper-button-prev {
+            left: -10px !important;
+            right: auto !important;
+        }
+        .swiper-button-next:after, .swiper-button-prev:after {
+            font-size: 18px !important;
+        }
+        .swiper-button-next:hover, .swiper-button-prev:hover {
+            background: rgba(0,0,0,0.8);
+            transform: translateY(-50%) scale(1.1);
+        }
         .swiper-pagination-bullet-active { background: #fbbf24 !important; }
         
-        .coinCarousel {
-            padding-bottom: 40px !important;
-        }
         .coinCarousel .swiper-pagination {
-            bottom: 0 !important;
+            bottom: -30px !important;
             position: relative;
             margin-top: 20px;
         }
@@ -103,6 +121,23 @@
             -webkit-line-clamp: 3;
             -webkit-box-orient: vertical;
             overflow: hidden;
+        }
+        
+        @media (max-width: 768px) {
+            .coinCarousel {
+                padding: 0 30px;
+            }
+            .swiper-button-next {
+                right: -5px !important;
+            }
+            .swiper-button-prev {
+                left: -5px !important;
+            }
+        }
+        @media (max-width: 640px) {
+            .coinCarousel {
+                padding: 0 20px;
+            }
         }
     </style>
 </head>
@@ -168,37 +203,37 @@
             <div class="category-card bg-gray-900 rounded-xl p-6 text-center cursor-pointer hover:bg-gray-800 transition" onclick="window.location.href='catalog.html?category=us'">
                 <div class="w-20 h-20 mx-auto mb-4 rounded-full bg-yellow-500/20 flex items-center justify-center"><i class="fas fa-dollar-sign text-3xl text-yellow-500"></i></div>
                 <h3 class="text-xl font-bold mb-1" data-i18n="us_coins">US Coins</h3>
-                <p class="text-gray-400">1792-Now</p>
+                <p class="text-gray-400" data-i18n="us_coins_period">1792-Now</p>
                 <p class="text-yellow-500 font-bold mt-2">1,245 <span data-i18n="coins">Coins</span></p>
             </div>
             <div class="category-card bg-gray-900 rounded-xl p-6 text-center cursor-pointer hover:bg-gray-800 transition" onclick="window.location.href='catalog.html?category=world'">
                 <div class="w-20 h-20 mx-auto mb-4 rounded-full bg-yellow-500/20 flex items-center justify-center"><i class="fas fa-globe text-3xl text-yellow-500"></i></div>
                 <h3 class="text-xl font-bold mb-1" data-i18n="world_coins">World Coins</h3>
-                <p class="text-gray-400">American-Now</p>
+                <p class="text-gray-400" data-i18n="world_coins_period">American-Now</p>
                 <p class="text-yellow-500 font-bold mt-2">2,377 <span data-i18n="coins">Coins</span></p>
             </div>
             <div class="category-card bg-gray-900 rounded-xl p-6 text-center cursor-pointer hover:bg-gray-800 transition" onclick="window.location.href='catalog.html?category=ancient'">
                 <div class="w-20 h-20 mx-auto mb-4 rounded-full bg-yellow-500/20 flex items-center justify-center"><i class="fas fa-landmark text-3xl text-yellow-500"></i></div>
                 <h3 class="text-xl font-bold mb-1" data-i18n="ancient_coins">Ancient Coins</h3>
-                <p class="text-gray-400">3000 BC-500 AD</p>
+                <p class="text-gray-400" data-i18n="ancient_coins_period">3000 BC-500 AD</p>
                 <p class="text-yellow-500 font-bold mt-2">684 <span data-i18n="coins">Coins</span></p>
             </div>
             <div class="category-card bg-gray-900 rounded-xl p-6 text-center cursor-pointer hover:bg-gray-800 transition" onclick="window.location.href='catalog.html?category=gold'">
                 <div class="w-20 h-20 mx-auto mb-4 rounded-full bg-yellow-500/20 flex items-center justify-center"><i class="fas fa-crown text-3xl text-yellow-500"></i></div>
                 <h3 class="text-xl font-bold mb-1" data-i18n="gold_coins">Gold Coins</h3>
-                <p class="text-gray-400">Pre-1933-Now</p>
+                <p class="text-gray-400" data-i18n="gold_coins_period">Pre-1933-Now</p>
                 <p class="text-yellow-500 font-bold mt-2">503 <span data-i18n="coins">Coins</span></p>
             </div>
             <div class="category-card bg-gray-900 rounded-xl p-6 text-center cursor-pointer hover:bg-gray-800 transition" onclick="window.location.href='catalog.html?category=error'">
                 <div class="w-20 h-20 mx-auto mb-4 rounded-full bg-yellow-500/20 flex items-center justify-center"><i class="fas fa-exclamation-triangle text-3xl text-yellow-500"></i></div>
                 <h3 class="text-xl font-bold mb-1" data-i18n="error_coins">Error Coins</h3>
-                <p class="text-gray-400">Mint Errors</p>
+                <p class="text-gray-400" data-i18n="error_coins_period">Mint Errors</p>
                 <p class="text-yellow-500 font-bold mt-2">1,023 <span data-i18n="coins">Coins</span></p>
             </div>
             <div class="category-card bg-gray-900 rounded-xl p-6 text-center cursor-pointer hover:bg-gray-800 transition" onclick="window.location.href='catalog.html?category=commonwealth'">
                 <div class="w-20 h-20 mx-auto mb-4 rounded-full bg-yellow-500/20 flex items-center justify-center"><i class="fas fa-flag-checkered text-3xl text-yellow-500"></i></div>
                 <h3 class="text-xl font-bold mb-1" data-i18n="commonwealth">Commonwealth</h3>
-                <p class="text-gray-400">1892-Now</p>
+                <p class="text-gray-400" data-i18n="commonwealth_period">1892-Now</p>
                 <p class="text-yellow-500 font-bold mt-2">902 <span data-i18n="coins">Coins</span></p>
             </div>
         </div>
