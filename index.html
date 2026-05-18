@@ -31,39 +31,30 @@
     <link rel="stylesheet" href="css/custom.css">
     
     <style>
-        /* Стрілки каруселі - по боках, ззовні карток */
-        .coinCarousel {
-            position: relative;
-            padding: 0 50px;
-        }
+        /* ТІЛЬКИ СТРІЛКИ ЗМІНЕНО - решта залишилось як було */
         .swiper-button-next, .swiper-button-prev {
             color: #fbbf24 !important;
-            background: rgba(0,0,0,0.6);
-            width: 44px !important;
-            height: 44px !important;
+            background: rgba(0,0,0,0.5);
+            width: 40px !important;
+            height: 40px !important;
             border-radius: 50%;
-            top: 50%;
-            transform: translateY(-50%);
         }
         .swiper-button-next {
-            right: -10px !important;
+            right: 4px !important;
             left: auto !important;
         }
         .swiper-button-prev {
-            left: -10px !important;
+            left: 4px !important;
             right: auto !important;
         }
-        .swiper-button-next:after, .swiper-button-prev:after {
-            font-size: 18px !important;
-        }
-        .swiper-button-next:hover, .swiper-button-prev:hover {
-            background: rgba(0,0,0,0.8);
-            transform: translateY(-50%) scale(1.1);
-        }
+        .swiper-button-next:after, .swiper-button-prev:after { font-size: 20px !important; }
         .swiper-pagination-bullet-active { background: #fbbf24 !important; }
         
+        .coinCarousel {
+            padding-bottom: 40px !important;
+        }
         .coinCarousel .swiper-pagination {
-            bottom: -30px !important;
+            bottom: 0 !important;
             position: relative;
             margin-top: 20px;
         }
@@ -122,23 +113,7 @@
             -webkit-box-orient: vertical;
             overflow: hidden;
         }
-        
-        @media (max-width: 768px) {
-            .coinCarousel {
-                padding: 0 30px;
-            }
-            .swiper-button-next {
-                right: -5px !important;
-            }
-            .swiper-button-prev {
-                left: -5px !important;
-            }
-        }
-        @media (max-width: 640px) {
-            .coinCarousel {
-                padding: 0 20px;
-            }
-        }
+
     </style>
 </head>
 <body class="bg-gray-900 text-gray-100 transition-colors duration-300">
