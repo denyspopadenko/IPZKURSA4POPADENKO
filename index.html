@@ -31,7 +31,7 @@
     <link rel="stylesheet" href="css/custom.css">
     
     <style>
-        /* Стрілки каруселі ЗЗОВНІ карток, по центру */
+        /* Стрілки каруселі - по боках, ззовні карток */
         .coinCarousel {
             position: relative;
             padding: 0 50px;
@@ -200,36 +200,42 @@
             <p class="text-gray-400" data-i18n="identify_coins_subtitle">Accurate tools and detailed information to help you identify any coin</p>
         </div>
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- US Coins -->
             <div class="category-card bg-gray-900 rounded-xl p-6 text-center cursor-pointer hover:bg-gray-800 transition" onclick="window.location.href='catalog.html?category=us'">
                 <div class="w-20 h-20 mx-auto mb-4 rounded-full bg-yellow-500/20 flex items-center justify-center"><i class="fas fa-dollar-sign text-3xl text-yellow-500"></i></div>
                 <h3 class="text-xl font-bold mb-1" data-i18n="us_coins">US Coins</h3>
                 <p class="text-gray-400" data-i18n="us_coins_period">1792-Now</p>
                 <p class="text-yellow-500 font-bold mt-2">1,245 <span data-i18n="coins">Coins</span></p>
             </div>
+            <!-- World Coins -->
             <div class="category-card bg-gray-900 rounded-xl p-6 text-center cursor-pointer hover:bg-gray-800 transition" onclick="window.location.href='catalog.html?category=world'">
                 <div class="w-20 h-20 mx-auto mb-4 rounded-full bg-yellow-500/20 flex items-center justify-center"><i class="fas fa-globe text-3xl text-yellow-500"></i></div>
                 <h3 class="text-xl font-bold mb-1" data-i18n="world_coins">World Coins</h3>
                 <p class="text-gray-400" data-i18n="world_coins_period">American-Now</p>
                 <p class="text-yellow-500 font-bold mt-2">2,377 <span data-i18n="coins">Coins</span></p>
             </div>
+            <!-- Ancient Coins -->
             <div class="category-card bg-gray-900 rounded-xl p-6 text-center cursor-pointer hover:bg-gray-800 transition" onclick="window.location.href='catalog.html?category=ancient'">
                 <div class="w-20 h-20 mx-auto mb-4 rounded-full bg-yellow-500/20 flex items-center justify-center"><i class="fas fa-landmark text-3xl text-yellow-500"></i></div>
                 <h3 class="text-xl font-bold mb-1" data-i18n="ancient_coins">Ancient Coins</h3>
                 <p class="text-gray-400" data-i18n="ancient_coins_period">3000 BC-500 AD</p>
                 <p class="text-yellow-500 font-bold mt-2">684 <span data-i18n="coins">Coins</span></p>
             </div>
+            <!-- Gold Coins -->
             <div class="category-card bg-gray-900 rounded-xl p-6 text-center cursor-pointer hover:bg-gray-800 transition" onclick="window.location.href='catalog.html?category=gold'">
                 <div class="w-20 h-20 mx-auto mb-4 rounded-full bg-yellow-500/20 flex items-center justify-center"><i class="fas fa-crown text-3xl text-yellow-500"></i></div>
                 <h3 class="text-xl font-bold mb-1" data-i18n="gold_coins">Gold Coins</h3>
                 <p class="text-gray-400" data-i18n="gold_coins_period">Pre-1933-Now</p>
                 <p class="text-yellow-500 font-bold mt-2">503 <span data-i18n="coins">Coins</span></p>
             </div>
+            <!-- Error Coins -->
             <div class="category-card bg-gray-900 rounded-xl p-6 text-center cursor-pointer hover:bg-gray-800 transition" onclick="window.location.href='catalog.html?category=error'">
                 <div class="w-20 h-20 mx-auto mb-4 rounded-full bg-yellow-500/20 flex items-center justify-center"><i class="fas fa-exclamation-triangle text-3xl text-yellow-500"></i></div>
                 <h3 class="text-xl font-bold mb-1" data-i18n="error_coins">Error Coins</h3>
                 <p class="text-gray-400" data-i18n="error_coins_period">Mint Errors</p>
                 <p class="text-yellow-500 font-bold mt-2">1,023 <span data-i18n="coins">Coins</span></p>
             </div>
+            <!-- Commonwealth -->
             <div class="category-card bg-gray-900 rounded-xl p-6 text-center cursor-pointer hover:bg-gray-800 transition" onclick="window.location.href='catalog.html?category=commonwealth'">
                 <div class="w-20 h-20 mx-auto mb-4 rounded-full bg-yellow-500/20 flex items-center justify-center"><i class="fas fa-flag-checkered text-3xl text-yellow-500"></i></div>
                 <h3 class="text-xl font-bold mb-1" data-i18n="commonwealth">Commonwealth</h3>

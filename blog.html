@@ -319,12 +319,20 @@
         document.getElementById('loginToComment')?.classList.toggle('hidden', isLoggedIn);
     }
     
-    function forceShowNavButtons() {
+    // Показуємо/ховаємо кнопки залежно від авторизації
+    function updateNavButtonsVisibility() {
         const navProfile = document.getElementById('nav-profile');
         const navAddCoin = document.getElementById('nav-add-coin');
         
-        if (navProfile) navProfile.classList.remove('hidden');
-        if (navAddCoin) navAddCoin.classList.remove('hidden');
+        if (window.currentUser) {
+            // Користувач залогінений - показуємо кнопки
+            if (navProfile) navProfile.classList.remove('hidden');
+            if (navAddCoin) navAddCoin.classList.remove('hidden');
+        } else {
+            // Користувач не залогінений - ховаємо кнопки
+            if (navProfile) navProfile.classList.add('hidden');
+            if (navAddCoin) navAddCoin.classList.add('hidden');
+        }
         
         if (typeof updateUserMenu === 'function') updateUserMenu();
     }
@@ -345,7 +353,7 @@
     window.updatePageAfterAuth = function() {
         updateCommentFormVisibility();
         if (currentArticleId) loadComments(currentArticleId);
-        forceShowNavButtons();
+        updateNavButtonsVisibility();
         if (typeof updateUserMenu === 'function') updateUserMenu();
         if (typeof window.updateUIAfterLogin === 'function' && window.currentUser) window.updateUIAfterLogin(window.currentUser);
     };
@@ -354,9 +362,10 @@
         AOS.init({ duration: 600, once: true });
         loadBlogData();
         updateCommentFormVisibility();
+        updateNavButtonsVisibility();
         
         setTimeout(() => {
-            forceShowNavButtons();
+            updateNavButtonsVisibility();
             if (window.currentUser && typeof window.updateUIAfterLogin === 'function') window.updateUIAfterLogin(window.currentUser);
         }, 200);
     });
